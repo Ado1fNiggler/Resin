@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import localFont from 'next/font/local';
 
@@ -21,32 +21,31 @@ export default function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000); // Change every 5 seconds
+    }, 10000); // Change every 10 seconds
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image Carousel */}
+      {/* Background Image Carousel - Stacked for Cross-fade */}
       <div className="absolute inset-0">
-        <AnimatePresence mode="wait">
+        {heroImages.map((image, index) => (
           <motion.div
-            key={currentImageIndex}
+            key={image}
             className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: 'easeInOut' }}
+            initial={{ opacity: index === 0 ? 1 : 0 }}
+            animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
+            transition={{ duration: 2, ease: 'easeInOut' }}
           >
             <div
               className="w-full h-full bg-cover bg-center"
               style={{
-                backgroundImage: `url(${heroImages[currentImageIndex]})`,
+                backgroundImage: `url(${image})`,
               }}
             />
           </motion.div>
-        </AnimatePresence>
+        ))}
 
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/30" />
