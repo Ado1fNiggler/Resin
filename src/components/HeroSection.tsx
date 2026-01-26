@@ -55,7 +55,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto">
         <motion.h1
-          className={`text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-6 ${dihjauti.className}`}
+          className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 ${dihjauti.className}`}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}

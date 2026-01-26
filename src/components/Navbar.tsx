@@ -1,86 +1,108 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import localFont from 'next/font/local';
+
+const narrenschiff = localFont({
+  src: '../../public/fonts/Narrenschiff-Regular.otf',
+  display: 'swap',
+});
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { scrollY } = useScroll();
-
-  const backgroundColor = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(255, 255, 255, 0.95)', 'rgba(255, 255, 255, 0.98)']
-  );
-
-  const boxShadow = useTransform(
-    scrollY,
-    [0, 100],
-    ['0 2px 10px rgba(0, 0, 0, 0.1)', '0 2px 20px rgba(0, 0, 0, 0.15)']
-  );
-
-  useEffect(() => {
-    const unsubscribe = scrollY.on('change', (latest) => {
-      setIsScrolled(latest > 100);
-    });
-    return () => unsubscribe();
-  }, [scrollY]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md"
-      style={{
-        backgroundColor,
-        boxShadow,
-      }}
+      className="fixed top-0 left-0 right-0 z-50"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <motion.div
-            className="text-2xl font-bold tracking-[0.2em] text-primary"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            ROOOF
-          </motion.div>
+      <div className="flex items-center px-6 lg:px-8 py-6">
+        {/* Menu Button Square */}
+        <motion.button
+          className="w-16 h-16 flex items-center justify-center"
+          style={{ backgroundColor: '#176571' }}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {/* Menu Icon */}
+          <div className="flex flex-col gap-1.5">
+            <motion.div
+              className="w-6 h-0.5 bg-white"
+              animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.div
+              className="w-6 h-0.5 bg-white"
+              animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.div
+              className="w-6 h-0.5 bg-white"
+              animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </motion.button>
 
-          {/* Navigation Links */}
-          <motion.ul
-            className="hidden md:flex items-center space-x-10"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            {['Products', 'Features', 'About', 'Contact'].map((item, index) => (
-              <li key={item}>
-                <motion.a
-                  href={`#${item.toLowerCase()}`}
-                  className="text-gray-700 font-medium relative group"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {item}
-                  <span className="absolute left-0 bottom-[-5px] w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                </motion.a>
-              </li>
-            ))}
-          </motion.ul>
-
-          {/* CTA Button */}
-          <motion.button
-            className="bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-dark-brown transition-all duration-300"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Shop Now
-          </motion.button>
-        </div>
+        {/* Logo */}
+        <motion.div
+          className={`ml-6 text-4xl font-bold ${narrenschiff.className}`}
+          style={{ color: '#F86A38' }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          Resin
+        </motion.div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <motion.div
+        className="fixed inset-0 z-40"
+        style={{ backgroundColor: '#176571' }}
+        initial={{ x: '-100%' }}
+        animate={{ x: isMenuOpen ? 0 : '-100%' }}
+        transition={{ duration: 0.4, ease: 'easeInOut' }}
+      >
+        <div className="flex flex-col items-center justify-center h-full gap-8">
+          <motion.a
+            href="#products"
+            className="text-white text-3xl font-bold hover:text-orange-400 transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+            whileHover={{ scale: 1.1 }}
+          >
+            Προϊόντα
+          </motion.a>
+          <motion.a
+            href="#features"
+            className="text-white text-3xl font-bold hover:text-orange-400 transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+            whileHover={{ scale: 1.1 }}
+          >
+            Χαρακτηριστικά
+          </motion.a>
+          <motion.a
+            href="#about"
+            className="text-white text-3xl font-bold hover:text-orange-400 transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+            whileHover={{ scale: 1.1 }}
+          >
+            Σχετικά
+          </motion.a>
+          <motion.a
+            href="#contact"
+            className="text-white text-3xl font-bold hover:text-orange-400 transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+            whileHover={{ scale: 1.1 }}
+          >
+            Επικοινωνία
+          </motion.a>
+        </div>
+      </motion.div>
     </motion.nav>
   );
 }
