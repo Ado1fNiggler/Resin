@@ -2,6 +2,12 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import localFont from 'next/font/local';
+
+const dihjauti = localFont({
+  src: '../../public/fonts/Dihjauti-Bold.otf',
+  display: 'swap',
+});
 
 const heroImages = [
   '/hero1.png',
@@ -49,13 +55,13 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto">
         <motion.h1
-          className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-6"
+          className={`text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-6 ${dihjauti.className}`}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          Luxury Furniture <br />
-          <span className="text-secondary">for Dogs</span>
+          Πολυτελή έπιπλα <br />
+          <span className="text-secondary">για την οικία σας</span>
         </motion.h1>
 
         <motion.p
@@ -65,7 +71,7 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.6 }}
           style={{ textShadow: '1px 1px 5px rgba(0, 0, 0, 0.5)' }}
         >
-          Loving your pets doesn't mean compromising your style—it means elevating theirs.
+          Ανακαλύψτε τη συλλογή μας από χειροποίητα έπιπλα που συνδυάζουν αισθητική και λειτουργικότητα.
         </motion.p>
 
         <motion.button
@@ -76,7 +82,7 @@ export default function HeroSection() {
           whileHover={{ scale: 1.05, y: -3 }}
           whileTap={{ scale: 0.95 }}
         >
-          Explore Collection
+          Εξερευνήστε τη Συλλογή
         </motion.button>
       </div>
 
