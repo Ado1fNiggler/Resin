@@ -19,14 +19,14 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="flex items-center px-6 lg:px-8 py-6">
-        {/* Menu Button Square */}
+      <div className="flex items-center">
+        {/* Menu Button Square - No padding, touches corner */}
         <motion.button
-          className="w-16 h-16 flex items-center justify-center"
+          className="w-20 h-20 flex items-center justify-center"
           style={{ backgroundColor: '#176571' }}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           {/* Menu Icon */}
           <div className="flex flex-col gap-1.5">

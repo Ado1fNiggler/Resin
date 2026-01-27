@@ -80,8 +80,25 @@ export default function HeroSection() {
       </div>
 
 
+      {/* Explore Collection Button - Bottom Right */}
+      <motion.div
+        className="absolute bottom-12 right-12 z-10"
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, delay: 0.9 }}
+      >
+        <motion.button
+          className="px-8 py-4 text-white font-semibold rounded-full uppercase tracking-wider text-sm"
+          style={{ backgroundColor: '#176571' }}
+          whileHover={{ scale: 1.05, backgroundColor: '#1a7a88' }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Εξερευνήστε τη συλλογή μας
+        </motion.button>
+      </motion.div>
+
       {/* Image Indicators */}
-      <div className="absolute bottom-10 right-10 z-10 flex gap-2">
+      <div className="absolute bottom-6 right-12 z-10 flex gap-2">
         {heroImages.map((_, index) => (
           <motion.button
             key={index}
