@@ -50,8 +50,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <motion.div
-          className={`ml-6 text-4xl font-bold ${narrenschiff.className}`}
-          style={{ color: '#F86A38' }}
+          className={`ml-8 text-6xl font-bold text-white ${narrenschiff.className}`}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
