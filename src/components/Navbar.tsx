@@ -13,6 +13,7 @@ const products = ['Phantigo', 'Violet', 'Maximillian', 'Huxton'];
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
@@ -25,29 +26,46 @@ export default function Navbar() {
         <div className="flex items-center">
           {/* Menu Button Square - No padding, touches corner */}
           <motion.button
-            className="w-20 h-20 flex items-center justify-center"
+            className="h-20 flex items-center justify-center overflow-hidden"
             style={{ backgroundColor: '#176571' }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            animate={{ width: isHovered ? 140 : 80 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            {/* Menu Icon */}
-            <div className="flex flex-col gap-1.5">
-              <motion.div
-                className="w-6 h-0.5 bg-white"
-                animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+            <div className="flex items-center gap-4 px-5">
+              {/* MENU Text */}
+              <motion.span
+                className="text-white font-bold text-sm tracking-wider whitespace-nowrap"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{
+                  opacity: isHovered ? 1 : 0,
+                  x: isHovered ? 0 : -10
+                }}
                 transition={{ duration: 0.3 }}
-              />
-              <motion.div
-                className="w-6 h-0.5 bg-white"
-                animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-              <motion.div
-                className="w-6 h-0.5 bg-white"
-                animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                transition={{ duration: 0.3 }}
-              />
+              >
+                MENU
+              </motion.span>
+
+              {/* Menu Icon */}
+              <div className="flex flex-col gap-1.5">
+                <motion.div
+                  className="w-6 h-0.5 bg-white"
+                  animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.div
+                  className="w-6 h-0.5 bg-white"
+                  animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.div
+                  className="w-6 h-0.5 bg-white"
+                  animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
             </div>
           </motion.button>
 
