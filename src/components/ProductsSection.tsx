@@ -66,32 +66,57 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
     <motion.div
       ref={ref}
       variants={item}
-      className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
-      whileHover={{ y: -10 }}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500"
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.6, delay: index * 0.15, ease: 'easeOut' }}
+      whileHover={{ y: -8 }}
     >
       {/* Image */}
-      <div className="relative h-80 overflow-hidden">
+      <div className="relative h-80 overflow-hidden bg-gray-100">
         <motion.img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ scale: 1 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
         />
       </div>
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
-        <p className="text-gray-600 mb-4">{product.description}</p>
-        <p className="text-3xl font-bold text-primary mb-6">{product.price}</p>
+        <motion.h3
+          className="text-2xl font-bold text-gray-900 mb-2"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: index * 0.15 + 0.2 }}
+        >
+          {product.name}
+        </motion.h3>
+        <motion.p
+          className="text-gray-600 mb-4"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: index * 0.15 + 0.3 }}
+        >
+          {product.description}
+        </motion.p>
+        <motion.p
+          className="text-3xl font-bold text-primary mb-6"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: index * 0.15 + 0.4 }}
+        >
+          {product.price}
+        </motion.p>
 
         <motion.button
-          className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-dark-brown transition-all duration-300"
-          whileHover={{ scale: 1.02 }}
+          className="w-full bg-primary text-white py-3 rounded-lg font-semibold transition-all duration-300"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: index * 0.15 + 0.5 }}
+          whileHover={{ scale: 1.02, backgroundColor: '#654321' }}
           whileTap={{ scale: 0.98 }}
         >
           View Details

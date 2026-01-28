@@ -43,50 +43,62 @@ const features: Feature[] = [
 
 function FeatureRow({ feature, index }: { feature: Feature; index: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.25 });
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  // Subtle parallax effect
+  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
     <motion.div
       ref={ref}
       className={`flex flex-col ${
         feature.reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'
-      } items-center gap-12 mb-24 last:mb-0`}
-      style={{ opacity }}
+      } items-center gap-16 mb-32 last:mb-0`}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: 0.6 }}
     >
       {/* Content */}
       <motion.div
         className="flex-1"
-        initial={{ opacity: 0, x: feature.reverse ? 50 : -50 }}
+        initial={{ opacity: 0, x: feature.reverse ? 30 : -30 }}
         animate={
           isInView
             ? { opacity: 1, x: 0 }
-            : { opacity: 0, x: feature.reverse ? 50 : -50 }
+            : { opacity: 0, x: feature.reverse ? 30 : -30 }
         }
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        <motion.h2
+          className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           {feature.title}
-        </h2>
-        <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+        </motion.h2>
+        <motion.p
+          className="text-lg text-gray-600 mb-8 leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
           {feature.description}
-        </p>
+        </motion.p>
 
         <ul className="space-y-4">
           {feature.points.map((point, i) => (
             <motion.li
               key={i}
               className="flex items-start gap-3"
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
+              initial={{ opacity: 0, x: -15 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -15 }}
+              transition={{ duration: 0.5, delay: 0.5 + i * 0.08, ease: 'easeOut' }}
             >
               <span className="text-primary text-xl font-bold mt-1">✓</span>
               <span className="text-gray-700">{point}</span>
@@ -95,25 +107,26 @@ function FeatureRow({ feature, index }: { feature: Feature; index: number }) {
         </ul>
       </motion.div>
 
-      {/* Image */}
+      {/* Image with subtle parallax */}
       <motion.div
         className="flex-1"
-        initial={{ opacity: 0, x: feature.reverse ? -50 : 50 }}
+        initial={{ opacity: 0, x: feature.reverse ? -30 : 30 }}
         animate={
           isInView
             ? { opacity: 1, x: 0 }
-            : { opacity: 0, x: feature.reverse ? -50 : 50 }
+            : { opacity: 0, x: feature.reverse ? -30 : 30 }
         }
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
         style={{ y }}
       >
-        <motion.img
-          src={feature.image}
-          alt={feature.title}
-          className="w-full rounded-2xl shadow-2xl"
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
-        />
+        <div className="relative overflow-hidden rounded-2xl shadow-xl group">
+          <motion.img
+            src={feature.image}
+            alt={feature.title}
+            className="w-full transition-transform duration-500"
+            whileHover={{ scale: 1.03 }}
+          />
+        </div>
       </motion.div>
     </motion.div>
   );

@@ -38,35 +38,20 @@ function GalleryItem({ image, index }: { image: { url: string; alt: string }; in
   return (
     <motion.div
       ref={ref}
-      className="relative overflow-hidden rounded-xl aspect-square group cursor-pointer"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ scale: 1.02 }}
+      className="relative overflow-hidden rounded-xl aspect-square group cursor-pointer bg-gray-100"
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: 'easeOut' }}
     >
       <motion.img
         src={image.url}
         alt={image.alt}
-        className="w-full h-full object-cover"
-        whileHover={{ scale: 1.1 }}
-        transition={{ duration: 0.5 }}
+        className="w-full h-full object-cover transition-all duration-500"
+        whileHover={{ scale: 1.05 }}
       />
 
-      {/* Overlay on hover */}
-      <motion.div
-        className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-      >
-        <motion.div
-          initial={{ scale: 0 }}
-          whileHover={{ scale: 1 }}
-          transition={{ duration: 0.3 }}
-          className="text-white text-xl font-semibold"
-        >
-          View
-        </motion.div>
-      </motion.div>
+      {/* Subtle overlay on hover */}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300" />
     </motion.div>
   );
 }
