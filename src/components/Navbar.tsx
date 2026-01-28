@@ -26,7 +26,7 @@ export default function Navbar() {
         <div className="flex items-center">
           {/* Menu Button Square - No padding, touches corner */}
           <motion.button
-            className="flex items-center justify-center overflow-hidden"
+            className="relative overflow-hidden"
             style={{ backgroundColor: '#176571' }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             onMouseEnter={() => setIsHovered(true)}
@@ -38,38 +38,36 @@ export default function Navbar() {
             }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="flex items-center gap-4 px-4">
-              {/* MENU Text - Horizontal */}
-              <motion.span
-                className="text-white font-bold text-sm tracking-wider whitespace-nowrap"
-                initial={{ opacity: 0, width: 0 }}
-                animate={{
-                  opacity: isHovered ? 1 : 0,
-                  width: isHovered ? 'auto' : 0
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                MENU
-              </motion.span>
+            {/* MENU Text - Horizontal, positioned left */}
+            <motion.span
+              className="absolute left-5 top-1/2 -translate-y-1/2 text-white font-bold text-sm tracking-wider whitespace-nowrap"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{
+                opacity: isHovered ? 1 : 0,
+                x: isHovered ? 0 : -10
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              MENU
+            </motion.span>
 
-              {/* Menu Icon */}
-              <div className="flex flex-col gap-1.5 flex-shrink-0">
-                <motion.div
-                  className="w-6 h-0.5 bg-white"
-                  animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <motion.div
-                  className="w-6 h-0.5 bg-white"
-                  animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <motion.div
-                  className="w-6 h-0.5 bg-white"
-                  animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </div>
+            {/* Menu Icon - Always centered in initial 80px square */}
+            <div className="absolute left-[27px] top-1/2 -translate-y-1/2 flex flex-col gap-1.5">
+              <motion.div
+                className="w-6 h-0.5 bg-white"
+                animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div
+                className="w-6 h-0.5 bg-white"
+                animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div
+                className="w-6 h-0.5 bg-white"
+                animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.3 }}
+              />
             </div>
           </motion.button>
 
