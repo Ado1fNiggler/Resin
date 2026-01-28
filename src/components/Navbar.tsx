@@ -38,15 +38,14 @@ export default function Navbar() {
             }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="flex items-center gap-3">
-              {/* MENU Text - Vertical */}
+            <div className="flex items-center gap-4 px-4">
+              {/* MENU Text - Horizontal */}
               <motion.span
-                className="text-white font-bold text-xs tracking-widest whitespace-nowrap"
-                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-                initial={{ opacity: 0, y: -10 }}
+                className="text-white font-bold text-sm tracking-wider whitespace-nowrap"
+                initial={{ opacity: 0, width: 0 }}
                 animate={{
                   opacity: isHovered ? 1 : 0,
-                  y: isHovered ? 0 : -10
+                  width: isHovered ? 'auto' : 0
                 }}
                 transition={{ duration: 0.3 }}
               >
@@ -54,7 +53,7 @@ export default function Navbar() {
               </motion.span>
 
               {/* Menu Icon */}
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1.5 flex-shrink-0">
                 <motion.div
                   className="w-6 h-0.5 bg-white"
                   animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
