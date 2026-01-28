@@ -14,6 +14,7 @@ const products = ['Phantigo', 'Violet', 'Maximillian', 'Huxton'];
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [hoveredSidebarItem, setHoveredSidebarItem] = useState<string | null>(null);
 
   return (
     <>
@@ -100,114 +101,177 @@ export default function Navbar() {
       >
         <div className="flex h-full">
           {/* Left Sidebar */}
-          <div className="w-20 bg-white flex flex-col items-center border-r border-gray-200">
+          <div className="bg-white flex flex-col items-start border-r border-gray-200">
             {/* Close Button */}
             <motion.button
-              className="w-20 h-20 flex items-center justify-center text-gray-800 transition-all duration-300"
+              className="flex items-center justify-center overflow-hidden text-gray-800"
               onClick={() => setIsMenuOpen(false)}
-              whileHover={{ scale: 1.05, backgroundColor: 'rgba(243, 244, 246, 1)' }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              onMouseEnter={() => setHoveredSidebarItem('close')}
+              onMouseLeave={() => setHoveredSidebarItem(null)}
+              initial={{ width: 80, height: 80 }}
+              animate={{ width: hoveredSidebarItem === 'close' ? 140 : 80, height: 80 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              whileTap={{ scale: 0.98 }}
             >
-              <motion.svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                whileHover={{ rotate: 90 }}
-                transition={{ duration: 0.3 }}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </motion.svg>
+              <div className="flex items-center gap-3">
+                <motion.span
+                  className="text-gray-800 font-bold text-xs tracking-widest whitespace-nowrap"
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{
+                    opacity: hoveredSidebarItem === 'close' ? 1 : 0,
+                    width: hoveredSidebarItem === 'close' ? 'auto' : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  CLOSE
+                </motion.span>
+                <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
             </motion.button>
 
             {/* Shopping Cart */}
             <motion.button
-              className="w-20 h-20 flex items-center justify-center text-gray-600 transition-all duration-300"
-              whileHover={{ scale: 1.05, color: '#176571', backgroundColor: 'rgba(243, 244, 246, 0.5)' }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              className="flex items-center justify-center overflow-hidden text-gray-600"
+              onMouseEnter={() => setHoveredSidebarItem('cart')}
+              onMouseLeave={() => setHoveredSidebarItem(null)}
+              initial={{ width: 80, height: 80 }}
+              animate={{
+                width: hoveredSidebarItem === 'cart' ? 140 : 80,
+                height: 80,
+                color: hoveredSidebarItem === 'cart' ? '#176571' : '#4B5563'
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              whileTap={{ scale: 0.98 }}
             >
-              <motion.svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                whileHover={{ y: -2 }}
-                transition={{ duration: 0.2 }}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </motion.svg>
+              <div className="flex items-center gap-3">
+                <motion.span
+                  className="font-bold text-xs tracking-widest whitespace-nowrap"
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{
+                    opacity: hoveredSidebarItem === 'cart' ? 1 : 0,
+                    width: hoveredSidebarItem === 'cart' ? 'auto' : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ color: '#176571' }}
+                >
+                  CART
+                </motion.span>
+                <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
             </motion.button>
 
             {/* Search */}
             <motion.button
-              className="w-20 h-20 flex items-center justify-center text-gray-600 transition-all duration-300"
-              whileHover={{ scale: 1.05, color: '#176571', backgroundColor: 'rgba(243, 244, 246, 0.5)' }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              className="flex items-center justify-center overflow-hidden text-gray-600"
+              onMouseEnter={() => setHoveredSidebarItem('search')}
+              onMouseLeave={() => setHoveredSidebarItem(null)}
+              initial={{ width: 80, height: 80 }}
+              animate={{
+                width: hoveredSidebarItem === 'search' ? 140 : 80,
+                height: 80,
+                color: hoveredSidebarItem === 'search' ? '#176571' : '#4B5563'
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              whileTap={{ scale: 0.98 }}
             >
-              <motion.svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </motion.svg>
+              <div className="flex items-center gap-3">
+                <motion.span
+                  className="font-bold text-xs tracking-widest whitespace-nowrap"
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{
+                    opacity: hoveredSidebarItem === 'search' ? 1 : 0,
+                    width: hoveredSidebarItem === 'search' ? 'auto' : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ color: '#176571' }}
+                >
+                  SEARCH
+                </motion.span>
+                <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
             </motion.button>
 
             {/* ROOOF Vertical Text */}
-            <div className="flex-1 flex items-center justify-center">
-              <motion.div
-                className="text-sm font-bold tracking-widest text-gray-800 cursor-default"
+            <div className="flex-1 w-20 flex items-center justify-center">
+              <div
+                className="text-sm font-bold tracking-widest text-gray-800"
                 style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-                whileHover={{ letterSpacing: '0.3em' }}
-                transition={{ duration: 0.3 }}
               >
                 ROOOF
-              </motion.div>
+              </div>
             </div>
 
             {/* Favorites */}
             <motion.button
-              className="w-20 h-20 flex items-center justify-center text-gray-600 transition-all duration-300"
-              whileHover={{ scale: 1.05, color: '#176571', backgroundColor: 'rgba(243, 244, 246, 0.5)' }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              className="flex items-center justify-center overflow-hidden text-gray-600"
+              onMouseEnter={() => setHoveredSidebarItem('favorites')}
+              onMouseLeave={() => setHoveredSidebarItem(null)}
+              initial={{ width: 80, height: 80 }}
+              animate={{
+                width: hoveredSidebarItem === 'favorites' ? 140 : 80,
+                height: 80,
+                color: hoveredSidebarItem === 'favorites' ? '#176571' : '#4B5563'
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              whileTap={{ scale: 0.98 }}
             >
-              <motion.svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                whileHover={{ scale: 1.15, fill: 'rgba(23, 101, 113, 0.2)' }}
-                transition={{ duration: 0.2 }}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </motion.svg>
+              <div className="flex items-center gap-3">
+                <motion.span
+                  className="font-bold text-xs tracking-widest whitespace-nowrap"
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{
+                    opacity: hoveredSidebarItem === 'favorites' ? 1 : 0,
+                    width: hoveredSidebarItem === 'favorites' ? 'auto' : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ color: '#176571' }}
+                >
+                  LIKE
+                </motion.span>
+                <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
             </motion.button>
 
             {/* Scroll to Top */}
             <motion.button
-              className="w-20 h-20 flex items-center justify-center text-gray-600 transition-all duration-300"
-              whileHover={{ scale: 1.05, color: '#176571', backgroundColor: 'rgba(243, 244, 246, 0.5)' }}
-              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center overflow-hidden text-gray-600"
+              onMouseEnter={() => setHoveredSidebarItem('top')}
+              onMouseLeave={() => setHoveredSidebarItem(null)}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              transition={{ duration: 0.2 }}
+              initial={{ width: 80, height: 80 }}
+              animate={{
+                width: hoveredSidebarItem === 'top' ? 140 : 80,
+                height: 80,
+                color: hoveredSidebarItem === 'top' ? '#176571' : '#4B5563'
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              whileTap={{ scale: 0.98 }}
             >
-              <motion.svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                whileHover={{ y: -3 }}
-                transition={{ duration: 0.2 }}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-              </motion.svg>
+              <div className="flex items-center gap-3">
+                <motion.span
+                  className="font-bold text-xs tracking-widest whitespace-nowrap"
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{
+                    opacity: hoveredSidebarItem === 'top' ? 1 : 0,
+                    width: hoveredSidebarItem === 'top' ? 'auto' : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ color: '#176571' }}
+                >
+                  TOP
+                </motion.span>
+                <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              </div>
             </motion.button>
           </div>
 
