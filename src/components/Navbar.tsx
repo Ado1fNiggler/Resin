@@ -26,22 +26,27 @@ export default function Navbar() {
         <div className="flex items-center">
           {/* Menu Button Square - No padding, touches corner */}
           <motion.button
-            className="h-20 flex items-center justify-center overflow-hidden"
+            className="flex items-center justify-center overflow-hidden"
             style={{ backgroundColor: '#176571' }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            animate={{ width: isHovered ? 140 : 80 }}
+            initial={{ width: 80, height: 80 }}
+            animate={{
+              width: isHovered ? 140 : 80,
+              height: 80
+            }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <div className="flex items-center gap-4 px-5">
-              {/* MENU Text */}
+            <div className="flex items-center gap-3">
+              {/* MENU Text - Vertical */}
               <motion.span
-                className="text-white font-bold text-sm tracking-wider whitespace-nowrap"
-                initial={{ opacity: 0, x: -10 }}
+                className="text-white font-bold text-xs tracking-widest whitespace-nowrap"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+                initial={{ opacity: 0, y: -10 }}
                 animate={{
                   opacity: isHovered ? 1 : 0,
-                  x: isHovered ? 0 : -10
+                  y: isHovered ? 0 : -10
                 }}
                 transition={{ duration: 0.3 }}
               >
