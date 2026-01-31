@@ -9,13 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#8B7355',
-        secondary: '#C19A6B',
-        'dark-brown': '#654321',
-        'bg-light': '#f8f6f3',
+        primary: '#214A4F',
+        secondary: '#006364',
+        accent: '#7EC0C9',
+        'dark-teal': '#18363A',
+        'bg-light': '#F7F6F3',
+        'bg-warm': '#FCFCFC',
       },
       fontFamily: {
         sans: ['Helvetica Neue', 'Arial', 'sans-serif'],
+        serif: ['Georgia', 'Times New Roman', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out forwards',
