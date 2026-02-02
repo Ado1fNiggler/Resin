@@ -187,13 +187,17 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
       }, i * COLLAPSE_DELAY);
     });
 
-    // After all rows collapsed, hide overlay and reset
-    const totalCollapseTime = products.length * COLLAPSE_DELAY + 500; // extra time for last animation
+    // After all rows collapsed, hide overlay FIRST, then reset states
+    const totalCollapseTime = products.length * COLLAPSE_DELAY + 450;
     setTimeout(() => {
-      setShowItems(false);
+      // Step 1: Close overlay immediately (while rows are still collapsed)
       setIsOpen(false);
-      setIsClosing(false);
-      setCollapsedRows(new Array(products.length).fill(false));
+      setShowItems(false);
+      // Step 2: Reset collapse state AFTER overlay is fully hidden
+      setTimeout(() => {
+        setIsClosing(false);
+        setCollapsedRows(new Array(products.length).fill(false));
+      }, 100);
     }, totalCollapseTime);
   }, [isClosing]);
 
@@ -446,6 +450,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           left: `${SIDEBAR_W}px`,
           zIndex: 250,
           pointerEvents: isOpen ? 'auto' : 'none',
+          visibility: (isOpen || isClosing) ? 'visible' : 'hidden',
           overflow: 'hidden',
         }}
       >
