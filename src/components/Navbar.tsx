@@ -131,6 +131,8 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
   const [clickedIndex, setClickedIndex] = useState<number | null>(null); // which product was clicked
   const [expandImage, setExpandImage] = useState(false); // trigger image expand to fullscreen
   const [overImageSection, setOverImageSection] = useState(false); // sidebar transparent when over image sections
+  const [isClosing, setIsClosing] = useState(false);     // closing animation in progress
+  const [collapsedRows, setCollapsedRows] = useState<boolean[]>(new Array(products.length).fill(false)); // which rows have collapsed
 
   /* ── Scroll listener: detect when user leaves hero ── */
   useEffect(() => {
@@ -167,13 +169,41 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
     return () => window.removeEventListener('scroll', checkImageSections);
   }, []);
 
+  /* ── Handle menu close with sequential collapse ── */
+  const handleCloseMenu = useCallback(() => {
+    if (isClosing) return;
+    setIsClosing(true);
+
+    // Collapse rows one by one: Πολυθρόνες(0) → Καναπέδες(1) → Τραπεζαρίες(2) → Αποθηκευτικοί(3) → Ειδικές(4)
+    const COLLAPSE_DELAY = 120; // ms between each row collapse
+
+    products.forEach((_, i) => {
+      setTimeout(() => {
+        setCollapsedRows(prev => {
+          const next = [...prev];
+          next[i] = true;
+          return next;
+        });
+      }, i * COLLAPSE_DELAY);
+    });
+
+    // After all rows collapsed, hide overlay and reset
+    const totalCollapseTime = products.length * COLLAPSE_DELAY + 500; // extra time for last animation
+    setTimeout(() => {
+      setShowItems(false);
+      setIsOpen(false);
+      setIsClosing(false);
+      setCollapsedRows(new Array(products.length).fill(false));
+    }, totalCollapseTime);
+  }, [isClosing]);
+
   /* ── Stagger delay when menu opens ── */
   useEffect(() => {
     if (isOpen) {
       const t = setTimeout(() => setShowItems(true), 50);
       return () => clearTimeout(t);
     }
-    setShowItems(false);
+    // Don't auto-reset showItems here — handleCloseMenu manages the close sequence
   }, [isOpen]);
 
   /* ── Lock scroll when overlay is open ── */
@@ -341,7 +371,13 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
             <SidebarButton
               label={isOpen ? 'CLOSE' : 'MENU'}
               icon={isOpen ? 'close' : 'hamburger'}
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => {
+                if (isOpen) {
+                  handleCloseMenu();
+                } else {
+                  setIsOpen(true);
+                }
+              }}
               isOpen={isOpen}
               teal={teal}
               transparent={overImageSection && !isOpen}
@@ -420,9 +456,10 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
             inset: 0,
             background: `linear-gradient(to bottom, ${menuRowColors[0]}, ${menuRowColors[menuRowColors.length - 1]})`,
             transform: showItems ? 'translateY(0)' : 'translateY(150%)',
+            opacity: (isClosing && collapsedRows.every(Boolean)) ? 0 : showItems ? 1 : 0,
             transition: showItems
-              ? 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
-              : 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s',
+              ? 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 0.3s ease-in-out'
+              : (isClosing ? 'opacity 0.4s ease-out' : 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s'),
           }}
         />
 
@@ -448,22 +485,29 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
               const openDelay = 0.45 + (products.length - 1 - index) * 0.15;
               // Close: top-to-bottom stagger — Πολυθρόνες first, Ειδικές last
               const closeDelay = 0.15 + index * 0.1;
+              const isCollapsed = collapsedRows[index];
 
               return (
                 <li
                   key={product.name}
                   style={{
-                    flex: (clickedIndex === index && expandImage) ? 99 : isHovered ? 2 : 1,
+                    flex: isCollapsed
+                      ? 0.001
+                      : (clickedIndex === index && expandImage) ? 99 : isHovered ? 2 : 1,
                     overflow: 'hidden',
-                    transition: (clickedIndex !== null)
-                      ? 'flex 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out'
-                      : 'flex 1s',
+                    transition: isCollapsed
+                      ? 'flex 0.45s cubic-bezier(0.55, 0, 1, 0.45)'
+                      : (clickedIndex !== null)
+                        ? 'flex 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out'
+                        : 'flex 1s',
                     minHeight: 0,
-                    opacity: (clickedIndex !== null && clickedIndex !== index && expandImage) ? 0 : 1,
+                    opacity: isCollapsed
+                      ? 0
+                      : (clickedIndex !== null && clickedIndex !== index && expandImage) ? 0 : 1,
                     background: menuRowColors[index] || '#F3F7F7',
                     marginBottom: '-1px',
                   }}
-                  onMouseEnter={() => { if (clickedIndex === null) setHoveredProduct(index); }}
+                  onMouseEnter={() => { if (clickedIndex === null && !isClosing) setHoveredProduct(index); }}
                   onMouseLeave={() => setHoveredProduct(null)}
                 >
                   <a
@@ -510,7 +554,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                       transform: showItems ? 'translateY(0)' : 'translateY(110%)',
                       transition: showItems
                         ? `transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${openDelay}s`
-                        : `transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${closeDelay}s`,
+                        : (isClosing ? 'none' : `transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${closeDelay}s`),
                     }}
                   >
                     {/* Product image (left) – expands to fullscreen on click */}
@@ -610,8 +654,8 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
               transform: showItems ? 'translateY(0)' : 'translateY(150%)',
               transition: showItems
                 ? 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
-                : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0s',
-              opacity: (clickedIndex !== null && expandImage) ? 0 : 1,
+                : (isClosing ? 'opacity 0.2s ease-out' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0s'),
+              opacity: isClosing ? 0 : (clickedIndex !== null && expandImage) ? 0 : 1,
             }}
           >
             {['ΣΧΕΤΙΚΑ', 'ΕΡΩΤΗΣΕΙΣ', 'ΑΓΑΠΗΜΕΝΑ', 'ΕΠΙΚΟΙΝΩΝΙΑ'].map((item) => (
