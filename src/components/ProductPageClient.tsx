@@ -234,22 +234,24 @@ export default function ProductPageClient({ product }: { product: ProductData })
           style={{
             position: 'absolute',
             right: '2.5rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
+            top: '1.5rem',
+            bottom: '1.5rem',
             width: '420px',
             backgroundColor: '#FCFCFC',
             borderRadius: '12px',
             boxShadow: '0 8px 60px rgba(0,0,0,0.12)',
             zIndex: 10,
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          <div style={{ padding: '2.5rem 2.5rem 2rem 2.5rem' }}>
+          <div style={{ padding: '1.75rem 2rem 1.5rem 2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
 
             {/* ── Header: Title + Favorite ── */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.15rem' }}>
               <h1 style={{
                 fontFamily: 'Georgia, "Times New Roman", serif',
-                fontSize: '2.2rem',
+                fontSize: '2rem',
                 fontWeight: 400,
                 color: '#214A4F',
                 lineHeight: 1.1,
@@ -279,19 +281,19 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
             {/* ── Subtitle ── */}
             <p style={{
-              fontSize: '0.7rem',
+              fontSize: '0.65rem',
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               color: '#214A4F',
               opacity: 0.5,
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               {product.slug === 'custom-orders' ? 'ΕΙΔΙΚΗ ΠΑΡΑΓΓΕΛΙΑ' : 'ΕΠΙΠΛΟ'}
             </p>
 
             {/* ── Price + Rating ── */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <p style={{
                 fontSize: '1.15rem',
                 color: '#214A4F',
@@ -315,14 +317,14 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ SIZE SELECTOR ════════════ */}
-            <div style={{ padding: '1.25rem 0' }}>
+            <div style={{ padding: '1rem 0' }}>
               <p style={{
-                fontSize: '0.7rem',
+                fontSize: '0.68rem',
                 fontWeight: 700,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
                 color: '#214A4F',
-                marginBottom: '0.75rem',
+                marginBottom: '0.6rem',
               }}>
                 CHOOSE SIZE
               </p>
@@ -346,14 +348,14 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ FINISH SELECTOR ════════════ */}
-            <div style={{ padding: '1.25rem 0' }}>
+            <div style={{ padding: '1rem 0' }}>
               <p style={{
-                fontSize: '0.7rem',
+                fontSize: '0.68rem',
                 fontWeight: 700,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
                 color: '#214A4F',
-                marginBottom: '1rem',
+                marginBottom: '0.75rem',
               }}>
                 CHOOSE FINISH
               </p>
@@ -408,22 +410,22 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ CUSHION FABRIC SELECTOR ════════════ */}
-            <div style={{ padding: '1.25rem 0' }}>
+            <div style={{ padding: '1rem 0' }}>
               <p style={{
-                fontSize: '0.7rem',
+                fontSize: '0.68rem',
                 fontWeight: 700,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
                 color: '#214A4F',
-                marginBottom: '0.25rem',
+                marginBottom: '0.2rem',
               }}>
                 CHOOSE CUSHION FABRIC
               </p>
               <p style={{
-                fontSize: '0.72rem',
+                fontSize: '0.68rem',
                 color: '#214A4F',
                 opacity: 0.5,
-                marginBottom: '1rem',
+                marginBottom: '0.75rem',
               }}>
                 Select from 4 in-stock and 14 special order fabrics
               </p>
@@ -431,7 +433,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
               {/* Fabric strip using textures.png image */}
               <div style={{
                 width: '100%',
-                height: '48px',
+                height: '42px',
                 borderRadius: '8px',
                 overflow: 'hidden',
                 cursor: 'pointer',
@@ -451,18 +453,18 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ VIEW IN 3D & AR ════════════ */}
-            <div style={{ padding: '1.25rem 0 0.75rem 0' }}>
+            <div style={{ padding: '1rem 0 0.5rem 0', marginTop: 'auto' }}>
               <motion.button
                 whileHover={{ backgroundColor: 'rgba(33,74,79,0.04)' }}
                 transition={{ duration: 0.2 }}
                 style={{
                   width: '100%',
-                  padding: '0.9rem 1.25rem',
+                  padding: '0.8rem 1.25rem',
                   backgroundColor: 'transparent',
                   color: '#214A4F',
                   border: '1.5px solid rgba(33,74,79,0.2)',
                   borderRadius: '50px',
-                  fontSize: '0.7rem',
+                  fontSize: '0.68rem',
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
@@ -487,12 +489,12 @@ export default function ProductPageClient({ product }: { product: ProductData })
                 transition={{ duration: 0.2 }}
                 style={{
                   width: '100%',
-                  padding: '1rem 1.25rem',
+                  padding: '0.85rem 1.25rem',
                   backgroundColor: '#214A4F',
                   color: '#FCFCFC',
                   border: 'none',
                   borderRadius: '50px',
-                  fontSize: '0.7rem',
+                  fontSize: '0.68rem',
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
