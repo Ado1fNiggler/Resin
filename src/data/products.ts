@@ -24,11 +24,11 @@ export const allProducts: ProductData[] = [
     price: '750',
     description: '\u0388\u03BD\u03B1 \u03BA\u03BF\u03BC\u03C8\u03CC \u03AD\u03C0\u03B9\u03C0\u03BB\u03BF \u03C0\u03BF\u03C5 \u03C3\u03C5\u03BD\u03B4\u03C5\u03AC\u03B6\u03B5\u03B9 \u03C4\u03B7\u03BD \u03C0\u03BF\u03BB\u03C5\u03C4\u03AD\u03BB\u03B5\u03B9\u03B1 \u03BC\u03B5 \u03C4\u03B7\u03BD \u03AC\u03BD\u03B5\u03C3\u03B7. \u0394\u03B9\u03B1\u03B8\u03AD\u03C3\u03B9\u03BC\u03BF \u03C3\u03B5 2 \u03BC\u03B5\u03B3\u03AD\u03B8\u03B7 \u03BA\u03B1\u03B9 19 \u03C5\u03C6\u03AC\u03C3\u03BC\u03B1\u03C4\u03B1.',
     images: {
-      'natural-oak': '/dining-tables1.png',
-      'caramel-walnut': '/dining-tables2.png',
-      'dark-walnut': '/dining-tables.png',
+      'natural-oak': '/armchairs1.png',
+      'caramel-walnut': '/armchairs2.png',
+      'dark-walnut': '/armchairs.png',
     },
-    galleryImages: ['/dining-tables1.png', '/dining-tables2.png', '/dining-tables.png'],
+    galleryImages: ['/armchairs1.png', '/armchairs2.png', '/armchairs.png'],
   },
   {
     slug: 'violet',
@@ -69,11 +69,11 @@ export const allProducts: ProductData[] = [
     price: '1.150',
     description: '\u03A4\u03BF \u03B1\u03C0\u03CC\u03BB\u03C5\u03C4\u03BF \u03AD\u03C0\u03B9\u03C0\u03BB\u03BF \u03C0\u03BF\u03BB\u03C5\u03C4\u03B5\u03BB\u03B5\u03AF\u03B1\u03C2 \u03B3\u03B9\u03B1 \u03C4\u03B7\u03BD \u03BF\u03B9\u03BA\u03AF\u03B1 \u03C3\u03B1\u03C2. \u0394\u03B9\u03B1\u03B8\u03AD\u03C3\u03B9\u03BC\u03BF \u03C3\u03B5 2 \u03BC\u03B5\u03B3\u03AD\u03B8\u03B7 \u03BA\u03B1\u03B9 19 \u03C5\u03C6\u03AC\u03C3\u03BC\u03B1\u03C4\u03B1.',
     images: {
-      'natural-oak': '/armchairs1.png',
-      'caramel-walnut': '/armchairs2.png',
-      'dark-walnut': '/armchairs.png',
+      'natural-oak': '/dining-tables1.png',
+      'caramel-walnut': '/dining-tables2.png',
+      'dark-walnut': '/dining-tables.png',
     },
-    galleryImages: ['/armchairs1.png', '/armchairs2.png', '/armchairs.png'],
+    galleryImages: ['/dining-tables1.png', '/dining-tables2.png', '/dining-tables.png'],
   },
   {
     slug: 'custom-orders',
