@@ -56,11 +56,11 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
   return (
     <div style={{ paddingLeft: '75px' }}>
-      {/* ─── TWO-COLUMN LAYOUT ─── */}
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* ─── FULLSCREEN IMAGE WITH FLOATING INFO CARD ─── */}
+      <div style={{ position: 'relative', minHeight: '100vh' }}>
 
         {/* ═══════════════════════════════════
-            LEFT: IMAGE GALLERY (~68%)
+            FULLSCREEN IMAGE GALLERY
             ═══════════════════════════════════ */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -68,9 +68,10 @@ export default function ProductPageClient({ product }: { product: ProductData })
           transition={{ duration: 0.8, delay: 0.3 }}
           ref={galleryRef}
           style={{
-            flex: '0 0 68%',
-            position: 'sticky',
+            position: 'fixed',
             top: 0,
+            left: '75px',
+            right: 0,
             height: '100vh',
             backgroundColor: '#EDEBE8',
             overflow: 'hidden',
@@ -224,21 +225,27 @@ export default function ProductPageClient({ product }: { product: ProductData })
         </motion.div>
 
         {/* ═══════════════════════════════════
-            RIGHT: PRODUCT INFO (~32%)
+            RIGHT: PRODUCT INFO (floating card)
             ═══════════════════════════════════ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           style={{
-            flex: '0 0 32%',
+            position: 'absolute',
+            right: '2.5rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '340px',
+            maxHeight: 'calc(100vh - 4rem)',
             overflowY: 'auto',
-            height: '100vh',
-            position: 'sticky',
-            top: 0,
+            backgroundColor: '#FCFCFC',
+            borderRadius: '0',
+            boxShadow: '0 4px 40px rgba(0,0,0,0.08)',
+            zIndex: 10,
           }}
         >
-          <div style={{ padding: '2.5rem 2.5rem 4rem 2rem' }}>
+          <div style={{ padding: '2rem 2rem 2.5rem 2rem' }}>
 
             {/* ── Product name ── */}
             <h1 style={{
