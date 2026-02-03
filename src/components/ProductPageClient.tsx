@@ -586,129 +586,174 @@ export default function ProductPageClient({ product }: { product: ProductData })
             </div>
 
             {/* Go to cart link */}
-            <p style={{ textAlign: 'center', fontSize: '0.68rem', color: '#214A4F', opacity: 0.45, marginBottom: '2rem' }}>
+            <p style={{ textAlign: 'center', fontSize: '0.68rem', color: '#214A4F', opacity: 0.45 }}>
               <a href="#" style={{ color: '#214A4F', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
                 Μετάβαση στο καλάθι
               </a>
             </p>
 
-            <Divider />
-
-            {/* ════════════ ABOUT PRODUCT ════════════ */}
-            <div style={{ padding: '1.5rem 0' }}>
-              <button
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  color: '#214A4F',
-                }}
-              >
-                <span style={{
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                }}>
-                  Σχετικά με {product.name}
-                </span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2" strokeLinecap="round">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </button>
-              <div style={{ marginTop: '1rem' }}>
-                <p style={{
-                  fontSize: '0.78rem',
-                  color: '#214A4F',
-                  opacity: 0.65,
-                  lineHeight: 1.8,
-                }}>
-                  {product.description}
-                </p>
-              </div>
-            </div>
-
-            <Divider />
-
-            {/* ════════════ DIMENSIONS ════════════ */}
-            <CollapsibleSection title="Διαστάσεις">
-              <div style={{ fontSize: '0.78rem', color: '#214A4F', opacity: 0.65, lineHeight: 2 }}>
-                <p style={{ fontWeight: 600, marginBottom: '0.25rem', opacity: 1, color: '#214A4F' }}>Μικρό</p>
-                <p>85cm Μ × 50cm Π × 29cm Υ (15kg)</p>
-                <p style={{ fontWeight: 600, marginBottom: '0.25rem', marginTop: '1rem', opacity: 1, color: '#214A4F' }}>Μεγάλο</p>
-                <p>123cm Μ × 50cm Π × 43cm Υ (23kg)</p>
-              </div>
-            </CollapsibleSection>
-
-            <Divider />
-
-            {/* ════════════ CARE INSTRUCTIONS ════════════ */}
-            <CollapsibleSection title="Οδηγίες φροντίδας">
-              <div style={{ fontSize: '0.78rem', color: '#214A4F', opacity: 0.65, lineHeight: 1.8 }}>
-                <p style={{ fontWeight: 600, marginBottom: '0.25rem', opacity: 1, color: '#214A4F' }}>Γενική συντήρηση</p>
-                <p>Σκουπίστε με μαλακό πανί μικροϊνών για να αφαιρέσετε τη σκόνη. Αποφύγετε την έκθεση σε άμεσο ηλιακό φως.</p>
-                <p style={{ fontWeight: 600, marginBottom: '0.25rem', marginTop: '1rem', opacity: 1, color: '#214A4F' }}>Καθαρισμός υφασμάτων</p>
-                <p>Τα καλύμματα αφαιρούνται και πλένονται στο πλυντήριο στους 30°C.</p>
-              </div>
-            </CollapsibleSection>
-
-            <Divider />
-
-            {/* ════════════ YOU MIGHT ALSO LIKE ════════════ */}
-            <div style={{ padding: '2rem 0 0 0' }}>
-              <p style={{
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#214A4F',
-                marginBottom: '1.25rem',
-              }}>
-                Μπορεί να σας αρέσει επίσης
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
-                {[
-                  { name: 'PHANTIGO', slug: 'phantigo', image: '/dining-tables1.png' },
-                  { name: 'VIOLET', slug: 'violet', image: '/wardrobes.png' },
-                  { name: 'MAXIMILLIAN', slug: 'maximillian', image: '/sofa1.png' },
-                ].filter(p => p.slug !== product.slug).slice(0, 3).map(p => (
-                  <a key={p.slug} href={`/product/${p.slug}`} style={{ textDecoration: 'none' }}>
-                    <div style={{
-                      aspectRatio: '4/3',
-                      overflow: 'hidden',
-                      borderRadius: '4px',
-                      backgroundColor: '#E8E5E0',
-                      marginBottom: '0.5rem',
-                    }}>
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          transition: 'transform 0.5s ease',
-                        }}
-                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'; }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
-                      />
-                    </div>
-                    <p style={{ fontSize: '0.65rem', fontWeight: 600, color: '#214A4F', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>{p.name}</p>
-                    <p style={{ fontSize: '0.6rem', color: '#214A4F', opacity: 0.5, textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                      Προβολή
-                    </p>
-                  </a>
-                ))}
-              </div>
-            </div>
-
           </div>
         </motion.div>
+
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════
+          BELOW IMAGE SECTIONS (About, Dimensions, Care, Related)
+          ═══════════════════════════════════════════════════════ */}
+      <div style={{
+        marginTop: '100vh',
+        backgroundColor: '#FCFCFC',
+        position: 'relative',
+        zIndex: 5,
+      }}>
+        {/* ════════════ ABOUT PRODUCT ════════════ */}
+        <div style={{
+          padding: '5rem 4rem',
+          maxWidth: '900px',
+          margin: '0 auto',
+        }}>
+          <h2 style={{
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontSize: 'clamp(2rem, 4vw, 3rem)',
+            fontWeight: 300,
+            color: '#214A4F',
+            marginBottom: '2rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+          }}>
+            Σχετικά με {product.name}
+          </h2>
+          <p style={{
+            fontSize: '1.1rem',
+            color: '#214A4F',
+            opacity: 0.7,
+            lineHeight: 2,
+          }}>
+            {product.description}
+          </p>
+        </div>
+
+        <Divider />
+
+        {/* ════════════ DIMENSIONS ════════════ */}
+        <div style={{
+          padding: '4rem',
+          maxWidth: '900px',
+          margin: '0 auto',
+        }}>
+          <h3 style={{
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: '#214A4F',
+            marginBottom: '2rem',
+          }}>
+            Διαστάσεις
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+            <div>
+              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Μικρό</p>
+              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>85cm Μ × 50cm Π × 29cm Υ<br />Βάρος: 15kg</p>
+            </div>
+            <div>
+              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Μεγάλο</p>
+              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>123cm Μ × 50cm Π × 43cm Υ<br />Βάρος: 23kg</p>
+            </div>
+          </div>
+        </div>
+
+        <Divider />
+
+        {/* ════════════ CARE INSTRUCTIONS ════════════ */}
+        <div style={{
+          padding: '4rem',
+          maxWidth: '900px',
+          margin: '0 auto',
+        }}>
+          <h3 style={{
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: '#214A4F',
+            marginBottom: '2rem',
+          }}>
+            Οδηγίες φροντίδας
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+            <div>
+              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Γενική συντήρηση</p>
+              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>
+                Σκουπίστε με μαλακό πανί μικροϊνών για να αφαιρέσετε τη σκόνη. Αποφύγετε την έκθεση σε άμεσο ηλιακό φως.
+              </p>
+            </div>
+            <div>
+              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Καθαρισμός υφασμάτων</p>
+              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>
+                Τα καλύμματα αφαιρούνται και πλένονται στο πλυντήριο στους 30°C.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <Divider />
+
+        {/* ════════════ YOU MIGHT ALSO LIKE ════════════ */}
+        <div style={{
+          padding: '4rem',
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}>
+          <h3 style={{
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: '#214A4F',
+            marginBottom: '2.5rem',
+          }}>
+            Μπορεί να σας αρέσει επίσης
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+            {[
+              { name: 'PHANTIGO', slug: 'phantigo', image: '/armchairs1.png' },
+              { name: 'VIOLET', slug: 'violet', image: '/sofas.png' },
+              { name: 'MAXIMILLIAN', slug: 'maximillian', image: '/dining-tables1.png' },
+              { name: 'HUXTON', slug: 'huxton', image: '/wardrobes.png' },
+            ].filter(p => p.slug !== product.slug).slice(0, 3).map(p => (
+              <a key={p.slug} href={`/product/${p.slug}`} style={{ textDecoration: 'none' }}>
+                <div style={{
+                  aspectRatio: '4/3',
+                  overflow: 'hidden',
+                  borderRadius: '4px',
+                  backgroundColor: '#EDEBE8',
+                  marginBottom: '1rem',
+                }}>
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      transition: 'transform 0.6s ease',
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
+                  />
+                </div>
+                <p style={{ fontSize: '0.9rem', fontWeight: 600, color: '#214A4F', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>{p.name}</p>
+                <p style={{ fontSize: '0.75rem', color: '#214A4F', opacity: 0.5, textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                  Προβολή
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer spacing */}
+        <div style={{ height: '4rem' }} />
       </div>
     </div>
   );
