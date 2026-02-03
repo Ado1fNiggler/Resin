@@ -236,137 +236,117 @@ export default function ProductPageClient({ product }: { product: ProductData })
             right: '2.5rem',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: '340px',
-            maxHeight: 'calc(100vh - 4rem)',
-            overflowY: 'auto',
+            width: '420px',
             backgroundColor: '#FCFCFC',
-            borderRadius: '0',
-            boxShadow: '0 4px 40px rgba(0,0,0,0.08)',
+            borderRadius: '12px',
+            boxShadow: '0 8px 60px rgba(0,0,0,0.12)',
             zIndex: 10,
           }}
         >
-          <div style={{ padding: '2rem 2rem 2.5rem 2rem' }}>
+          <div style={{ padding: '2.5rem 2.5rem 2rem 2.5rem' }}>
 
-            {/* ── Product name ── */}
-            <h1 style={{
-              fontFamily: 'Georgia, "Times New Roman", serif',
-              fontSize: 'clamp(1.8rem, 3vw, 2.8rem)',
-              fontWeight: 300,
-              color: '#214A4F',
-              lineHeight: 1.1,
-              letterSpacing: '0.01em',
-              marginBottom: '0.35rem',
-            }}>
-              {product.name}
-            </h1>
+            {/* ── Header: Title + Favorite ── */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem' }}>
+              <h1 style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontSize: '2.2rem',
+                fontWeight: 400,
+                color: '#214A4F',
+                lineHeight: 1.1,
+                letterSpacing: '-0.01em',
+              }}>
+                {product.name}
+              </h1>
+              <button
+                onClick={() => setIsFavorited(!isFavorited)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  marginTop: '4px',
+                }}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24"
+                  fill={isFavorited ? '#214A4F' : 'none'}
+                  stroke="#214A4F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                  style={{ transition: 'fill 0.3s ease' }}
+                >
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                </svg>
+              </button>
+            </div>
 
             {/* ── Subtitle ── */}
             <p style={{
               fontSize: '0.7rem',
               fontWeight: 600,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
               color: '#214A4F',
-              opacity: 0.45,
-              marginBottom: '0.5rem',
+              opacity: 0.5,
+              marginBottom: '1rem',
             }}>
-              {product.slug === 'custom-orders' ? 'Ειδική παραγγελία' : 'Έπιπλο'}
+              {product.slug === 'custom-orders' ? 'ΕΙΔΙΚΗ ΠΑΡΑΓΓΕΛΙΑ' : 'ΕΠΙΠΛΟ'}
             </p>
 
-            {/* ── Favorite ── */}
-            <button
-              onClick={() => setIsFavorited(!isFavorited)}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: 0,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                marginBottom: '1rem',
+            {/* ── Price + Rating ── */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <p style={{
+                fontSize: '1.15rem',
                 color: '#214A4F',
-                fontSize: '0.72rem',
-                opacity: 0.6,
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24"
-                fill={isFavorited ? '#214A4F' : 'none'}
-                stroke="#214A4F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                style={{ transition: 'fill 0.3s ease' }}
-              >
-                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-              </svg>
-              <span>+1 Αγαπημένο</span>
-            </button>
-
-            {/* ── Price ── */}
-            <p style={{
-              fontSize: '1.1rem',
-              color: '#214A4F',
-              fontWeight: 500,
-              letterSpacing: '0.02em',
-              marginBottom: '1.5rem',
-            }}>
-              {product.price}&euro;
-            </p>
-
-            <Divider />
-
-            {/* ════════════ SIZE SELECTOR ════════════ */}
-            <div style={{ padding: '1.5rem 0' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                <p style={{
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: '#214A4F',
-                }}>
-                  Επιλογή μεγέθους
-                </p>
-                <a href="#" style={{
-                  fontSize: '0.65rem',
-                  color: '#214A4F',
-                  opacity: 0.5,
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '2px',
-                  fontWeight: 600,
-                }}>
-                  Δεν ξέρεις ποιο μέγεθος;
-                </a>
-              </div>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                {[
-                  { key: 'small', label: 'Μικρό' },
-                  { key: 'large', label: 'Μεγάλο' },
-                ].map(size => (
-                  <button
-                    key={size.key}
-                    onClick={() => setActiveSize(size.key)}
-                    style={{
-                      padding: '0.6rem 1.75rem',
-                      borderRadius: '50px',
-                      border: activeSize === size.key ? '2px solid #214A4F' : '1px solid rgba(33,74,79,0.2)',
-                      background: activeSize === size.key ? '#214A4F' : 'transparent',
-                      color: activeSize === size.key ? '#FCFCFC' : '#214A4F',
-                      fontSize: '0.75rem',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      letterSpacing: '0.02em',
-                    }}
-                  >
-                    {size.label}
-                  </button>
-                ))}
+                fontWeight: 500,
+                letterSpacing: '0.02em',
+              }}>
+                € {product.price}
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ fontSize: '0.85rem', color: '#214A4F', fontWeight: 500 }}>5</span>
+                <div style={{ display: 'flex', gap: '2px' }}>
+                  {[1,2,3,4,5].map(i => (
+                    <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#214A4F" stroke="none">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  ))}
+                </div>
               </div>
             </div>
 
             <Divider />
 
+            {/* ════════════ SIZE SELECTOR ════════════ */}
+            <div style={{ padding: '1.25rem 0' }}>
+              <p style={{
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: '#214A4F',
+                marginBottom: '0.75rem',
+              }}>
+                CHOOSE SIZE
+              </p>
+              <button
+                style={{
+                  padding: '0.65rem 1.5rem',
+                  borderRadius: '50px',
+                  border: 'none',
+                  background: '#214A4F',
+                  color: '#FCFCFC',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.05em',
+                  cursor: 'pointer',
+                }}
+              >
+                One Size
+              </button>
+            </div>
+
+            <Divider />
+
             {/* ════════════ FINISH SELECTOR ════════════ */}
-            <div style={{ padding: '1.5rem 0' }}>
+            <div style={{ padding: '1.25rem 0' }}>
               <p style={{
                 fontSize: '0.7rem',
                 fontWeight: 700,
@@ -375,11 +355,11 @@ export default function ProductPageClient({ product }: { product: ProductData })
                 color: '#214A4F',
                 marginBottom: '1rem',
               }}>
-                Επιλογή φινιρίσματος
+                CHOOSE FINISH
               </p>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
                 {woodSwatches.map((swatch) => (
-                  <div key={swatch.name} style={{ textAlign: 'center', flex: '0 0 auto' }}>
+                  <div key={swatch.name} style={{ textAlign: 'center', flex: '1' }}>
                     <button
                       onClick={() => {
                         setActiveFinish(swatch.name);
@@ -387,18 +367,16 @@ export default function ProductPageClient({ product }: { product: ProductData })
                         if (idx !== -1) setActiveImageIndex(idx);
                       }}
                       style={{
-                        width: '72px',
-                        height: '48px',
-                        borderRadius: '24px',
+                        width: '100%',
+                        height: '42px',
+                        borderRadius: '21px',
                         overflow: 'hidden',
-                        border: 'none',
+                        border: activeFinish === swatch.name ? '2px solid #214A4F' : '2px solid transparent',
                         cursor: 'pointer',
-                        outline: activeFinish === swatch.name ? '2.5px solid #214A4F' : '2px solid rgba(33,74,79,0.12)',
-                        outlineOffset: '3px',
-                        transition: 'outline 0.3s ease',
                         position: 'relative',
                         padding: 0,
                         display: 'block',
+                        transition: 'border 0.2s ease',
                       }}
                     >
                       <img
@@ -411,31 +389,16 @@ export default function ProductPageClient({ product }: { product: ProductData })
                           display: 'block',
                         }}
                       />
-                      {activeFinish === swatch.name && (
-                        <div style={{
-                          position: 'absolute',
-                          inset: 0,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          background: 'rgba(33,74,79,0.3)',
-                          borderRadius: '24px',
-                        }}>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="3" strokeLinecap="round">
-                            <polyline points="20 6 9 17 4 12" />
-                          </svg>
-                        </div>
-                      )}
                     </button>
                     <p style={{
-                      fontSize: '0.6rem',
+                      fontSize: '0.65rem',
                       color: '#214A4F',
-                      opacity: 0.55,
+                      opacity: activeFinish === swatch.name ? 1 : 0.5,
                       marginTop: '0.5rem',
-                      lineHeight: 1.3,
-                      whiteSpace: 'nowrap',
+                      lineHeight: 1.2,
+                      fontWeight: activeFinish === swatch.name ? 600 : 400,
                     }}>
-                      {swatch.label}
+                      {swatch.label.split(' ').map((word, i) => <span key={i}>{word}<br/></span>)}
                     </p>
                   </div>
                 ))}
@@ -445,7 +408,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ CUSHION FABRIC SELECTOR ════════════ */}
-            <div style={{ padding: '1.5rem 0' }}>
+            <div style={{ padding: '1.25rem 0' }}>
               <p style={{
                 fontSize: '0.7rem',
                 fontWeight: 700,
@@ -454,143 +417,99 @@ export default function ProductPageClient({ product }: { product: ProductData })
                 color: '#214A4F',
                 marginBottom: '0.25rem',
               }}>
-                Επιλογή υφάσματος
+                CHOOSE CUSHION FABRIC
               </p>
               <p style={{
-                fontSize: '0.68rem',
-                color: '#214A4F',
-                opacity: 0.45,
-                marginBottom: '1rem',
-                lineHeight: 1.5,
-              }}>
-                Επιλέξτε από 4 διαθέσιμα και 14 κατόπιν παραγγελίας
-              </p>
-
-              {/* Fabric strip - horizontal row of fabric swatches like shoprooof */}
-              <div style={{
-                display: 'flex',
-                gap: '0',
-                overflow: 'hidden',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                border: '1px solid rgba(33,74,79,0.1)',
-              }}>
-                {fabricSwatches.map((fabric, i) => (
-                  <button
-                    key={fabric.name}
-                    onClick={() => setActiveFabric(fabric.name)}
-                    style={{
-                      flex: 1,
-                      height: '52px',
-                      background: fabric.color,
-                      border: 'none',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      padding: 0,
-                      borderRight: i < fabricSwatches.length - 1 ? '1px solid rgba(255,255,255,0.3)' : 'none',
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    {activeFabric === fabric.name && (
-                      <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        background: 'rgba(33,74,79,0.25)',
-                      }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="3" strokeLinecap="round">
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-              {/* Selected fabric label */}
-              <p style={{
-                fontSize: '0.62rem',
+                fontSize: '0.72rem',
                 color: '#214A4F',
                 opacity: 0.5,
-                marginTop: '0.5rem',
-                textAlign: 'center',
+                marginBottom: '1rem',
               }}>
-                {currentFabricLabel}
+                Select from 4 in-stock and 14 special order fabrics
               </p>
+
+              {/* Fabric strip using textures.png image */}
+              <div style={{
+                width: '100%',
+                height: '48px',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                cursor: 'pointer',
+              }}>
+                <img
+                  src="/textures.png"
+                  alt="Fabric textures"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
             </div>
 
             <Divider />
 
             {/* ════════════ VIEW IN 3D & AR ════════════ */}
-            <div style={{ padding: '1.5rem 0' }}>
+            <div style={{ padding: '1.25rem 0 0.75rem 0' }}>
               <motion.button
-                whileHover={{ backgroundColor: 'rgba(33,74,79,0.05)' }}
-                transition={{ duration: 0.3 }}
+                whileHover={{ backgroundColor: 'rgba(33,74,79,0.04)' }}
+                transition={{ duration: 0.2 }}
                 style={{
                   width: '100%',
-                  padding: '0.85rem 1.25rem',
+                  padding: '0.9rem 1.25rem',
                   backgroundColor: 'transparent',
                   color: '#214A4F',
-                  border: '1.5px solid #214A4F',
+                  border: '1.5px solid rgba(33,74,79,0.2)',
                   borderRadius: '50px',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.5rem',
-                }}
-              >
-                Προβολή σε 3D & AR
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2" strokeLinecap="round">
-                  <path d="M7 17l9.2-9.2M17 17V8h-9" />
-                </svg>
-              </motion.button>
-            </div>
-
-            {/* ════════════ ADD TO CART ════════════ */}
-            <div style={{ marginBottom: '1rem' }}>
-              <motion.button
-                whileHover={{ backgroundColor: '#18363A' }}
-                transition={{ duration: 0.3 }}
-                style={{
-                  width: '100%',
-                  padding: '0.95rem 1.25rem',
-                  backgroundColor: '#214A4F',
-                  color: '#FCFCFC',
-                  border: 'none',
-                  borderRadius: '50px',
-                  fontSize: '0.75rem',
+                  fontSize: '0.7rem',
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.6rem',
+                  justifyContent: 'space-between',
                 }}
               >
-                Προσθήκη στο καλάθι
-                {/* Cart icon */}
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <span>VIEW PRODUCT IN 3D & AR</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2" strokeLinecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </motion.button>
+            </div>
+
+            {/* ════════════ ADD TO CART ════════════ */}
+            <div>
+              <motion.button
+                whileHover={{ backgroundColor: '#18363A' }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  width: '100%',
+                  padding: '1rem 1.25rem',
+                  backgroundColor: '#214A4F',
+                  color: '#FCFCFC',
+                  border: 'none',
+                  borderRadius: '50px',
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <span>ADD TO CART</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
                   <path d="M16 10a4 4 0 01-8 0" />
                 </svg>
               </motion.button>
             </div>
-
-            {/* Go to cart link */}
-            <p style={{ textAlign: 'center', fontSize: '0.68rem', color: '#214A4F', opacity: 0.45 }}>
-              <a href="#" style={{ color: '#214A4F', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                Μετάβαση στο καλάθι
-              </a>
-            </p>
 
           </div>
         </motion.div>
