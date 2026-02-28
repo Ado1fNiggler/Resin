@@ -35,7 +35,7 @@ const heroImages = [
   '/heroimage4.png',
 ];
 
-// Word-by-word reveal animation like shoprooof.com
+// Word-by-word reveal animation like resin.gr
 const heroTitle = 'Πολυτελή έπιπλα για την οικία σας';
 const heroWords = heroTitle.split(' ');
 

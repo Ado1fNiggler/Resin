@@ -24,7 +24,7 @@ const products = [
   { name: 'Ειδικές παραγγελίες', slug: 'custom-orders', image: '/other.png' },
 ];
 
-/* ── Menu row background gradient scale (light → darker teal, like shoprooof.com) ── */
+/* ── Menu row background gradient scale (light → darker teal, like resin.gr) ── */
 const menuRowColors = [
   '#F3F7F7',  // lightest
   '#E8F0F0',
@@ -486,7 +486,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           <ol style={{ flex: 1, display: 'flex', flexDirection: 'column', listStyle: 'none', margin: 0, padding: 0, gap: 0 }}>
             {products.map((product, index) => {
               const isHovered = hoveredProduct === index;
-              // Match shoprooof.com stagger: Huxton first, Phantigo last
+              // Match resin.gr stagger: Huxton first, Phantigo last
               const openDelay = 0.45 + (products.length - 1 - index) * 0.15;
               // Close: top-to-bottom stagger — Πολυθρόνες first, Ειδικές last
               const closeDelay = 0.15 + index * 0.1;

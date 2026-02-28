@@ -1,6 +1,6 @@
-# ROOOF - Luxury Furniture Website
+# Resin - Luxury Furniture Website
 
-Σύγχρονη ιστοσελίδα για luxury pet furniture με advanced scroll animations, φτιαγμένη με **Next.js 16**, **TypeScript**, **Tailwind CSS 4** και **Framer Motion**.
+Σύγχρονη ιστοσελίδα για luxury furniture με advanced scroll animations, φτιαγμένη με **Next.js 16**, **TypeScript**, **Tailwind CSS 4** και **Framer Motion**.
 
 ## 🚀 Tech Stack
 
