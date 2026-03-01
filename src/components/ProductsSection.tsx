@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface WoodSwatch {
   name: string;
@@ -16,6 +17,7 @@ const woodSwatches: WoodSwatch[] = [
 ];
 
 interface Product {
+  slug: string;
   name: string;
   sizes: string;
   fabrics: string;
@@ -26,6 +28,7 @@ interface Product {
 
 const products: Product[] = [
   {
+    slug: 'phantigo',
     name: 'PHANTIGO',
     sizes: '2 μεγέθη',
     fabrics: '19 υφάσματα',
@@ -38,6 +41,7 @@ const products: Product[] = [
     hoverImage: '/tables-hover.png',
   },
   {
+    slug: 'violet',
     name: 'VIOLET',
     sizes: '2 μεγέθη',
     fabrics: '19 υφάσματα',
@@ -50,6 +54,7 @@ const products: Product[] = [
     hoverImage: '/wardrobe-hover.png',
   },
   {
+    slug: 'maximillian',
     name: 'MAXIMILLIAN',
     sizes: '2 μεγέθη',
     fabrics: '19 υφάσματα',
@@ -62,6 +67,7 @@ const products: Product[] = [
     hoverImage: '/sofa-hover.png',
   },
   {
+    slug: 'huxton',
     name: 'HUXTON',
     sizes: '2 μεγέθη',
     fabrics: '19 υφάσματα',
@@ -77,6 +83,7 @@ const products: Product[] = [
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
   const ref = useRef(null);
+  const router = useRouter();
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const [activeSwatch, setActiveSwatch] = useState(woodSwatches[0].name);
   const [isHovered, setIsHovered] = useState(false);
@@ -178,12 +185,14 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           borderColor: '#214A4F',
           color: '#214A4F',
           backgroundColor: 'transparent',
+          cursor: 'pointer',
         }}
         whileHover={{
           backgroundColor: '#214A4F',
           color: '#ffffff',
         }}
         transition={{ duration: 0.3 }}
+        onClick={() => router.push(`/product/${product.slug}`)}
       >
         Προσαρμογή
         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

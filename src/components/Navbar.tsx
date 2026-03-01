@@ -17,10 +17,10 @@ const narrenschiff = localFont({
 });
 
 const products = [
-  { name: 'Πολυθρόνες', slug: 'phantigo', image: '/armchairs.png' },
-  { name: 'Καναπέδες', slug: 'violet', image: '/sofas.png' },
-  { name: 'Τραπεζαρίες', slug: 'maximillian', image: '/dining-tables.png' },
-  { name: 'Αποθηκευτικοί χώροι', slug: 'huxton', image: '/wardrobes.png' },
+  { name: 'Πολυθρόνες', slug: 'armchairs', image: '/armchairs.png' },
+  { name: 'Καναπέδες', slug: 'sofas', image: '/sofas.png' },
+  { name: 'Τραπεζαρίες', slug: 'dining-tables', image: '/dining-tables.png' },
+  { name: 'Αποθηκευτικοί χώροι', slug: 'storage', image: '/wardrobes.png' },
   { name: 'Ειδικές παραγγελίες', slug: 'custom-orders', image: '/other.png' },
 ];
 
@@ -516,7 +516,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                   onMouseLeave={() => setHoveredProduct(null)}
                 >
                   <a
-                    href={`/product/${product.slug}`}
+                    href={`/category/${product.slug}`}
                     onClick={(e) => {
                       e.preventDefault();
                       if (clickedIndex !== null) return; // already navigating
@@ -528,7 +528,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                       });
                       // Step 2: Navigate after animation completes
                       setTimeout(() => {
-                        router.push(`/product/${product.slug}`);
+                        router.push(`/category/${product.slug}`);
                         // Reset state after navigation
                         setTimeout(() => {
                           setIsOpen(false);
