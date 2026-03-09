@@ -1,5 +1,6 @@
 /* ══════════════════════════════════════════════
    CartPageClient – CSS Modules (shoprooof-inspired)
+   Slow, luxury sliding animations
    ══════════════════════════════════════════════ */
 
 .pageWrapper {
@@ -61,12 +62,21 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border-radius: 9999px;
-  transition: background 0.4s ease, transform 0.3s ease;
+  transition: background 0.8s ease, transform 0.6s ease, box-shadow 0.6s ease;
 }
 
 .ctaLink:hover {
   background: #18363A;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(33, 74, 79, 0.15);
+}
+
+.ctaLink svg {
+  transition: transform 0.6s ease;
+}
+
+.ctaLink:hover svg {
+  transform: translateX(4px);
 }
 
 /* ── Cart Section ── */
@@ -106,6 +116,11 @@
   border-bottom: 1px solid rgba(33, 74, 79, 0.08);
   align-items: flex-start;
   position: relative;
+  transition: border-color 0.8s ease;
+}
+
+.cartItem:hover {
+  border-bottom-color: rgba(33, 74, 79, 0.2);
 }
 
 /* Product Image */
@@ -122,11 +137,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .itemImageWrap:hover .itemImage {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 /* Item Details (center column) */
@@ -144,12 +159,13 @@
   color: #214A4F;
   letter-spacing: -0.01em;
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   margin-bottom: 4px;
 }
 
 .itemName:hover {
-  opacity: 0.7;
+  opacity: 0.65;
+  transform: translateX(4px);
 }
 
 /* Variation Grid (label : value) */
@@ -165,6 +181,11 @@
   font-size: 12px;
   color: #214A4F;
   opacity: 0.5;
+  transition: opacity 0.6s ease;
+}
+
+.cartItem:hover .varLabel {
+  opacity: 0.7;
 }
 
 .varValue {
@@ -192,13 +213,18 @@
   align-items: center;
   justify-content: center;
   color: #214A4F;
-  transition: border-color 0.3s, background 0.3s;
+  transition: border-color 0.6s ease, background 0.6s ease, transform 0.4s ease;
   padding: 0;
 }
 
 .quantityBtn:hover {
   border-color: #214A4F;
-  background: rgba(33, 74, 79, 0.04);
+  background: rgba(33, 74, 79, 0.06);
+  transform: scale(1.1);
+}
+
+.quantityBtn:active {
+  transform: scale(0.95);
 }
 
 .quantityValue {
@@ -221,12 +247,13 @@
   opacity: 0.5;
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: opacity 0.3s;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   text-align: left;
 }
 
 .favLink:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+  transform: translateX(3px);
 }
 
 /* Right Column (Price + Remove) */
@@ -245,6 +272,11 @@
   font-weight: 500;
   color: #214A4F;
   white-space: nowrap;
+  transition: transform 0.6s ease;
+}
+
+.cartItem:hover .itemPrice {
+  transform: translateX(-2px);
 }
 
 .removeBtn {
@@ -253,14 +285,16 @@
   cursor: pointer;
   font-size: 12px;
   color: #214A4F;
-  opacity: 0.4;
-  transition: opacity 0.3s;
+  opacity: 0.35;
+  transition: opacity 0.6s ease, transform 0.6s ease, color 0.6s ease;
   padding: 0;
   white-space: nowrap;
 }
 
 .removeBtn:hover {
-  opacity: 0.8;
+  opacity: 0.9;
+  transform: translateX(-2px);
+  color: #8B3A3A;
 }
 
 /* ── Summary ── */
@@ -291,11 +325,12 @@
   opacity: 0.5;
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: opacity 0.3s;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .continueLink:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+  transform: translateX(4px);
 }
 
 .summaryRight {
@@ -330,6 +365,7 @@
   font-size: 12px;
   color: #B08D57;
   opacity: 0.8;
+  transition: opacity 0.6s ease;
 }
 
 .checkoutBtn {
@@ -347,7 +383,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border-radius: 9999px;
-  transition: background 0.4s ease, transform 0.3s ease;
+  transition: background 0.8s ease, box-shadow 0.6s ease;
   margin-top: 4px;
   width: 100%;
   max-width: 380px;
@@ -355,7 +391,15 @@
 
 .checkoutBtn:hover {
   background: #18363A;
-  transform: translateY(-1px);
+  box-shadow: 0 10px 32px rgba(33, 74, 79, 0.2);
+}
+
+.checkoutBtn svg {
+  transition: transform 0.6s ease;
+}
+
+.checkoutBtn:hover svg {
+  transform: translateX(4px);
 }
 
 /* ── Responsive ── */
