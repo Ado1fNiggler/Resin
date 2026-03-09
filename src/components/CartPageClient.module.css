@@ -1,0 +1,253 @@
+/* ══════════════════════════════════════════════
+   CartPageClient – CSS Modules
+   ══════════════════════════════════════════════ */
+
+.pageWrapper {
+  padding-left: 75px;
+}
+
+/* ── Hero ── */
+.hero {
+  padding: clamp(120px, 15vw, 200px) clamp(24px, 5vw, 100px) clamp(60px, 8vw, 100px);
+  text-align: center;
+  background: #214A4F;
+}
+
+.heroTitle {
+  font-size: clamp(42px, 6vw, 72px);
+  color: #FCFCFC;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+/* ── Empty State ── */
+.emptySection {
+  padding: clamp(80px, 12vw, 160px) clamp(24px, 5vw, 100px);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.emptyTitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #214A4F;
+  margin-bottom: 16px;
+}
+
+.emptyText {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5A5A5A;
+  margin-bottom: 32px;
+}
+
+.ctaLink {
+  display: inline-block;
+  padding: 16px 48px;
+  background: #214A4F;
+  color: #FCFCFC;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.3s;
+}
+
+.ctaLink:hover {
+  opacity: 0.85;
+}
+
+/* ── Cart Items ── */
+.cartSection {
+  padding: clamp(40px, 6vw, 80px) clamp(24px, 5vw, 80px);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cartItem {
+  display: flex;
+  gap: 24px;
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(33, 74, 79, 0.1);
+  align-items: flex-start;
+}
+
+.cartItem:first-child {
+  padding-top: 0;
+}
+
+.itemImage {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #EDEBE8;
+  flex-shrink: 0;
+}
+
+.itemDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.itemName {
+  font-size: 18px;
+  font-weight: 500;
+  color: #214A4F;
+  letter-spacing: 0.02em;
+}
+
+.itemMeta {
+  font-size: 13px;
+  color: #214A4F;
+  opacity: 0.5;
+}
+
+.itemPrice {
+  font-size: 16px;
+  font-weight: 600;
+  color: #214A4F;
+  margin-top: 4px;
+}
+
+/* ── Quantity Controls ── */
+.quantityRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(33, 74, 79, 0.15);
+  border-radius: 4px;
+}
+
+.quantityBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #214A4F;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.quantityBtn:hover {
+  background: rgba(33, 74, 79, 0.05);
+}
+
+.quantityValue {
+  width: 40px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #214A4F;
+  border-left: 1px solid rgba(33, 74, 79, 0.15);
+  border-right: 1px solid rgba(33, 74, 79, 0.15);
+  padding: 8px 0;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #214A4F;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  padding: 0;
+}
+
+.removeBtn:hover {
+  opacity: 0.8;
+}
+
+/* ── Summary ── */
+.summary {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(33, 74, 79, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.summaryLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.continueLink {
+  font-size: 13px;
+  color: #214A4F;
+  opacity: 0.5;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.continueLink:hover {
+  opacity: 0.8;
+}
+
+.summaryRight {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.subtotalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 48px;
+}
+
+.subtotalLabel {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #214A4F;
+  opacity: 0.5;
+}
+
+.subtotalValue {
+  font-size: 22px;
+  font-weight: 600;
+  color: #214A4F;
+}
+
+.checkoutBtn {
+  padding: 16px 48px;
+  background: #214A4F;
+  color: #FCFCFC;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.3s;
+  border-radius: 0;
+}
+
+.checkoutBtn:hover {
+  background: #18363A;
+}

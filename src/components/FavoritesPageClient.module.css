@@ -1,0 +1,186 @@
+/* ══════════════════════════════════════════════
+   FavoritesPageClient – CSS Modules
+   ══════════════════════════════════════════════ */
+
+.pageWrapper {
+  padding-left: 75px;
+}
+
+/* ── Hero ── */
+.hero {
+  padding: clamp(120px, 15vw, 200px) clamp(24px, 5vw, 100px) clamp(60px, 8vw, 100px);
+  text-align: center;
+  background: #214A4F;
+}
+
+.heroTitle {
+  font-size: clamp(42px, 6vw, 72px);
+  color: #FCFCFC;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+.heroSubtitle {
+  font-size: 18px;
+  color: rgba(252, 252, 252, 0.7);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Empty State ── */
+.emptySection {
+  padding: clamp(80px, 12vw, 160px) clamp(24px, 5vw, 100px);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.emptyTitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #214A4F;
+  margin-bottom: 16px;
+}
+
+.emptyText {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5A5A5A;
+  margin-bottom: 32px;
+}
+
+.ctaLink {
+  display: inline-block;
+  padding: 16px 48px;
+  background: #214A4F;
+  color: #FCFCFC;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.3s;
+}
+
+.ctaLink:hover {
+  opacity: 0.85;
+}
+
+/* ── Favorites Grid ── */
+.gridSection {
+  padding: clamp(40px, 6vw, 80px) clamp(24px, 5vw, 80px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.countText {
+  font-size: 13px;
+  color: #214A4F;
+  opacity: 0.5;
+  margin-bottom: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+}
+
+/* ── Product Card ── */
+.card {
+  cursor: pointer;
+}
+
+.imageWrap {
+  position: relative;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: #EDEBE8;
+  margin-bottom: 14px;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.productImage:hover {
+  transform: scale(1.05);
+}
+
+.heartBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  z-index: 2;
+}
+
+.heartBtn:hover {
+  transform: scale(1.1);
+}
+
+.productName {
+  font-size: 15px;
+  font-weight: 500;
+  color: #214A4F;
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+
+.productPrice {
+  font-size: 15px;
+  font-weight: 600;
+  color: #214A4F;
+  margin-bottom: 12px;
+}
+
+.cardActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.viewLink {
+  font-size: 12px;
+  color: #214A4F;
+  opacity: 0.5;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.viewLink:hover {
+  opacity: 0.8;
+}
+
+.addCartBtn {
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1.5px solid #214A4F;
+  background: transparent;
+  color: #214A4F;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.addCartBtn:hover {
+  background: #214A4F;
+  color: #FCFCFC;
+}

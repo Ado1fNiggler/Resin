@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import localFont from 'next/font/local';
+import { useStore } from '@/context/StoreContext';
+import styles from './Navbar.module.css';
 
 const narrenschiff = localFont({
   src: [
@@ -75,42 +77,44 @@ function SidebarIcon({ type, teal }: { type: string; teal: boolean }) {
    Sidebar button – hover‑expand with teal bg
    ────────────────────────────────────────────── */
 function SidebarButton({
-  label, icon, onClick, isOpen, teal, transparent,
+  label, icon, onClick, isOpen, teal, transparent, badge,
 }: {
-  label: string; icon: string; onClick?: () => void; isOpen: boolean; teal: boolean; transparent?: boolean;
+  label: string; icon: string; onClick?: () => void; isOpen: boolean; teal: boolean; transparent?: boolean; badge?: number;
 }) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <button
+      className={styles.sidebarButton}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={onClick}
       style={{
-        position: 'relative',
-        width: '100%',
         height: `${SIDEBAR_W}px`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        overflow: 'visible',
-        border: 'none',
-        background: 'transparent',
-        cursor: 'pointer',
         borderTop: transparent ? '1px solid rgba(252,252,252,0.25)' : '1px solid rgba(33,74,79,0.12)',
-        transition: 'border-top 0.45s ease-in-out, border-bottom 0.45s ease-in-out',
       }}
     >
-      <div style={{ position: 'absolute', left: 0, top: -1, bottom: -1, display: 'flex', alignItems: 'center', gap: '12px', padding: '0 24px', whiteSpace: 'nowrap', minWidth: '100%', zIndex: 2, transition: 'color 0.45s ease-in-out' }}>
+      <div className={styles.sidebarButtonInner}>
         {/* Teal hover bg – scales from left */}
-        <span style={{ position: 'absolute', inset: 0, background: '#214A4F', transformOrigin: '0 0', transform: hovered ? 'scaleX(1)' : 'scaleX(0)', transition: 'transform 0.45s ease-in-out', zIndex: -1 }} />
+        <span className={styles.hoverBg} style={{ transform: hovered ? 'scaleX(1)' : 'scaleX(0)' }} />
         {/* Label text */}
-        <span style={{ display: 'inline-block', overflow: 'hidden', maxWidth: hovered ? '120px' : 0, opacity: hovered ? 1 : 0, marginRight: hovered ? '4px' : 0, transition: 'max-width 0.45s ease-in-out, opacity 0.45s ease-in-out, margin 0.45s ease-in-out', fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase' as const, color: hovered ? '#FCFCFC' : (transparent ? '#FCFCFC' : '#214A4F') }}>
+        <span
+          className={styles.labelText}
+          style={{
+            maxWidth: hovered ? '120px' : 0,
+            opacity: hovered ? 1 : 0,
+            marginRight: hovered ? '4px' : 0,
+            color: hovered ? '#FCFCFC' : (transparent ? '#FCFCFC' : '#214A4F'),
+          }}
+        >
           {label}
         </span>
-        {/* Icon */}
-        <span style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+        {/* Icon + badge */}
+        <span className={styles.iconWrap}>
           <SidebarIcon type={icon} teal={hovered ? false : teal} />
+          {badge !== undefined && badge > 0 && (
+            <span className={styles.badge}>{badge}</span>
+          )}
         </span>
       </div>
     </button>
@@ -122,6 +126,7 @@ function SidebarButton({
    ══════════════════════════════════════════════ */
 export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSidebar?: boolean }) {
   const router = useRouter();
+  const { cartCount, favoritesCount } = useStore();
   const [isOpen, setIsOpen] = useState(false);           // full‑screen menu
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
   const [showItems, setShowItems] = useState(false);     // stagger trigger
@@ -233,85 +238,39 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           Teal square, top‑left, hamburger icon + Resin logo.
           ============================================= */}
       <div
+        className={styles.floatingMenuArea}
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          zIndex: 310,
           height: `${SIDEBAR_W}px`,
-          display: 'flex',
-          alignItems: 'center',
-          /* hide when sidebar takes over (or overlay open) */
           opacity: sidebarVisible ? 0 : 1,
           pointerEvents: sidebarVisible ? 'none' : 'auto',
-          transition: 'opacity 0.45s ease-in-out',
         }}
       >
         <button
           aria-label="Open menu"
+          className={styles.menuButton}
           onMouseEnter={() => setMenuBtnHovered(true)}
           onMouseLeave={() => setMenuBtnHovered(false)}
           onClick={() => setIsOpen(true)}
-          style={{
-            position: 'relative',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            background: 'transparent',
-            border: 'none',
-            borderRadius: 0,
-            cursor: 'pointer',
-            overflow: 'visible',
-            padding: 0,
-          }}
         >
           {/* Inner wrap – grows on hover like sidebar buttons */}
-          <div
-            style={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '0 24px',
-              height: '100%',
-              whiteSpace: 'nowrap',
-              minWidth: `${SIDEBAR_W}px`,
-            }}
-          >
+          <div className={styles.menuButtonInner} style={{ minWidth: `${SIDEBAR_W}px` }}>
             {/* Teal background – always visible, expands on hover */}
-            <span
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: '#214A4F',
-                transformOrigin: '0 0',
-                transition: 'transform 0.45s ease-in-out',
-                zIndex: -1,
-              }}
-            />
+            <span className={styles.menuBg} />
 
             {/* "MENU" label – revealed on hover */}
             <span
+              className={styles.menuLabel}
               style={{
-                display: 'inline-block',
-                overflow: 'hidden',
                 maxWidth: menuBtnHovered ? '60px' : 0,
                 opacity: menuBtnHovered ? 1 : 0,
                 marginRight: menuBtnHovered ? '4px' : 0,
-                transition: 'max-width 0.45s ease-in-out, opacity 0.45s ease-in-out, margin 0.45s ease-in-out',
-                fontSize: '12px',
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase' as const,
-                color: '#FCFCFC',
               }}
             >
               MENU
             </span>
 
             {/* Hamburger icon */}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+            <svg className={styles.hamburgerIcon} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="2" strokeLinecap="round">
               <line x1="3" y1="6" x2="21" y2="6" />
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="18" x2="21" y2="18" />
@@ -320,18 +279,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
         </button>
 
         {/* "Resin" logo – sits right next to menu button, moves with hover expand */}
-        <span
-          className={narrenschiff.className}
-          style={{
-            color: '#FCFCFC',
-            fontSize: '56px',
-            letterSpacing: '0.02em',
-            lineHeight: 1,
-            textShadow: '1px 1px 6px rgba(0, 0, 0, 0.3)',
-            marginLeft: '24px',
-            transition: 'margin-left 0.45s ease-in-out',
-          }}
-        >
+        <span className={`${narrenschiff.className} ${styles.heroLogo}`}>
           Resin
         </span>
       </div>
@@ -340,38 +288,31 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           2. FULL SIDEBAR  (appears after hero via slide‑in)
           ============================================= */}
       <header
+        className={styles.sidebar}
         style={{
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          bottom: 0,
           width: `${SIDEBAR_W}px`,
-          zIndex: 300,
-          /* Slide in from left */
           transform: sidebarVisible ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 0.55s cubic-bezier(0.76, 0, 0.24, 1)',
           pointerEvents: sidebarVisible ? 'auto' : 'none',
         }}
       >
         {/* White bg – transparent with outline when over image sections */}
         <div
+          className={styles.sidebarBg}
           style={{
-            position: 'absolute',
-            inset: '0 -1px 0 0',
             background: (overImageSection && !isOpen) ? 'transparent' : '#FCFCFC',
             borderRight: '1px solid ' + ((overImageSection && !isOpen) ? 'rgba(252,252,252,0.25)' : 'rgba(33,74,79,0.12)'),
-            zIndex: 0,
-            transition: 'background 0.45s ease-in-out, border-right 0.45s ease-in-out',
           }}
         />
 
         {/* Sidebar column */}
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', zIndex: 2 }}>
+        <div className={styles.sidebarColumn}>
           {/* ── TOP GROUP ── */}
-          <div style={{
-            borderBottom: (overImageSection && !isOpen) ? '1px solid rgba(252,252,252,0.25)' : '1px solid rgba(33,74,79,0.12)',
-            transition: 'border-bottom 0.45s ease-in-out',
-          }}>
+          <div
+            className={styles.sidebarGroup}
+            style={{
+              borderBottom: (overImageSection && !isOpen) ? '1px solid rgba(252,252,252,0.25)' : '1px solid rgba(33,74,79,0.12)',
+            }}
+          >
             <SidebarButton
               label={isOpen ? 'CLOSE' : 'MENU'}
               icon={isOpen ? 'close' : 'hamburger'}
@@ -387,50 +328,59 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
               transparent={overImageSection && !isOpen}
             />
             {sidebarItems.map((item) => (
-              <SidebarButton key={item.id} label={item.label} icon={item.icon} isOpen={isOpen} teal={teal} transparent={overImageSection && !isOpen} />
+              <SidebarButton
+                key={item.id}
+                label={item.label}
+                icon={item.icon}
+                isOpen={isOpen}
+                teal={teal}
+                transparent={overImageSection && !isOpen}
+                badge={item.id === 'cart' ? cartCount : undefined}
+                onClick={() => {
+                  setIsOpen(false);
+                  setTimeout(() => {
+                    router.push(item.id === 'cart' ? '/cart' : '/search');
+                  }, 50);
+                }}
+              />
             ))}
           </div>
 
           {/* ── MIDDLE: Vertical RESIN logo – clickable, goes to hero ── */}
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className={styles.verticalLogoArea}>
             <button
               onClick={() => {
                 setIsOpen(false);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => router.push('/'), 50);
               }}
-              className={narrenschiff.className}
+              className={`${narrenschiff.className} ${styles.verticalLogo}`}
               style={{
-                writingMode: 'vertical-rl',
-                transform: 'rotate(180deg)',
-                fontSize: '18px',
-                fontWeight: 700,
-                letterSpacing: '0.2em',
                 color: (overImageSection && !isOpen) ? '#FCFCFC' : '#214A4F',
-                userSelect: 'none',
-                transition: 'color 0.3s ease-in-out',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '12px 0',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.6'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
             >
               RESIN
             </button>
           </div>
 
           {/* ── BOTTOM GROUP ── */}
-          <div style={{
-            borderBottom: (overImageSection && !isOpen) ? '1px solid rgba(252,252,252,0.25)' : '1px solid rgba(33,74,79,0.12)',
-            transition: 'border-bottom 0.45s ease-in-out',
-          }}>
+          <div
+            className={styles.sidebarGroup}
+            style={{
+              borderBottom: (overImageSection && !isOpen) ? '1px solid rgba(252,252,252,0.25)' : '1px solid rgba(33,74,79,0.12)',
+            }}
+          >
             {bottomItems.map((item) => (
               <SidebarButton
                 key={item.id}
                 label={item.label}
                 icon={item.icon}
-                onClick={item.id === 'top' ? scrollToTop : undefined}
+                badge={item.id === 'favorites' ? favoritesCount : undefined}
+                onClick={item.id === 'top' ? scrollToTop : () => {
+                  setIsOpen(false);
+                  setTimeout(() => {
+                    router.push('/favorites');
+                  }, 50);
+                }}
                 isOpen={isOpen}
                 teal={teal}
                 transparent={overImageSection && !isOpen}
@@ -444,21 +394,17 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           3. FULL‑SCREEN MENU OVERLAY
           ============================================= */}
       <div
+        className={styles.menuOverlay}
         style={{
-          position: 'fixed',
-          inset: 0,
           left: `${SIDEBAR_W}px`,
-          zIndex: 250,
           pointerEvents: isOpen ? 'auto' : 'none',
           visibility: (isOpen || isClosing) ? 'visible' : 'hidden',
-          overflow: 'hidden',
         }}
       >
         {/* Gradient bg – slides up on open, slides down on close (after items) */}
         <div
+          className={styles.overlayBg}
           style={{
-            position: 'absolute',
-            inset: 0,
             background: `linear-gradient(to bottom, ${menuRowColors[0]}, ${menuRowColors[menuRowColors.length - 1]})`,
             transform: showItems ? 'translateY(0)' : 'translateY(150%)',
             opacity: (isClosing && collapsedRows.every(Boolean)) ? 0 : showItems ? 1 : 0,
@@ -470,12 +416,8 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
 
         {/* Nav – slides up on open, slides down on close */}
         <nav
+          className={styles.overlayNav}
           style={{
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            zIndex: 2,
             transform: showItems ? 'translateY(0)' : 'translateY(300%)',
             transition: showItems
               ? 'transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s'
@@ -483,7 +425,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           }}
         >
           {/* Product links */}
-          <ol style={{ flex: 1, display: 'flex', flexDirection: 'column', listStyle: 'none', margin: 0, padding: 0, gap: 0 }}>
+          <ol className={styles.productList}>
             {products.map((product, index) => {
               const isHovered = hoveredProduct === index;
               // Match resin.gr stagger: Huxton first, Phantigo last
@@ -495,22 +437,20 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
               return (
                 <li
                   key={product.name}
+                  className={styles.productItem}
                   style={{
                     flex: isCollapsed
                       ? 0.001
                       : (clickedIndex === index && expandImage) ? 99 : isHovered ? 2 : 1,
-                    overflow: 'hidden',
                     transition: isCollapsed
                       ? 'flex 0.45s cubic-bezier(0.55, 0, 1, 0.45)'
                       : (clickedIndex !== null)
                         ? 'flex 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out'
                         : 'flex 1s',
-                    minHeight: 0,
                     opacity: isCollapsed
                       ? 0
                       : (clickedIndex !== null && clickedIndex !== index && expandImage) ? 0 : 1,
                     background: menuRowColors[index] || '#F3F7F7',
-                    marginBottom: '-1px',
                   }}
                   onMouseEnter={() => { if (clickedIndex === null && !isClosing) setHoveredProduct(index); }}
                   onMouseLeave={() => setHoveredProduct(null)}
@@ -539,23 +479,8 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                         }, 100);
                       }, 1400);
                     }}
+                    className={styles.productLink}
                     style={{
-                      position: 'relative',
-                      display: 'flex',
-                      alignItems: 'center',
-                      width: '100%',
-                      height: '100%',
-                      background: '#214A4F',
-                      color: '#FCFCFC',
-                      textDecoration: 'none',
-                      fontFamily: 'Georgia, "Times New Roman", serif',
-                      fontSize: '42px',
-                      fontWeight: 300,
-                      lineHeight: 1,
-                      letterSpacing: '1px',
-                      paddingLeft: '40vw',
-                      paddingRight: '48px',
-                      overflow: 'hidden',
                       transform: showItems ? 'translateY(0)' : 'translateY(110%)',
                       transition: showItems
                         ? `transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${openDelay}s`
@@ -563,27 +488,22 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                     }}
                   >
                     {/* Product image (left) – expands to fullscreen on click */}
-                    <div style={{
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      bottom: 0,
-                      width: (clickedIndex === index && expandImage) ? '100vw' : '25.4167vw',
-                      height: (clickedIndex === index && expandImage) ? '100vh' : '100%',
-                      background: '#18363A',
-                      overflow: 'hidden',
-                      zIndex: (clickedIndex === index) ? 50 : 'auto',
-                      transition: (clickedIndex === index)
-                        ? 'width 1.2s cubic-bezier(0.16, 1, 0.3, 1), height 1.2s cubic-bezier(0.16, 1, 0.3, 1)'
-                        : 'none',
-                    }}>
+                    <div
+                      className={styles.productImageWrap}
+                      style={{
+                        width: (clickedIndex === index && expandImage) ? '100vw' : '25.4167vw',
+                        height: (clickedIndex === index && expandImage) ? '100vh' : '100%',
+                        zIndex: (clickedIndex === index) ? 50 : 'auto',
+                        transition: (clickedIndex === index)
+                          ? 'width 1.2s cubic-bezier(0.16, 1, 0.3, 1), height 1.2s cubic-bezier(0.16, 1, 0.3, 1)'
+                          : 'none',
+                      }}
+                    >
                       <img
                         src={product.image}
                         alt={product.name}
+                        className={styles.productImage}
                         style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
                           transition: (clickedIndex === index)
                             ? 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)'
                             : 'transform 0.7s ease-out',
@@ -596,28 +516,13 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
 
                     {/* Light overlay – clip‑path wipe on hover, gradient scale per row */}
                     <div
+                      className={styles.lightOverlay}
                       style={{
-                        position: 'absolute',
-                        top: '-2px',
-                        left: 0,
-                        right: 0,
-                        bottom: '-2px',
                         background: menuRowColors[index] || '#F3F7F7',
-                        display: 'flex',
-                        alignItems: 'center',
-                        paddingLeft: '40vw',
-                        paddingRight: '48px',
-                        color: '#214A4F',
-                        fontFamily: 'inherit',
-                        fontSize: 'inherit',
-                        fontWeight: 'inherit',
-                        letterSpacing: 'inherit',
-                        lineHeight: 'inherit',
                         clipPath: (isHovered || clickedIndex === index)
                           ? 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)'
                           : 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                         transition: (isHovered || clickedIndex === index) ? 'clip-path 0.45s ease-in-out' : 'clip-path 0.8s ease-in-out',
-                        zIndex: 1,
                         opacity: (clickedIndex === index && expandImage) ? 0 : 1,
                       }}
                     >
@@ -625,15 +530,13 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                     </div>
 
                     {/* Text + arrow on dark teal */}
-                    <span style={{
-                      position: 'relative',
-                      zIndex: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '24px',
-                      opacity: (clickedIndex === index && expandImage) ? 0 : 1,
-                      transition: 'opacity 0.4s ease-out',
-                    }}>
+                    <span
+                      className={styles.textArrow}
+                      style={{
+                        opacity: (clickedIndex === index && expandImage) ? 0 : 1,
+                        transition: 'opacity 0.4s ease-out',
+                      }}
+                    >
                       {product.name}
                       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
                         style={{ opacity: isHovered ? 1 : 0, transform: isHovered ? 'translateX(0)' : 'translateX(-12px)', transition: 'opacity 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s', flexShrink: 0 }}>
@@ -648,14 +551,8 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
 
           {/* Bottom row – secondary nav */}
           <div
+            className={styles.bottomNav}
             style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              gap: '48px',
-              padding: '24px 48px',
-              borderTop: '1px solid rgba(33,74,79,0.15)',
-              background: '#FCFCFC',
               transform: showItems ? 'translateY(0)' : 'translateY(150%)',
               transition: showItems
                 ? 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
@@ -663,16 +560,23 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
               opacity: isClosing ? 0 : (clickedIndex !== null && expandImage) ? 0 : 1,
             }}
           >
-            {['ΣΧΕΤΙΚΑ', 'ΕΡΩΤΗΣΕΙΣ', 'ΑΓΑΠΗΜΕΝΑ', 'ΕΠΙΚΟΙΝΩΝΙΑ'].map((item) => (
+            {[
+              { label: 'ΣΧΕΤΙΚΑ', href: '/about' },
+              { label: 'ΕΡΩΤΗΣΕΙΣ', href: '/faq' },
+              { label: 'ΑΓΑΠΗΜΕΝΑ', href: '/favorites' },
+              { label: 'ΕΠΙΚΟΙΝΩΝΙΑ', href: '/contact' },
+            ].map((item) => (
               <a
-                key={item}
-                href="#"
-                onClick={() => setIsOpen(false)}
-                style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#214A4F', textDecoration: 'none', transition: 'opacity 0.3s' }}
-                onMouseEnter={(e) => { (e.target as HTMLElement).style.opacity = '0.6'; }}
-                onMouseLeave={(e) => { (e.target as HTMLElement).style.opacity = '1'; }}
+                key={item.label}
+                href={item.href}
+                className={styles.bottomNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsOpen(false);
+                  setTimeout(() => router.push(item.href), 50);
+                }}
               >
-                {item}
+                {item.label}
               </a>
             ))}
           </div>

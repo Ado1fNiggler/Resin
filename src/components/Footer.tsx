@@ -15,6 +15,19 @@ const narrenschiff = localFont({
   variable: '--font-narrenschiff',
 });
 
+/* Link mapping: display text → href */
+const linkMap: Record<string, string> = {
+  'Αρχική': '/',
+  'Σχετικά με εμάς': '/about',
+  'Επικοινωνία': '/contact',
+  'Πολυθρόνες': '/category/armchairs',
+  'Καναπέδες': '/category/sofas',
+  'Τραπεζαρίες': '/category/dining-tables',
+  'Αποθηκευτικοί χώροι': '/category/storage',
+  'Ειδικές παραγγελίες': '/category/custom-orders',
+  'Συχνές ερωτήσεις': '/faq',
+};
+
 const footerColumns = [
   {
     title: 'ΕΤΑΙΡΕΙΑ',
@@ -66,7 +79,7 @@ export default function Footer() {
                   {column.links.map((link) => (
                     <li key={link}>
                       <motion.a
-                        href="#"
+                        href={linkMap[link] || '#'}
                         className="text-[14px] transition-colors duration-300 block"
                         style={{ color: 'rgba(252,252,252,0.6)' }}
                         whileHover={{ color: '#ffffff', x: 2 }}
@@ -107,7 +120,7 @@ export default function Footer() {
 
             {/* Logo */}
             <a
-              href="#"
+              href="/"
               className={narrenschiff.className}
               style={{
                 fontSize: '24px',

@@ -1,0 +1,480 @@
+/* ══════════════════════════════════════════════
+   ProductPageClient – CSS Modules
+   ══════════════════════════════════════════════ */
+
+/* ── Page Layout ── */
+.pageWrapper {
+  padding-left: 75px;
+}
+
+.heroSection {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ── Gallery ── */
+.galleryContainer {
+  position: fixed;
+  top: 0;
+  left: 75px;
+  right: 0;
+  height: 100vh;
+  background-color: #EDEBE8;
+  overflow: hidden;
+}
+
+.galleryImageWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.galleryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.caption {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #214A4F;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+/* ── Gallery Controls ── */
+.controlsBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+.arrowGroup {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.roundButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.roundButton:hover {
+  transform: scale(1.08);
+}
+
+.dotsContainer {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dot {
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+/* ── Floating Card ── */
+.floatingCard {
+  position: absolute;
+  right: 2.5rem;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 420px;
+  background-color: #FCFCFC;
+  border-radius: 12px;
+  box-shadow: 0 8px 60px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardContent {
+  padding: 1.75rem 2rem 1.5rem 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Card Header ── */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.15rem;
+}
+
+.productTitle {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: #214A4F;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.favoriteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-top: 4px;
+}
+
+.subtitle {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #214A4F;
+  opacity: 0.5;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Price & Rating ── */
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 1.15rem;
+  color: #214A4F;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.ratingWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ratingNumber {
+  font-size: 0.85rem;
+  color: #214A4F;
+  font-weight: 500;
+}
+
+.starsRow {
+  display: flex;
+  gap: 2px;
+}
+
+/* ── Selectors ── */
+.selectorSection {
+  padding: 1rem 0;
+}
+
+.selectorLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #214A4F;
+  margin-bottom: 0.6rem;
+}
+
+.selectorLabelWide {
+  composes: selectorLabel;
+  margin-bottom: 0.75rem;
+}
+
+.sizeButton {
+  padding: 0.65rem 1.5rem;
+  border-radius: 50px;
+  border: none;
+  background: #214A4F;
+  color: #FCFCFC;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+/* ── Finish Swatches ── */
+.finishSwatchesRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.swatchItem {
+  text-align: center;
+  flex: 1;
+}
+
+.swatchButton {
+  width: 100%;
+  height: 42px;
+  border-radius: 21px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  display: block;
+  transition: border 0.2s ease;
+}
+
+.swatchImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.swatchLabel {
+  font-size: 0.65rem;
+  color: #214A4F;
+  margin-top: 0.5rem;
+  line-height: 1.2;
+}
+
+/* ── Cushion Fabric ── */
+.fabricSubtext {
+  font-size: 0.68rem;
+  color: #214A4F;
+  opacity: 0.5;
+  margin-bottom: 0.75rem;
+}
+
+.fabricStrip {
+  width: 100%;
+  height: 42px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.fabricStripImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── CTA Buttons ── */
+.ctaSection {
+  padding: 1rem 0 0.5rem 0;
+  margin-top: auto;
+}
+
+.viewArButton {
+  width: 100%;
+  padding: 0.8rem 1.25rem;
+  background-color: transparent;
+  color: #214A4F;
+  border: 1.5px solid rgba(33, 74, 79, 0.2);
+  border-radius: 50px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.addToCartButton {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background-color: #214A4F;
+  color: #FCFCFC;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Divider ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(33, 74, 79, 0.12);
+}
+
+/* ── Below Image Sections ── */
+.belowImageContent {
+  margin-top: 100vh;
+  background-color: #FCFCFC;
+  position: relative;
+  z-index: 5;
+}
+
+.aboutSection {
+  padding: 5rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.contentSection {
+  padding: 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: #214A4F;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sectionText {
+  font-size: 1.1rem;
+  color: #214A4F;
+  opacity: 0.7;
+  line-height: 2;
+}
+
+.subSectionTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #214A4F;
+  margin-bottom: 2rem;
+}
+
+.twoColumnGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.dimLabel {
+  font-weight: 600;
+  color: #214A4F;
+  margin-bottom: 0.5rem;
+}
+
+.dimValue {
+  color: #214A4F;
+  opacity: 0.6;
+  line-height: 1.8;
+}
+
+/* ── Related Products ── */
+.relatedSection {
+  padding: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.threeColumnGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.relatedLink {
+  text-decoration: none;
+}
+
+.relatedImageWrap {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: #EDEBE8;
+  margin-bottom: 1rem;
+}
+
+.relatedImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.relatedImage:hover {
+  transform: scale(1.05);
+}
+
+.relatedName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #214A4F;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+
+.relatedViewText {
+  font-size: 0.75rem;
+  color: #214A4F;
+  opacity: 0.5;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footerSpacer {
+  height: 4rem;
+}
+
+/* ── Collapsible Section ── */
+.collapsibleSection {
+  padding: 1.5rem 0;
+}
+
+.collapsibleButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #214A4F;
+}
+
+.collapsibleTitle {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.collapsibleContent {
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collapsibleInner {
+  padding-top: 1rem;
+}

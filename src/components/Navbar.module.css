@@ -1,0 +1,324 @@
+/* ══════════════════════════════════════════════
+   Navbar – CSS Modules
+   ══════════════════════════════════════════════ */
+
+/* ── SidebarButton ── */
+.sidebarButton {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: visible;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: border-top 0.45s ease-in-out, border-bottom 0.45s ease-in-out;
+}
+
+.sidebarButtonInner {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  bottom: -1px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  white-space: nowrap;
+  min-width: 100%;
+  z-index: 2;
+  transition: color 0.45s ease-in-out;
+}
+
+.hoverBg {
+  position: absolute;
+  inset: 0;
+  background: #214A4F;
+  transform-origin: 0 0;
+  transition: transform 0.45s ease-in-out;
+  z-index: -1;
+}
+
+.labelText {
+  display: inline-block;
+  overflow: hidden;
+  transition: max-width 0.45s ease-in-out, opacity 0.45s ease-in-out,
+    margin 0.45s ease-in-out;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.iconWrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: #7EC0C9;
+  color: #FCFCFC;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  line-height: 1;
+}
+
+/* ── Floating Menu Button (hero) ── */
+.floatingMenuArea {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 310;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.45s ease-in-out;
+}
+
+.menuButton {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  overflow: visible;
+  padding: 0;
+}
+
+.menuButtonInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.menuBg {
+  position: absolute;
+  inset: 0;
+  background: #214A4F;
+  transform-origin: 0 0;
+  transition: transform 0.45s ease-in-out;
+  z-index: -1;
+}
+
+.menuLabel {
+  display: inline-block;
+  overflow: hidden;
+  transition: max-width 0.45s ease-in-out, opacity 0.45s ease-in-out,
+    margin 0.45s ease-in-out;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #FCFCFC;
+}
+
+.hamburgerIcon {
+  flex-shrink: 0;
+}
+
+.heroLogo {
+  color: #FCFCFC;
+  font-size: 56px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+  margin-left: 24px;
+  transition: margin-left 0.45s ease-in-out;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 300;
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.sidebarBg {
+  position: absolute;
+  inset: 0 -1px 0 0;
+  z-index: 0;
+  transition: background 0.45s ease-in-out, border-right 0.45s ease-in-out;
+}
+
+.sidebarColumn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 2;
+}
+
+.sidebarGroup {
+  transition: border-bottom 0.45s ease-in-out;
+}
+
+.verticalLogoArea {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verticalLogo {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  user-select: none;
+  transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 12px 0;
+}
+
+.verticalLogo:hover {
+  opacity: 0.6;
+}
+
+/* ── Menu Overlay ── */
+.menuOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  overflow: hidden;
+}
+
+.overlayBg {
+  position: absolute;
+  inset: 0;
+}
+
+.overlayNav {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 2;
+}
+
+.productList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.productItem {
+  overflow: hidden;
+  margin-bottom: -1px;
+  min-height: 0;
+}
+
+.productLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #214A4F;
+  color: #FCFCFC;
+  text-decoration: none;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 1px;
+  padding-left: 40vw;
+  padding-right: 48px;
+  overflow: hidden;
+}
+
+.productImageWrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: #18363A;
+  overflow: hidden;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lightOverlay {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  display: flex;
+  align-items: center;
+  padding-left: 40vw;
+  padding-right: 48px;
+  color: #214A4F;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  z-index: 1;
+}
+
+.textArrow {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ── Bottom Nav ── */
+.bottomNav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 48px;
+  padding: 24px 48px;
+  border-top: 1px solid rgba(33, 74, 79, 0.15);
+  background: #FCFCFC;
+}
+
+.bottomNavLink {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #214A4F;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.bottomNavLink:hover {
+  opacity: 0.6;
+}

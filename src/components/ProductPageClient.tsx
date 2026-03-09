@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ProductData } from '@/data/products';
+import { useStore } from '@/context/StoreContext';
+import styles from './ProductPageClient.module.css';
 
 /* ── Wood finish swatches ── */
 const woodSwatches = [
@@ -21,9 +23,7 @@ const fabricSwatches = [
 
 /* ── Separator line ── */
 function Divider() {
-  return (
-    <div style={{ width: '100%', height: '1px', backgroundColor: 'rgba(33,74,79,0.12)' }} />
-  );
+  return <div className={styles.divider} />;
 }
 
 /* ══════════════════════════════════════════════
@@ -34,7 +34,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeFabric, setActiveFabric] = useState('wheat');
   const [activeSize, setActiveSize] = useState<string>('small');
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { addToCart, toggleFavorite, isFavorite } = useStore();
   const galleryRef = useRef<HTMLDivElement>(null);
 
   const galleryImages = product.galleryImages;
@@ -55,9 +55,9 @@ export default function ProductPageClient({ product }: { product: ProductData })
   const currentSizeLabel = activeSize === 'small' ? 'Small' : 'Large';
 
   return (
-    <div style={{ paddingLeft: '75px' }}>
+    <div className={styles.pageWrapper}>
       {/* ─── FULLSCREEN IMAGE WITH FLOATING INFO CARD ─── */}
-      <div style={{ position: 'relative', minHeight: '100vh' }}>
+      <div className={styles.heroSection}>
 
         {/* ═══════════════════════════════════
             FULLSCREEN IMAGE GALLERY
@@ -67,18 +67,10 @@ export default function ProductPageClient({ product }: { product: ProductData })
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           ref={galleryRef}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: '75px',
-            right: 0,
-            height: '100vh',
-            backgroundColor: '#EDEBE8',
-            overflow: 'hidden',
-          }}
+          className={styles.galleryContainer}
         >
           {/* Main image */}
-          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <div className={styles.galleryImageWrap}>
             <AnimatePresence mode="wait">
               <motion.img
                 key={galleryImages[activeImageIndex]}
@@ -88,85 +80,26 @@ export default function ProductPageClient({ product }: { product: ProductData })
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
+                className={styles.galleryImage}
               />
             </AnimatePresence>
 
             {/* Caption at bottom center - above controls */}
-            <div style={{
-              position: 'absolute',
-              bottom: '4.5rem',
-              left: 0,
-              right: 0,
-              textAlign: 'center',
-              color: '#214A4F',
-              fontSize: '0.75rem',
-              letterSpacing: '0.02em',
-              opacity: 0.6,
-              fontWeight: 400,
-            }}>
+            <div className={styles.caption}>
               {currentSizeLabel} in {currentFinishLabel}, {currentFabricLabel} Cushion
             </div>
 
             {/* Bottom controls bar */}
-            <div style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '3.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0 1.5rem',
-            }}>
+            <div className={styles.controlsBar}>
               {/* Left: Prev / Next arrows */}
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <button
-                  onClick={prevImage}
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.85)',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                    transition: 'transform 0.2s ease',
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.08)'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
-                >
+              <div className={styles.arrowGroup}>
+                <button onClick={prevImage} className={styles.roundButton}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2.5" strokeLinecap="round">
                     <polyline points="15 18 9 12 15 6" />
                   </svg>
                 </button>
 
-                <button
-                  onClick={nextImage}
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.85)',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                    transition: 'transform 0.2s ease',
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.08)'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
-                >
+                <button onClick={nextImage} className={styles.roundButton}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2.5" strokeLinecap="round">
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
@@ -174,47 +107,23 @@ export default function ProductPageClient({ product }: { product: ProductData })
               </div>
 
               {/* Center: Dots pagination */}
-              <div style={{
-                display: 'flex',
-                gap: '6px',
-                alignItems: 'center',
-              }}>
+              <div className={styles.dotsContainer}>
                 {galleryImages.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => goToImage(i)}
+                    className={styles.dot}
                     style={{
                       width: activeImageIndex === i ? '8px' : '6px',
                       height: activeImageIndex === i ? '8px' : '6px',
-                      borderRadius: '50%',
-                      border: 'none',
                       background: activeImageIndex === i ? '#214A4F' : 'rgba(33,74,79,0.25)',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      padding: 0,
                     }}
                   />
                 ))}
               </div>
 
               {/* Right: Zoom / fullscreen button */}
-              <button
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.85)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                  transition: 'transform 0.2s ease',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.08)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
-              >
+              <button className={styles.roundButton}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2" strokeLinecap="round">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
@@ -231,46 +140,26 @@ export default function ProductPageClient({ product }: { product: ProductData })
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          style={{
-            position: 'absolute',
-            right: '2.5rem',
-            top: '1.5rem',
-            bottom: '1.5rem',
-            width: '420px',
-            backgroundColor: '#FCFCFC',
-            borderRadius: '12px',
-            boxShadow: '0 8px 60px rgba(0,0,0,0.12)',
-            zIndex: 10,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
+          className={styles.floatingCard}
         >
-          <div style={{ padding: '1.75rem 2rem 1.5rem 2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <div className={styles.cardContent}>
 
             {/* ── Header: Title + Favorite ── */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.15rem' }}>
-              <h1 style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontSize: '2rem',
-                fontWeight: 400,
-                color: '#214A4F',
-                lineHeight: 1.1,
-                letterSpacing: '-0.01em',
-              }}>
+            <div className={styles.cardHeader}>
+              <h1 className={styles.productTitle}>
                 {product.name}
               </h1>
               <button
-                onClick={() => setIsFavorited(!isFavorited)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '4px',
-                  marginTop: '4px',
-                }}
+                onClick={() => toggleFavorite({
+                  slug: product.slug,
+                  name: product.name,
+                  price: product.price,
+                  image: product.galleryImages[0],
+                })}
+                className={styles.favoriteButton}
               >
                 <svg width="22" height="22" viewBox="0 0 24 24"
-                  fill={isFavorited ? '#214A4F' : 'none'}
+                  fill={isFavorite(product.slug) ? '#214A4F' : 'none'}
                   stroke="#214A4F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
                   style={{ transition: 'fill 0.3s ease' }}
                 >
@@ -280,31 +169,18 @@ export default function ProductPageClient({ product }: { product: ProductData })
             </div>
 
             {/* ── Subtitle ── */}
-            <p style={{
-              fontSize: '0.65rem',
-              fontWeight: 600,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: '#214A4F',
-              opacity: 0.5,
-              marginBottom: '0.75rem',
-            }}>
+            <p className={styles.subtitle}>
               {product.slug === 'custom-orders' ? 'ΕΙΔΙΚΗ ΠΑΡΑΓΓΕΛΙΑ' : 'ΕΠΙΠΛΟ'}
             </p>
 
             {/* ── Price + Rating ── */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <p style={{
-                fontSize: '1.15rem',
-                color: '#214A4F',
-                fontWeight: 500,
-                letterSpacing: '0.02em',
-              }}>
+            <div className={styles.priceRow}>
+              <p className={styles.price}>
                 € {product.price}
               </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <span style={{ fontSize: '0.85rem', color: '#214A4F', fontWeight: 500 }}>5</span>
-                <div style={{ display: 'flex', gap: '2px' }}>
+              <div className={styles.ratingWrap}>
+                <span className={styles.ratingNumber}>5</span>
+                <div className={styles.starsRow}>
                   {[1,2,3,4,5].map(i => (
                     <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#214A4F" stroke="none">
                       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -317,30 +193,11 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ SIZE SELECTOR ════════════ */}
-            <div style={{ padding: '1rem 0' }}>
-              <p style={{
-                fontSize: '0.68rem',
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#214A4F',
-                marginBottom: '0.6rem',
-              }}>
+            <div className={styles.selectorSection}>
+              <p className={styles.selectorLabel}>
                 CHOOSE SIZE
               </p>
-              <button
-                style={{
-                  padding: '0.65rem 1.5rem',
-                  borderRadius: '50px',
-                  border: 'none',
-                  background: '#214A4F',
-                  color: '#FCFCFC',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.05em',
-                  cursor: 'pointer',
-                }}
-              >
+              <button className={styles.sizeButton}>
                 One Size
               </button>
             </div>
@@ -348,58 +205,37 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ FINISH SELECTOR ════════════ */}
-            <div style={{ padding: '1rem 0' }}>
-              <p style={{
-                fontSize: '0.68rem',
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#214A4F',
-                marginBottom: '0.75rem',
-              }}>
+            <div className={styles.selectorSection}>
+              <p className={styles.selectorLabelWide}>
                 CHOOSE FINISH
               </p>
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+              <div className={styles.finishSwatchesRow}>
                 {woodSwatches.map((swatch) => (
-                  <div key={swatch.name} style={{ textAlign: 'center', flex: '1' }}>
+                  <div key={swatch.name} className={styles.swatchItem}>
                     <button
                       onClick={() => {
                         setActiveFinish(swatch.name);
                         const idx = finishKeys.indexOf(swatch.name);
                         if (idx !== -1) setActiveImageIndex(idx);
                       }}
+                      className={styles.swatchButton}
                       style={{
-                        width: '100%',
-                        height: '42px',
-                        borderRadius: '21px',
-                        overflow: 'hidden',
                         border: activeFinish === swatch.name ? '2px solid #214A4F' : '2px solid transparent',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        padding: 0,
-                        display: 'block',
-                        transition: 'border 0.2s ease',
                       }}
                     >
                       <img
                         src={swatch.image}
                         alt={swatch.label}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          display: 'block',
-                        }}
+                        className={styles.swatchImage}
                       />
                     </button>
-                    <p style={{
-                      fontSize: '0.65rem',
-                      color: '#214A4F',
-                      opacity: activeFinish === swatch.name ? 1 : 0.5,
-                      marginTop: '0.5rem',
-                      lineHeight: 1.2,
-                      fontWeight: activeFinish === swatch.name ? 600 : 400,
-                    }}>
+                    <p
+                      className={styles.swatchLabel}
+                      style={{
+                        opacity: activeFinish === swatch.name ? 1 : 0.5,
+                        fontWeight: activeFinish === swatch.name ? 600 : 400,
+                      }}
+                    >
                       {swatch.label.split(' ').map((word, i) => <span key={i}>{word}<br/></span>)}
                     </p>
                   </div>
@@ -410,42 +246,20 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ CUSHION FABRIC SELECTOR ════════════ */}
-            <div style={{ padding: '1rem 0' }}>
-              <p style={{
-                fontSize: '0.68rem',
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#214A4F',
-                marginBottom: '0.2rem',
-              }}>
+            <div className={styles.selectorSection}>
+              <p className={styles.selectorLabel}>
                 CHOOSE CUSHION FABRIC
               </p>
-              <p style={{
-                fontSize: '0.68rem',
-                color: '#214A4F',
-                opacity: 0.5,
-                marginBottom: '0.75rem',
-              }}>
+              <p className={styles.fabricSubtext}>
                 Select from 4 in-stock and 14 special order fabrics
               </p>
 
               {/* Fabric strip using textures.png image */}
-              <div style={{
-                width: '100%',
-                height: '42px',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-              }}>
+              <div className={styles.fabricStrip}>
                 <img
                   src="/textures.png"
                   alt="Fabric textures"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
+                  className={styles.fabricStripImage}
                 />
               </div>
             </div>
@@ -453,26 +267,11 @@ export default function ProductPageClient({ product }: { product: ProductData })
             <Divider />
 
             {/* ════════════ VIEW IN 3D & AR ════════════ */}
-            <div style={{ padding: '1rem 0 0.5rem 0', marginTop: 'auto' }}>
+            <div className={styles.ctaSection}>
               <motion.button
                 whileHover={{ backgroundColor: 'rgba(33,74,79,0.04)' }}
                 transition={{ duration: 0.2 }}
-                style={{
-                  width: '100%',
-                  padding: '0.8rem 1.25rem',
-                  backgroundColor: 'transparent',
-                  color: '#214A4F',
-                  border: '1.5px solid rgba(33,74,79,0.2)',
-                  borderRadius: '50px',
-                  fontSize: '0.68rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
+                className={styles.viewArButton}
               >
                 <span>VIEW PRODUCT IN 3D & AR</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2" strokeLinecap="round">
@@ -487,21 +286,18 @@ export default function ProductPageClient({ product }: { product: ProductData })
               <motion.button
                 whileHover={{ backgroundColor: '#18363A' }}
                 transition={{ duration: 0.2 }}
-                style={{
-                  width: '100%',
-                  padding: '0.85rem 1.25rem',
-                  backgroundColor: '#214A4F',
-                  color: '#FCFCFC',
-                  border: 'none',
-                  borderRadius: '50px',
-                  fontSize: '0.68rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
+                className={styles.addToCartButton}
+                onClick={() => {
+                  const finishLabel = woodSwatches.find(s => s.name === activeFinish)?.label || activeFinish;
+                  const fabricLabel = fabricSwatches.find(s => s.name === activeFabric)?.label || activeFabric;
+                  addToCart({
+                    slug: product.slug,
+                    name: product.name,
+                    price: product.price,
+                    image: product.galleryImages[activeImageIndex] || product.galleryImages[0],
+                    finish: finishLabel,
+                    fabric: fabricLabel,
+                  });
                 }}
               >
                 <span>ADD TO CART</span>
@@ -521,35 +317,13 @@ export default function ProductPageClient({ product }: { product: ProductData })
       {/* ═══════════════════════════════════════════════════════
           BELOW IMAGE SECTIONS (About, Dimensions, Care, Related)
           ═══════════════════════════════════════════════════════ */}
-      <div style={{
-        marginTop: '100vh',
-        backgroundColor: '#FCFCFC',
-        position: 'relative',
-        zIndex: 5,
-      }}>
+      <div className={styles.belowImageContent}>
         {/* ════════════ ABOUT PRODUCT ════════════ */}
-        <div style={{
-          padding: '5rem 4rem',
-          maxWidth: '900px',
-          margin: '0 auto',
-        }}>
-          <h2 style={{
-            fontFamily: 'Georgia, "Times New Roman", serif',
-            fontSize: 'clamp(2rem, 4vw, 3rem)',
-            fontWeight: 300,
-            color: '#214A4F',
-            marginBottom: '2rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-          }}>
+        <div className={styles.aboutSection}>
+          <h2 className={styles.sectionTitle}>
             Σχετικά με {product.name}
           </h2>
-          <p style={{
-            fontSize: '1.1rem',
-            color: '#214A4F',
-            opacity: 0.7,
-            lineHeight: 2,
-          }}>
+          <p className={styles.sectionText}>
             {product.description}
           </p>
         </div>
@@ -557,29 +331,18 @@ export default function ProductPageClient({ product }: { product: ProductData })
         <Divider />
 
         {/* ════════════ DIMENSIONS ════════════ */}
-        <div style={{
-          padding: '4rem',
-          maxWidth: '900px',
-          margin: '0 auto',
-        }}>
-          <h3 style={{
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: '#214A4F',
-            marginBottom: '2rem',
-          }}>
+        <div className={styles.contentSection}>
+          <h3 className={styles.subSectionTitle}>
             Διαστάσεις
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+          <div className={styles.twoColumnGrid}>
             <div>
-              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Μικρό</p>
-              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>85cm Μ × 50cm Π × 29cm Υ<br />Βάρος: 15kg</p>
+              <p className={styles.dimLabel}>Μικρό</p>
+              <p className={styles.dimValue}>85cm Μ × 50cm Π × 29cm Υ<br />Βάρος: 15kg</p>
             </div>
             <div>
-              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Μεγάλο</p>
-              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>123cm Μ × 50cm Π × 43cm Υ<br />Βάρος: 23kg</p>
+              <p className={styles.dimLabel}>Μεγάλο</p>
+              <p className={styles.dimValue}>123cm Μ × 50cm Π × 43cm Υ<br />Βάρος: 23kg</p>
             </div>
           </div>
         </div>
@@ -587,31 +350,20 @@ export default function ProductPageClient({ product }: { product: ProductData })
         <Divider />
 
         {/* ════════════ CARE INSTRUCTIONS ════════════ */}
-        <div style={{
-          padding: '4rem',
-          maxWidth: '900px',
-          margin: '0 auto',
-        }}>
-          <h3 style={{
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: '#214A4F',
-            marginBottom: '2rem',
-          }}>
+        <div className={styles.contentSection}>
+          <h3 className={styles.subSectionTitle}>
             Οδηγίες φροντίδας
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2rem' }}>
+          <div className={styles.twoColumnGrid}>
             <div>
-              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Γενική συντήρηση</p>
-              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>
+              <p className={styles.dimLabel}>Γενική συντήρηση</p>
+              <p className={styles.dimValue}>
                 Σκουπίστε με μαλακό πανί μικροϊνών για να αφαιρέσετε τη σκόνη. Αποφύγετε την έκθεση σε άμεσο ηλιακό φως.
               </p>
             </div>
             <div>
-              <p style={{ fontWeight: 600, color: '#214A4F', marginBottom: '0.5rem' }}>Καθαρισμός υφασμάτων</p>
-              <p style={{ color: '#214A4F', opacity: 0.6, lineHeight: 1.8 }}>
+              <p className={styles.dimLabel}>Καθαρισμός υφασμάτων</p>
+              <p className={styles.dimValue}>
                 Τα καλύμματα αφαιρούνται και πλένονται στο πλυντήριο στους 30°C.
               </p>
             </div>
@@ -621,51 +373,27 @@ export default function ProductPageClient({ product }: { product: ProductData })
         <Divider />
 
         {/* ════════════ YOU MIGHT ALSO LIKE ════════════ */}
-        <div style={{
-          padding: '4rem',
-          maxWidth: '1200px',
-          margin: '0 auto',
-        }}>
-          <h3 style={{
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: '#214A4F',
-            marginBottom: '2.5rem',
-          }}>
+        <div className={styles.relatedSection}>
+          <h3 className={styles.subSectionTitle}>
             Μπορεί να σας αρέσει επίσης
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+          <div className={styles.threeColumnGrid}>
             {[
               { name: 'PHANTIGO', slug: 'phantigo', image: '/armchairs1.png' },
               { name: 'VIOLET', slug: 'violet', image: '/sofas.png' },
               { name: 'MAXIMILLIAN', slug: 'maximillian', image: '/dining-tables1.png' },
               { name: 'HUXTON', slug: 'huxton', image: '/wardrobes.png' },
             ].filter(p => p.slug !== product.slug).slice(0, 3).map(p => (
-              <a key={p.slug} href={`/product/${p.slug}`} style={{ textDecoration: 'none' }}>
-                <div style={{
-                  aspectRatio: '4/3',
-                  overflow: 'hidden',
-                  borderRadius: '4px',
-                  backgroundColor: '#EDEBE8',
-                  marginBottom: '1rem',
-                }}>
+              <a key={p.slug} href={`/product/${p.slug}`} className={styles.relatedLink}>
+                <div className={styles.relatedImageWrap}>
                   <img
                     src={p.image}
                     alt={p.name}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      transition: 'transform 0.6s ease',
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
+                    className={styles.relatedImage}
                   />
                 </div>
-                <p style={{ fontSize: '0.9rem', fontWeight: 600, color: '#214A4F', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>{p.name}</p>
-                <p style={{ fontSize: '0.75rem', color: '#214A4F', opacity: 0.5, textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                <p className={styles.relatedName}>{p.name}</p>
+                <p className={styles.relatedViewText}>
                   Προβολή
                 </p>
               </a>
@@ -674,7 +402,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
         </div>
 
         {/* Footer spacing */}
-        <div style={{ height: '4rem' }} />
+        <div className={styles.footerSpacer} />
       </div>
     </div>
   );
@@ -685,27 +413,12 @@ function CollapsibleSection({ title, children }: { title: string; children: Reac
   const [open, setOpen] = useState(false);
 
   return (
-    <div style={{ padding: '1.5rem 0' }}>
+    <div className={styles.collapsibleSection}>
       <button
         onClick={() => setOpen(!open)}
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: 0,
-          color: '#214A4F',
-        }}
+        className={styles.collapsibleButton}
       >
-        <span style={{
-          fontSize: '0.7rem',
-          fontWeight: 700,
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-        }}>
+        <span className={styles.collapsibleTitle}>
           {title}
         </span>
         <svg
@@ -716,12 +429,11 @@ function CollapsibleSection({ title, children }: { title: string; children: Reac
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </button>
-      <div style={{
-        maxHeight: open ? '600px' : '0',
-        overflow: 'hidden',
-        transition: 'max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-      }}>
-        <div style={{ paddingTop: '1rem' }}>
+      <div
+        className={styles.collapsibleContent}
+        style={{ maxHeight: open ? '600px' : '0' }}
+      >
+        <div className={styles.collapsibleInner}>
           {children}
         </div>
       </div>
