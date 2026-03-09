@@ -12,6 +12,12 @@ const narrenschiff = localFont({
   variable: '--font-narrenschiff',
 });
 
+const dihjauti = localFont({
+  src: [{ path: '../../public/fonts/Dihjauti-Bold.otf', weight: '700', style: 'normal' }],
+  display: 'swap',
+  variable: '--font-dihjauti',
+});
+
 export default function CartPageClient() {
   const router = useRouter();
   const { cart, removeFromCart, updateQuantity, toggleFavorite, isFavorite } = useStore();
@@ -56,7 +62,7 @@ export default function CartPageClient() {
             <p className={styles.emptyText}>
               Ανακαλύψτε τη συλλογή μας και προσθέστε τα αγαπημένα σας κομμάτια στο καλάθι.
             </p>
-            <a href="/" className={styles.ctaLink} onClick={(e) => { e.preventDefault(); router.push('/'); }}>
+            <a href="/" className={`${dihjauti.className} ${styles.ctaLink}`} onClick={(e) => { e.preventDefault(); router.push('/'); }}>
               <span>Εξερευνήστε τη Συλλογή</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />
@@ -70,8 +76,8 @@ export default function CartPageClient() {
         <section className={styles.cartSection}>
           {/* Column headers */}
           <div className={styles.columnHeaders}>
-            <span className={styles.colLabel}>ΣΤΟ ΚΑΛΑΘΙ</span>
-            <span className={styles.colLabel}>ΤΙΜΗ</span>
+            <span className={`${dihjauti.className} ${styles.colLabel}`}>ΣΤΟ ΚΑΛΑΘΙ</span>
+            <span className={`${dihjauti.className} ${styles.colLabel}`}>ΤΙΜΗ</span>
           </div>
 
           {/* Separator */}
@@ -108,9 +114,9 @@ export default function CartPageClient() {
                 {/* Variation details */}
                 <div className={styles.variationGrid}>
                   <span className={styles.varLabel}>Φινίρισμα</span>
-                  <span className={styles.varValue}>{item.finish.toUpperCase()}</span>
+                  <span className={`${dihjauti.className} ${styles.varValue}`}>{item.finish.toUpperCase()}</span>
                   <span className={styles.varLabel}>Ύφασμα</span>
-                  <span className={styles.varValue}>{item.fabric.toUpperCase()}</span>
+                  <span className={`${dihjauti.className} ${styles.varValue}`}>{item.fabric.toUpperCase()}</span>
                   <span className={styles.varLabel}>Ποσότητα</span>
                   <div className={styles.quantityControls}>
                     <button
@@ -147,7 +153,7 @@ export default function CartPageClient() {
 
               {/* Price + Remove */}
               <div className={styles.itemRight}>
-                <span className={styles.itemPrice}>
+                <span className={`${dihjauti.className} ${styles.itemPrice}`}>
                   &euro; {item.price}
                 </span>
                 <button
@@ -175,14 +181,14 @@ export default function CartPageClient() {
             </div>
             <div className={styles.summaryRight}>
               <div className={styles.subtotalRow}>
-                <span className={styles.subtotalLabel}>ΣΥΝΟΛΟ:</span>
-                <span className={styles.subtotalValue}>&euro; {formatPrice(subtotal)}</span>
+                <span className={`${dihjauti.className} ${styles.subtotalLabel}`}>ΣΥΝΟΛΟ:</span>
+                <span className={`${dihjauti.className} ${styles.subtotalValue}`}>&euro; {formatPrice(subtotal)}</span>
               </div>
               <p className={styles.shippingNote}>
                 Τα έξοδα αποστολής υπολογίζονται κατά την ολοκλήρωση
               </p>
               <button
-                className={styles.checkoutBtn}
+                className={`${dihjauti.className} ${styles.checkoutBtn}`}
                 onClick={() => {/* checkout logic */}}
               >
                 <span>Ολοκλήρωση Παραγγελίας</span>
