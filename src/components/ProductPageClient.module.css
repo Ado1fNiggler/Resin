@@ -9,7 +9,7 @@
 
 .heroSection {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 /* ── Gallery ── */
@@ -328,7 +328,6 @@
 
 /* ── Below Image Sections ── */
 .belowImageContent {
-  margin-top: 100vh;
   background-color: #FCFCFC;
   position: relative;
   z-index: 5;
