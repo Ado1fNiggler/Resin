@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import localFont from 'next/font/local';
+import { GlassButton } from '@/components/ui/glass-button';
 
 const dihjauti = localFont({
   src: [
@@ -175,7 +176,7 @@ export default function HeroSection() {
         </motion.p>
       </div>
 
-      {/* CTA Button - Bottom Right with pill shape */}
+      {/* CTA Button - Bottom Right with Liquid Glass Effect */}
       <motion.div
         style={{
           position: 'absolute',
@@ -187,37 +188,22 @@ export default function HeroSection() {
         animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.8, delay: 1.6 }}
       >
-        <motion.a
-          href="#products"
-          style={{
-            position: 'relative',
-            display: 'inline-block',
-            padding: '12px 28px',
-            color: '#fff',
-            fontWeight: 500,
-            borderRadius: '9999px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            fontSize: '11px',
-            overflow: 'hidden',
-            border: '1px solid rgba(255,255,255,0.3)',
-            cursor: 'pointer',
-            textDecoration: 'none',
-            backgroundColor: '#214A4F',
-          }}
-          whileHover={{ scale: 1.03, backgroundColor: '#2a5f65' }}
-          whileTap={{ scale: 0.97 }}
-          transition={{ duration: 0.3 }}
-          onClick={(e) => {
-            e.preventDefault();
+        <GlassButton
+          size="default"
+          contentClassName="flex items-center gap-3 uppercase tracking-widest text-xs font-semibold"
+          onClick={() => {
             const target = document.getElementById('products');
             if (!target) return;
             const targetY = target.getBoundingClientRect().top + window.scrollY - 40;
             window.scrollTo({ top: targetY, behavior: 'smooth' });
           }}
         >
-          Ανακαλύψτε τη συλλογή μας
-        </motion.a>
+          <span className={dihjauti.className}>Ανακαλύψτε τη συλλογή μας</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </GlassButton>
       </motion.div>
 
       {/* Image Indicators - Progress bar style */}

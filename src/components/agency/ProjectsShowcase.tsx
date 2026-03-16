@@ -1,15 +1,16 @@
 'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 
 const projects = [
   {
-    id: 'resin',
+    id: 'rooof-luxury',
     title: 'Resin — Luxury Furniture',
     description: 'A premium luxury furniture e-commerce experience with stunning parallax animations, Ken Burns hero effects, and sophisticated product showcases. Built with Next.js 16 and Framer Motion.',
     tags: ['Next.js', 'React 19', 'Tailwind CSS', 'Framer Motion', 'E-Commerce'],
     gradient: 'from-[#214A4F] to-[#7EC0C9]',
-    link: '/projects/resin',
+    link: '/projects/rooof-luxury',
     stats: { pages: '6+', animations: '20+', components: '11' },
     image: '/heroimage1.png',
   },

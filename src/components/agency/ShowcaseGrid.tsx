@@ -1,15 +1,16 @@
 'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const projects = [
   {
-    id: 'resin',
-    title: 'Resin Luxury Furniture',
+    id: 'rooof',
+    title: 'ROOOF Luxury Furniture',
     description: 'Premium furniture e-commerce experience',
     tags: ['Next.js', 'React 19', 'Framer Motion'],
     screenshot: '/heroimage1.png',
-    link: '/projects/resin',
+    link: '/projects/rooof-luxury',
   },
   {
     id: 'spiti365',
@@ -97,6 +98,7 @@ function CardContent({ project }: { project: typeof projects[0] }) {
           </div>
         )}
       </div>
+
       {/* Card info */}
       <div className="p-5 border-t border-white/[0.06]">
         <h3 className="text-white font-semibold mb-1 group-hover:text-sky-100 transition-colors">
