@@ -2,9 +2,23 @@
 
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import localFont from 'next/font/local';
 import type { ProductData } from '@/data/products';
 import { useStore } from '@/context/StoreContext';
 import styles from './ProductPageClient.module.css';
+
+/* ── Custom Fonts ── */
+const narrenschiff = localFont({
+  src: [{ path: '../../public/fonts/Narrenschiff-Regular.otf', weight: '400', style: 'normal' }],
+  display: 'swap',
+  variable: '--font-narrenschiff',
+});
+
+const dihjauti = localFont({
+  src: [{ path: '../../public/fonts/Dihjauti-Bold.otf', weight: '700', style: 'normal' }],
+  display: 'swap',
+  variable: '--font-dihjauti',
+});
 
 /* ── Wood finish swatches ── */
 const woodSwatches = [
@@ -84,8 +98,8 @@ export default function ProductPageClient({ product }: { product: ProductData })
               />
             </AnimatePresence>
 
-            {/* Caption at bottom center - above controls */}
-            <div className={styles.caption}>
+            {/* Caption at bottom center */}
+            <div className={`${dihjauti.className} ${styles.caption}`}>
               {currentSizeLabel} in {currentFinishLabel}, {currentFabricLabel} Cushion
             </div>
 
@@ -98,7 +112,6 @@ export default function ProductPageClient({ product }: { product: ProductData })
                     <polyline points="15 18 9 12 15 6" />
                   </svg>
                 </button>
-
                 <button onClick={nextImage} className={styles.roundButton}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2.5" strokeLinecap="round">
                     <polyline points="9 18 15 12 9 6" />
@@ -146,7 +159,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
             {/* ── Header: Title + Favorite ── */}
             <div className={styles.cardHeader}>
-              <h1 className={styles.productTitle}>
+              <h1 className={`${narrenschiff.className} ${styles.productTitle}`}>
                 {product.name}
               </h1>
               <button
@@ -169,17 +182,17 @@ export default function ProductPageClient({ product }: { product: ProductData })
             </div>
 
             {/* ── Subtitle ── */}
-            <p className={styles.subtitle}>
+            <p className={`${dihjauti.className} ${styles.subtitle}`}>
               {product.slug === 'custom-orders' ? 'ΕΙΔΙΚΗ ΠΑΡΑΓΓΕΛΙΑ' : 'ΕΠΙΠΛΟ'}
             </p>
 
             {/* ── Price + Rating ── */}
             <div className={styles.priceRow}>
-              <p className={styles.price}>
-                € {product.price}
+              <p className={`${dihjauti.className} ${styles.price}`}>
+                &euro; {product.price}
               </p>
               <div className={styles.ratingWrap}>
-                <span className={styles.ratingNumber}>5</span>
+                <span className={`${dihjauti.className} ${styles.ratingNumber}`}>5</span>
                 <div className={styles.starsRow}>
                   {[1,2,3,4,5].map(i => (
                     <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#214A4F" stroke="none">
@@ -194,10 +207,10 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
             {/* ════════════ SIZE SELECTOR ════════════ */}
             <div className={styles.selectorSection}>
-              <p className={styles.selectorLabel}>
+              <p className={`${dihjauti.className} ${styles.selectorLabel}`}>
                 CHOOSE SIZE
               </p>
-              <button className={styles.sizeButton}>
+              <button className={`${dihjauti.className} ${styles.sizeButton}`}>
                 One Size
               </button>
             </div>
@@ -206,7 +219,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
             {/* ════════════ FINISH SELECTOR ════════════ */}
             <div className={styles.selectorSection}>
-              <p className={styles.selectorLabelWide}>
+              <p className={`${dihjauti.className} ${styles.selectorLabel}`}>
                 CHOOSE FINISH
               </p>
               <div className={styles.finishSwatchesRow}>
@@ -230,10 +243,10 @@ export default function ProductPageClient({ product }: { product: ProductData })
                       />
                     </button>
                     <p
-                      className={styles.swatchLabel}
+                      className={`${dihjauti.className} ${styles.swatchLabel}`}
                       style={{
                         opacity: activeFinish === swatch.name ? 1 : 0.5,
-                        fontWeight: activeFinish === swatch.name ? 600 : 400,
+                        fontWeight: activeFinish === swatch.name ? 700 : 400,
                       }}
                     >
                       {swatch.label.split(' ').map((word, i) => <span key={i}>{word}<br/></span>)}
@@ -247,14 +260,14 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
             {/* ════════════ CUSHION FABRIC SELECTOR ════════════ */}
             <div className={styles.selectorSection}>
-              <p className={styles.selectorLabel}>
+              <p className={`${dihjauti.className} ${styles.selectorLabel}`}>
                 CHOOSE CUSHION FABRIC
               </p>
               <p className={styles.fabricSubtext}>
                 Select from 4 in-stock and 14 special order fabrics
               </p>
 
-              {/* Fabric strip using textures.png image */}
+              {/* Fabric strip */}
               <div className={styles.fabricStrip}>
                 <img
                   src="/textures.png"
@@ -271,7 +284,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
               <motion.button
                 whileHover={{ backgroundColor: 'rgba(33,74,79,0.04)' }}
                 transition={{ duration: 0.2 }}
-                className={styles.viewArButton}
+                className={`${dihjauti.className} ${styles.viewArButton}`}
               >
                 <span>VIEW PRODUCT IN 3D & AR</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="2" strokeLinecap="round">
@@ -286,7 +299,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
               <motion.button
                 whileHover={{ backgroundColor: '#18363A' }}
                 transition={{ duration: 0.2 }}
-                className={styles.addToCartButton}
+                className={`${dihjauti.className} ${styles.addToCartButton}`}
                 onClick={() => {
                   const finishLabel = woodSwatches.find(s => s.name === activeFinish)?.label || activeFinish;
                   const fabricLabel = fabricSwatches.find(s => s.name === activeFabric)?.label || activeFabric;
@@ -320,7 +333,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
       <div className={styles.belowImageContent}>
         {/* ════════════ ABOUT PRODUCT ════════════ */}
         <div className={styles.aboutSection}>
-          <h2 className={styles.sectionTitle}>
+          <h2 className={`${narrenschiff.className} ${styles.sectionTitle}`}>
             Σχετικά με {product.name}
           </h2>
           <p className={styles.sectionText}>
@@ -332,17 +345,17 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
         {/* ════════════ DIMENSIONS ════════════ */}
         <div className={styles.contentSection}>
-          <h3 className={styles.subSectionTitle}>
+          <h3 className={`${dihjauti.className} ${styles.subSectionTitle}`}>
             Διαστάσεις
           </h3>
           <div className={styles.twoColumnGrid}>
             <div>
-              <p className={styles.dimLabel}>Μικρό</p>
-              <p className={styles.dimValue}>85cm Μ × 50cm Π × 29cm Υ<br />Βάρος: 15kg</p>
+              <p className={`${dihjauti.className} ${styles.dimLabel}`}>Μικρό</p>
+              <p className={styles.dimValue}>85cm Μ &times; 50cm Π &times; 29cm Υ<br />Βάρος: 15kg</p>
             </div>
             <div>
-              <p className={styles.dimLabel}>Μεγάλο</p>
-              <p className={styles.dimValue}>123cm Μ × 50cm Π × 43cm Υ<br />Βάρος: 23kg</p>
+              <p className={`${dihjauti.className} ${styles.dimLabel}`}>Μεγάλο</p>
+              <p className={styles.dimValue}>123cm Μ &times; 50cm Π &times; 43cm Υ<br />Βάρος: 23kg</p>
             </div>
           </div>
         </div>
@@ -351,20 +364,20 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
         {/* ════════════ CARE INSTRUCTIONS ════════════ */}
         <div className={styles.contentSection}>
-          <h3 className={styles.subSectionTitle}>
+          <h3 className={`${dihjauti.className} ${styles.subSectionTitle}`}>
             Οδηγίες φροντίδας
           </h3>
           <div className={styles.twoColumnGrid}>
             <div>
-              <p className={styles.dimLabel}>Γενική συντήρηση</p>
+              <p className={`${dihjauti.className} ${styles.dimLabel}`}>Γενική συντήρηση</p>
               <p className={styles.dimValue}>
                 Σκουπίστε με μαλακό πανί μικροϊνών για να αφαιρέσετε τη σκόνη. Αποφύγετε την έκθεση σε άμεσο ηλιακό φως.
               </p>
             </div>
             <div>
-              <p className={styles.dimLabel}>Καθαρισμός υφασμάτων</p>
+              <p className={`${dihjauti.className} ${styles.dimLabel}`}>Καθαρισμός υφασμάτων</p>
               <p className={styles.dimValue}>
-                Τα καλύμματα αφαιρούνται και πλένονται στο πλυντήριο στους 30°C.
+                Τα καλύμματα αφαιρούνται και πλένονται στο πλυντήριο στους 30&deg;C.
               </p>
             </div>
           </div>
@@ -374,7 +387,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
         {/* ════════════ YOU MIGHT ALSO LIKE ════════════ */}
         <div className={styles.relatedSection}>
-          <h3 className={styles.subSectionTitle}>
+          <h3 className={`${dihjauti.className} ${styles.subSectionTitle}`}>
             Μπορεί να σας αρέσει επίσης
           </h3>
           <div className={styles.threeColumnGrid}>
@@ -392,7 +405,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
                     className={styles.relatedImage}
                   />
                 </div>
-                <p className={styles.relatedName}>{p.name}</p>
+                <p className={`${dihjauti.className} ${styles.relatedName}`}>{p.name}</p>
                 <p className={styles.relatedViewText}>
                   Προβολή
                 </p>
