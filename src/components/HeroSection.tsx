@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 import localFont from 'next/font/local';
 import { GlassButton } from '@/components/ui/glass-button';
 
@@ -17,26 +17,7 @@ const dihjauti = localFont({
   variable: '--font-dihjauti',
 });
 
-const narrenschiff = localFont({
-  src: [
-    {
-      path: '../../public/fonts/Narrenschiff-Regular.otf',
-      weight: '400',
-      style: 'normal',
-    },
-  ],
-  display: 'swap',
-  variable: '--font-narrenschiff',
-});
-
-const heroImages = [
-  '/heroimage1.png',
-  '/heroimage2.png',
-  '/heroimage3.png',
-  '/heroimage4.png',
-];
-
-// Word-by-word reveal animation like resin.gr
+// Word-by-word reveal animation
 const heroTitle = 'Πολυτελή έπιπλα για την οικία σας';
 const heroWords = heroTitle.split(' ');
 
@@ -55,198 +36,218 @@ const wordVariants = {
 };
 
 export default function HeroSection() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loaderDone, setLoaderDone] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Scroll progress over the tall scroll container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // Fade out text & CTA as user scrolls into video territory
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 0.25], [0, -30]);
+
+  // Video darkens slightly as it plays deeper
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.35, 0.45, 0.6]);
+
+  // Drive video playback from scroll
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const unsubscribe = scrollYProgress.on('change', (v) => {
+      if (video.duration && isFinite(video.duration)) {
+        video.currentTime = v * video.duration;
+      }
+    });
+
+    return unsubscribe;
+  }, [scrollYProgress]);
 
   useEffect(() => {
-    // Wait for PageLoader to finish (2.2s loading + 0.6s fade out)
     const loaderTimer = setTimeout(() => setLoaderDone(true), 2800);
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 10000);
-    return () => {
-      clearTimeout(loaderTimer);
-      clearInterval(interval);
-    };
+    return () => clearTimeout(loaderTimer);
   }, []);
 
   return (
-    <section style={{
-      position: 'relative',
-      height: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden',
-    }}>
-      {/* Background Image Carousel - Cross-fade with subtle Ken Burns zoom */}
-      <div style={{ position: 'absolute', inset: 0 }}>
-        <AnimatePresence mode="sync">
-          {heroImages.map((image, index) => (
-            <motion.div
-              key={image}
-              style={{ position: 'absolute', inset: 0 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
-              transition={{ duration: 1.8, ease: 'easeInOut' }}
-            >
-              <motion.div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  backgroundImage: `url(${image})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-                animate={{ scale: index === currentImageIndex ? 1.05 : 1 }}
-                transition={{ duration: 10, ease: 'linear' }}
-              />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-
-        {/* Gradient overlay - darker at bottom for text readability */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1))',
-        }} />
-      </div>
-
-      {/* Content - Bottom Left: Word-by-word slide-up reveal */}
-      <div
+    // Tall scroll container — gives 300vh of scroll travel
+    <div ref={containerRef} style={{ height: '300vh' }}>
+      {/* Sticky viewport — stays fixed while container scrolls */}
+      <section
         style={{
-          position: 'absolute',
-          bottom: '80px',
-          left: '100px',
-          zIndex: 10,
-          color: '#fff',
-          maxWidth: '768px',
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          overflow: 'hidden',
         }}
       >
-        <h1
-          className={dihjauti.className}
+        {/* Scroll-driven video background */}
+        <video
+          ref={videoRef}
+          src="/hero-video.mp4"
+          muted
+          playsInline
+          preload="auto"
           style={{
-            fontSize: '90px',
-            fontWeight: 300,
-            letterSpacing: '-0.02em',
-            marginBottom: '20px',
-            textShadow: '1px 1px 6px rgba(0, 0, 0, 0.3)',
-            lineHeight: 1.05,
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+        />
+
+        {/* Gradient overlay */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1))',
+            opacity: overlayOpacity,
+          }}
+        />
+
+        {/* Content — fades out as user scrolls */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: contentOpacity,
+            y: contentY,
           }}
         >
-          {heroWords.map((word, i) => (
-            <span
-              key={i}
+          {/* Bottom Left: Word-by-word slide-up title */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '80px',
+              left: '100px',
+              color: '#fff',
+              maxWidth: '768px',
+            }}
+          >
+            <h1
+              className={dihjauti.className}
               style={{
-                display: 'inline-block',
-                overflow: 'hidden',
-                marginRight: '0.28em',
-                verticalAlign: 'bottom',
+                fontSize: '90px',
+                fontWeight: 300,
+                letterSpacing: '-0.02em',
+                marginBottom: '20px',
+                textShadow: '1px 1px 6px rgba(0, 0, 0, 0.3)',
+                lineHeight: 1.05,
               }}
             >
-              <motion.span
-                style={{ display: 'inline-block' }}
-                custom={i}
-                initial="hidden"
-                animate={loaderDone ? 'visible' : 'hidden'}
-                variants={wordVariants}
-              >
-                {word}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+              {heroWords.map((word, i) => (
+                <span
+                  key={i}
+                  style={{
+                    display: 'inline-block',
+                    overflow: 'hidden',
+                    marginRight: '0.28em',
+                    verticalAlign: 'bottom',
+                  }}
+                >
+                  <motion.span
+                    style={{ display: 'inline-block' }}
+                    custom={i}
+                    initial="hidden"
+                    animate={loaderDone ? 'visible' : 'hidden'}
+                    variants={wordVariants}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
 
-        <motion.p
-          style={{
-            fontSize: '16px',
-            letterSpacing: '0.12em',
-            lineHeight: 1.6,
-            textTransform: 'uppercase',
-            fontWeight: 500,
-            textShadow: '1px 1px 3px rgba(0, 0, 0, 0.3)',
-            fontFamily: '"Helvetica Neue", "Arial", sans-serif',
-          }}
-          initial={{ opacity: 0, y: 15 }}
-          animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-          transition={{ duration: 0.7, delay: 1.2, ease: 'easeOut' }}
-        >
-          Η αγάπη για το σπίτι σας δεν χωράει συμβιβασμούς στην αισθητική
-        </motion.p>
-      </div>
+            <motion.p
+              style={{
+                fontSize: '16px',
+                letterSpacing: '0.12em',
+                lineHeight: 1.6,
+                textTransform: 'uppercase',
+                fontWeight: 500,
+                textShadow: '1px 1px 3px rgba(0, 0, 0, 0.3)',
+                fontFamily: '"Helvetica Neue", "Arial", sans-serif',
+                color: '#fff',
+              }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+              transition={{ duration: 0.7, delay: 1.2, ease: 'easeOut' }}
+            >
+              Η αγάπη για το σπίτι σας δεν χωράει συμβιβασμούς στην αισθητική
+            </motion.p>
+          </div>
 
-      {/* CTA Button - Bottom Right with Liquid Glass Effect */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          bottom: '64px',
-          right: '100px',
-          zIndex: 10,
-        }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.8, delay: 1.6 }}
-      >
-        <GlassButton
-          size="default"
-          contentClassName="flex items-center gap-3 uppercase tracking-widest text-xs font-semibold"
-          onClick={() => {
-            const target = document.getElementById('products');
-            if (!target) return;
-            const targetY = target.getBoundingClientRect().top + window.scrollY - 40;
-            window.scrollTo({ top: targetY, behavior: 'smooth' });
-          }}
-        >
-          <span className={dihjauti.className}>Ανακαλύψτε τη συλλογή μας</span>
-        </GlassButton>
-      </motion.div>
-
-      {/* Image Indicators - Progress bar style */}
-      <div style={{
-        position: 'absolute',
-        bottom: '24px',
-        right: '100px',
-        zIndex: 10,
-        display: 'flex',
-        gap: '8px',
-        alignItems: 'center',
-      }}>
-        {heroImages.map((_, index) => (
-          <motion.button
-            key={index}
+          {/* CTA Button - Bottom Right */}
+          <motion.div
             style={{
-              position: 'relative',
-              height: '3px',
-              borderRadius: '9999px',
-              overflow: 'hidden',
-              cursor: 'pointer',
-              backgroundColor: 'rgba(255,255,255,0.3)',
-              border: 'none',
-              padding: 0,
+              position: 'absolute',
+              bottom: '64px',
+              right: '100px',
             }}
-            animate={{ width: index === currentImageIndex ? 40 : 8 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            onClick={() => setCurrentImageIndex(index)}
+            initial={{ opacity: 0, y: 20 }}
+            animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 1.6 }}
           >
-            {index === currentImageIndex && (
-              <motion.div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundColor: '#fff',
-                  borderRadius: '9999px',
-                  transformOrigin: 'left',
-                }}
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 10, ease: 'linear' }}
-                key={`progress-${currentImageIndex}`}
-              />
-            )}
-          </motion.button>
-        ))}
-      </div>
-    </section>
+            <GlassButton
+              size="default"
+              contentClassName="flex items-center gap-3 uppercase tracking-widest text-xs font-semibold"
+              onClick={() => {
+                const target = document.getElementById('products');
+                if (!target) return;
+                const targetY = target.getBoundingClientRect().top + window.scrollY - 40;
+                window.scrollTo({ top: targetY, behavior: 'smooth' });
+              }}
+            >
+              <span className={dihjauti.className}>Ανακαλύψτε τη συλλογή μας</span>
+            </GlassButton>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll hint — appears after loader, fades with scroll */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            bottom: '28px',
+            left: '50%',
+            x: '-50%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '6px',
+            opacity: contentOpacity,
+          }}
+          initial={{ opacity: 0 }}
+          animate={loaderDone ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.8, delay: 2.2 }}
+        >
+          <span
+            className={dihjauti.className}
+            style={{
+              color: 'rgba(255,255,255,0.55)',
+              fontSize: '10px',
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Scroll
+          </span>
+          <motion.div
+            style={{
+              width: '1px',
+              height: '40px',
+              background: 'linear-gradient(to bottom, rgba(255,255,255,0.55), transparent)',
+            }}
+            animate={{ scaleY: [1, 0.3, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
+      </section>
+    </div>
   );
 }
