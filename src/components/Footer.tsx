@@ -26,6 +26,10 @@ const linkMap: Record<string, string> = {
   'Αποθηκευτικοί χώροι': '/category/storage',
   'Ειδικές παραγγελίες': '/category/custom-orders',
   'Συχνές ερωτήσεις': '/faq',
+  'Αποστολή & Παράδοση': '/shipping-info',
+  'Επιστροφές & Ανταλλαγές': '/returns',
+  'Πολιτική απορρήτου': '/privacy',
+  'Όροι & Προϋποθέσεις': '/terms',
 };
 
 const footerColumns = [

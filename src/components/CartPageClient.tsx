@@ -243,7 +243,7 @@ export default function CartPageClient() {
               </p>
               <motion.button
                 className={`${dihjauti.className} ${styles.checkoutBtn}`}
-                onClick={() => {/* checkout logic */}}
+                onClick={() => router.push('/checkout')}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.3 + cart.length * 0.15, ease: slowEase }}

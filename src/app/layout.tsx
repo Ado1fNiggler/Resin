@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { StoreProvider } from '@/context/StoreContext';
+import CookieBanner from '@/components/legal/CookieBanner';
+import { OrganizationStructuredData } from '@/components/seo/StructuredData';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -16,7 +18,9 @@ export default function RootLayout({
     <html lang="el">
       <body className="antialiased">
         <StoreProvider>
+          <OrganizationStructuredData />
           {children}
+          <CookieBanner />
         </StoreProvider>
       </body>
     </html>
