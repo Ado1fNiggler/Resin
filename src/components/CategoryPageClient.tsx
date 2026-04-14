@@ -20,8 +20,8 @@ const narrenschiff = localFont({
 
 const woodSwatches = [
   { name: 'natural-oak', label: 'Natural Oak', image: '/wood1.png' },
-  { name: 'caramel-walnut', label: 'Caramel Walnut', image: '/wood2.png' },
-  { name: 'dark-walnut', label: 'Dark Walnut', image: '/wood3.png' },
+  { name: 'caramel-walnut', label: 'Caramel Walnut', image: '/wood3.png' },
+  { name: 'dark-walnut', label: 'Dark Walnut', image: '/wood2.png' },
 ];
 
 /* ── Individual Product Card ── */
