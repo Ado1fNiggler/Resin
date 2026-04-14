@@ -25,7 +25,7 @@ const woodSwatches = [
 ];
 
 /* ── Individual Product Card ── */
-function CategoryProductCard({ product, index }: { product: ProductData; index: number }) {
+function CategoryProductCard({ product, index, categorySlug }: { product: ProductData; index: number; categorySlug: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.15 });
   const [activeSwatch, setActiveSwatch] = useState(woodSwatches[0].name);
@@ -33,6 +33,7 @@ function CategoryProductCard({ product, index }: { product: ProductData; index: 
   const router = useRouter();
 
   const currentImage = product.images[activeSwatch as keyof typeof product.images] || product.galleryImages[0];
+  const imageAspectRatio = categorySlug === 'dining-tables' || categorySlug === 'storage' ? '4/3' : '1/1';
 
   return (
     <motion.div
@@ -47,7 +48,7 @@ function CategoryProductCard({ product, index }: { product: ProductData; index: 
       <div
         style={{
           position: 'relative',
-          aspectRatio: '1/1',
+          aspectRatio: imageAspectRatio,
           backgroundColor: '#E8E5E0',
           overflow: 'hidden',
           marginBottom: '16px',
@@ -363,7 +364,7 @@ export default function CategoryPageClient({
           gap: '48px',
         }}>
           {products.map((product, index) => (
-            <CategoryProductCard key={product.slug} product={product} index={index} />
+            <CategoryProductCard key={product.slug} product={product} index={index} categorySlug={category.slug} />
           ))}
         </div>
       </section>
