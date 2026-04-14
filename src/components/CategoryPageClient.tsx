@@ -32,7 +32,6 @@ function CategoryProductCard({ product, index, categorySlug }: { product: Produc
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
 
-  const currentImage = product.images[activeSwatch as keyof typeof product.images] || product.galleryImages[0];
   const imageAspectRatio = categorySlug === 'dining-tables' || categorySlug === 'storage' ? '4/3' : '1/1';
 
   return (
@@ -56,21 +55,33 @@ function CategoryProductCard({ product, index, categorySlug }: { product: Produc
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Main image */}
-        <motion.img
-          src={currentImage}
-          alt={product.name}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-          }}
-          animate={{
-            scale: isHovered ? 1.06 : 1,
-          }}
+        {/* Cross-fading swatch images */}
+        <motion.div
+          style={{ position: 'absolute', inset: 0 }}
+          animate={{ scale: isHovered ? 1.06 : 1 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        />
+        >
+          {Object.entries(product.images).map(([swatch, src]) => (
+            <motion.img
+              key={swatch}
+              src={src}
+              alt={`${product.name} - ${swatch}`}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+              initial={{ opacity: swatch === 'natural-oak' ? 1 : 0 }}
+              animate={{
+                opacity: activeSwatch === swatch && !(isHovered && product.hoverImage) ? 1 : 0,
+              }}
+              transition={{ duration: 0.45, ease: 'easeInOut' }}
+            />
+          ))}
+        </motion.div>
 
         {/* Hover image overlay */}
         {product.hoverImage && (
