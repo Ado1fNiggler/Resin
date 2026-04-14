@@ -318,12 +318,12 @@ export const allProducts: ProductData[] = [
     price: '950',
     description: 'Κορυφαία ποιότητα και διαχρονικός σχεδιασμός. Τραπεζαρία από μασίφ ξύλο που γίνεται το κεντρικό σημείο κάθε χώρου.',
     images: {
-      'natural-oak': '/table1.png',
+      'natural-oak': '/dining-tables1.png',
       'caramel-walnut': '/dining-tables2.png',
       'dark-walnut': '/dining-tables.png',
     },
     hoverImage: '/tables-hover.png',
-    galleryImages: ['/table1.png', '/dining-tables2.png', '/dining-tables.png'],
+    galleryImages: ['/dining-tables1.png', '/dining-tables2.png', '/dining-tables.png'],
     dimensions: {
       small: { width: '160cm', depth: '90cm', height: '75cm' },
       large: { width: '200cm', depth: '100cm', height: '75cm' },
@@ -340,11 +340,11 @@ export const allProducts: ProductData[] = [
     price: '1.350',
     description: 'Εντυπωσιακή τραπεζαρία με μοναδικό σχεδιασμό βάσης. Ξύλο καρυδιάς με χειροποίητο φινίρισμα και αντοχή στον χρόνο.',
     images: {
-      'natural-oak': '/dining-tables1.png',
+      'natural-oak': '/table1.png',
       'caramel-walnut': '/table.png',
       'dark-walnut': '/dining-tables2.png',
     },
-    galleryImages: ['/dining-tables1.png', '/table.png', '/dining-tables2.png'],
+    galleryImages: ['/table1.png', '/table.png', '/dining-tables2.png'],
     dimensions: {
       small: { width: '180cm', depth: '95cm', height: '76cm' },
       large: { width: '240cm', depth: '110cm', height: '76cm' },
