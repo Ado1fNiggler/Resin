@@ -281,7 +281,7 @@ export default function CategoryPageClient({
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(to top, rgba(33,74,79,0.8) 0%, rgba(33,74,79,0.2) 40%, transparent 70%)',
+          background: 'linear-gradient(to top, rgba(30,30,30,0.8) 0%, rgba(30,30,30,0.2) 40%, transparent 70%)',
         }} />
 
         {/* Hero content */}
