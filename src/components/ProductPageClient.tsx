@@ -100,7 +100,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
 
             {/* Caption at bottom center */}
             <div className={`${dihjauti.className} ${styles.caption}`}>
-              {currentSizeLabel} in {currentFinishLabel}, {currentFabricLabel} Cushion
+              {currentSizeLabel} in {currentFinishLabel}{product.fabrics !== '—' ? `, ${currentFabricLabel} Cushion` : ''}
             </div>
 
             {/* Bottom controls bar */}
@@ -192,7 +192,6 @@ export default function ProductPageClient({ product }: { product: ProductData })
                 &euro; {product.price}
               </p>
               <div className={styles.ratingWrap}>
-                <span className={`${dihjauti.className} ${styles.ratingNumber}`}>5</span>
                 <div className={styles.starsRow}>
                   {[1,2,3,4,5].map(i => (
                     <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#214A4F" stroke="none">
@@ -210,9 +209,27 @@ export default function ProductPageClient({ product }: { product: ProductData })
               <p className={`${dihjauti.className} ${styles.selectorLabel}`}>
                 CHOOSE SIZE
               </p>
-              <button className={`${dihjauti.className} ${styles.sizeButton}`}>
-                One Size
-              </button>
+              {product.dimensions?.large ? (
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {(['small', 'large'] as const).filter(s => product.dimensions?.[s]).map(size => (
+                    <button
+                      key={size}
+                      className={`${dihjauti.className} ${styles.sizeButton}`}
+                      onClick={() => setActiveSize(size)}
+                      style={{
+                        background: activeSize === size ? '#214A4F' : 'transparent',
+                        color: activeSize === size ? '#fff' : '#214A4F',
+                      }}
+                    >
+                      {size === 'small' ? 'Μικρό' : 'Μεγάλο'}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <button className={`${dihjauti.className} ${styles.sizeButton}`}>
+                  Ένα μέγεθος
+                </button>
+              )}
             </div>
 
             <Divider />
@@ -256,26 +273,31 @@ export default function ProductPageClient({ product }: { product: ProductData })
               </div>
             </div>
 
-            <Divider />
 
-            {/* ════════════ CUSHION FABRIC SELECTOR ════════════ */}
-            <div className={styles.selectorSection}>
-              <p className={`${dihjauti.className} ${styles.selectorLabel}`}>
-                CHOOSE CUSHION FABRIC
-              </p>
-              <p className={styles.fabricSubtext}>
-                Select from 4 in-stock and 14 special order fabrics
-              </p>
+            {product.fabrics !== '—' && (
+              <>
+                <Divider />
 
-              {/* Fabric strip */}
-              <div className={styles.fabricStrip}>
-                <img
-                  src="/textures.png"
-                  alt="Fabric textures"
-                  className={styles.fabricStripImage}
-                />
-              </div>
-            </div>
+                {/* ════════════ CUSHION FABRIC SELECTOR ════════════ */}
+                <div className={styles.selectorSection}>
+                  <p className={`${dihjauti.className} ${styles.selectorLabel}`}>
+                    CHOOSE CUSHION FABRIC
+                  </p>
+                  <p className={styles.fabricSubtext}>
+                    Select from 4 in-stock and 14 special order fabrics
+                  </p>
+
+                  {/* Fabric strip */}
+                  <div className={styles.fabricStrip}>
+                    <img
+                      src="/textures.png"
+                      alt="Fabric textures"
+                      className={styles.fabricStripImage}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
 
             <Divider />
 
@@ -344,21 +366,33 @@ export default function ProductPageClient({ product }: { product: ProductData })
         <Divider />
 
         {/* ════════════ DIMENSIONS ════════════ */}
-        <div className={styles.contentSection}>
-          <h3 className={`${dihjauti.className} ${styles.subSectionTitle}`}>
-            Διαστάσεις
-          </h3>
-          <div className={styles.twoColumnGrid}>
-            <div>
-              <p className={`${dihjauti.className} ${styles.dimLabel}`}>Μικρό</p>
-              <p className={styles.dimValue}>85cm Μ &times; 50cm Π &times; 29cm Υ<br />Βάρος: 15kg</p>
-            </div>
-            <div>
-              <p className={`${dihjauti.className} ${styles.dimLabel}`}>Μεγάλο</p>
-              <p className={styles.dimValue}>123cm Μ &times; 50cm Π &times; 43cm Υ<br />Βάρος: 23kg</p>
+        {product.dimensions && (
+          <div className={styles.contentSection}>
+            <h3 className={`${dihjauti.className} ${styles.subSectionTitle}`}>
+              Διαστάσεις
+            </h3>
+            <div className={styles.twoColumnGrid}>
+              {product.dimensions.small && (
+                <div>
+                  <p className={`${dihjauti.className} ${styles.dimLabel}`}>
+                    {product.dimensions.large ? 'Μικρό' : 'Διαστάσεις'}
+                  </p>
+                  <p className={styles.dimValue}>
+                    {product.dimensions.small.width} Μ &times; {product.dimensions.small.depth} Π &times; {product.dimensions.small.height} Υ
+                  </p>
+                </div>
+              )}
+              {product.dimensions.large && (
+                <div>
+                  <p className={`${dihjauti.className} ${styles.dimLabel}`}>Μεγάλο</p>
+                  <p className={styles.dimValue}>
+                    {product.dimensions.large.width} Μ &times; {product.dimensions.large.depth} Π &times; {product.dimensions.large.height} Υ
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
 
         <Divider />
 

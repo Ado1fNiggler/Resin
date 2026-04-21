@@ -19,11 +19,11 @@ const narrenschiff = localFont({
 });
 
 const products = [
-  { name: 'Πολυθρόνες', slug: 'armchairs', image: '/armchairs.png' },
-  { name: 'Καναπέδες', slug: 'sofas', image: '/sofas.png' },
-  { name: 'Τραπεζαρίες', slug: 'dining-tables', image: '/dining-tables.png' },
-  { name: 'Αποθηκευτικοί χώροι', slug: 'storage', image: '/wardrobes.png' },
-  { name: 'Ειδικές παραγγελίες', slug: 'custom-orders', image: '/other.png' },
+  { name: 'Πολυθρόνες', slug: 'armchairs', image: '/armchairs-hero.webp' },
+  { name: 'Καναπέδες', slug: 'sofas', image: '/sofas-hero.webp' },
+  { name: 'Τραπεζαρίες', slug: 'dining-tables', image: '/dining-tables-hero.webp' },
+  { name: 'Αποθηκευτικοί χώροι', slug: 'storage', image: '/storage-hero.webp' },
+  { name: 'Ειδικές παραγγελίες', slug: 'custom-orders', image: '/custom-orders-hero.webp' },
 ];
 
 /* ── Menu row background gradient scale (light → darker teal, like resin.gr) ── */

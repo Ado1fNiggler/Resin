@@ -172,6 +172,7 @@ export default function HeroSection() {
             fontWeight: 500,
             textShadow: '1px 1px 3px rgba(0, 0, 0, 0.3)',
             fontFamily: '"Helvetica Neue", "Arial", sans-serif',
+            marginBottom: '36px',
           }}
           initial={{ opacity: 0, y: 15 }}
           animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
@@ -179,33 +180,27 @@ export default function HeroSection() {
         >
           Η αγάπη για το σπίτι σας δεν χωράει συμβιβασμούς στην αισθητική
         </motion.p>
-      </div>
 
-      {/* CTA Button — Bottom Right */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          bottom: '64px',
-          right: '100px',
-          zIndex: 10,
-        }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.8, delay: 1.6 }}
-      >
-        <GlassButton
-          size="default"
-          contentClassName="flex items-center gap-3 uppercase tracking-widest text-xs font-semibold"
-          onClick={() => {
-            const target = document.getElementById('products');
-            if (!target) return;
-            const targetY = target.getBoundingClientRect().top + window.scrollY - 40;
-            window.scrollTo({ top: targetY, behavior: 'smooth' });
-          }}
+        {/* CTA Button — inline below subtitle */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8, delay: 1.6 }}
         >
-          <span className={dihjauti.className}>Ανακαλύψτε τη συλλογή μας</span>
-        </GlassButton>
-      </motion.div>
+          <GlassButton
+            size="default"
+            contentClassName="flex items-center gap-3 uppercase tracking-widest text-xs font-semibold"
+            onClick={() => {
+              const target = document.getElementById('products');
+              if (!target) return;
+              const targetY = target.getBoundingClientRect().top + window.scrollY - 40;
+              window.scrollTo({ top: targetY, behavior: 'smooth' });
+            }}
+          >
+            <span className={dihjauti.className}>Ανακαλύψτε τη συλλογή μας</span>
+          </GlassButton>
+        </motion.div>
+      </div>
     </section>
   );
 }
