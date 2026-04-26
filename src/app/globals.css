@@ -50,10 +50,10 @@
   content: "";
   position: absolute;
   top: 1px;
-  left: 10%;
-  right: 10%;
-  height: 44%;
-  border-radius: 9999px 9999px 55% 55%;
+  left: 2%;
+  right: 2%;
+  height: 50%;
+  border-radius: 9999px 9999px 40% 40%;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.52) 0%,
