@@ -10,7 +10,7 @@ const narrenschiff = localFont({
   src: [
     {
       path: '../../public/fonts/Narrenschiff-Regular.otf',
-      weight: '400',
+      weight: '100 900',
       style: 'normal',
     },
   ],
@@ -174,13 +174,29 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
     return () => window.removeEventListener('scroll', checkImageSections);
   }, []);
 
+  /* ── Handle menu open: rows expand simultaneously (shoprooof style) ── */
+  const handleOpenMenu = useCallback(() => {
+    if (isOpen || isClosing) return;
+    // Pre-collapse all rows so the expansion can be animated
+    setCollapsedRows(new Array(products.length).fill(true));
+    setShowItems(false);
+    setIsOpen(true);
+    // Two rAFs: first commits collapsed state to DOM, second triggers expansion
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setShowItems(true);
+        setCollapsedRows(new Array(products.length).fill(false));
+      });
+    });
+  }, [isOpen, isClosing]);
+
   /* ── Handle menu close with sequential collapse ── */
   const handleCloseMenu = useCallback(() => {
     if (isClosing) return;
     setIsClosing(true);
 
     // Collapse rows one by one: Πολυθρόνες(0) → Καναπέδες(1) → Τραπεζαρίες(2) → Αποθηκευτικοί(3) → Ειδικές(4)
-    const COLLAPSE_DELAY = 120; // ms between each row collapse
+    const COLLAPSE_DELAY = 110; // ms between each row collapse
 
     products.forEach((_, i) => {
       setTimeout(() => {
@@ -192,28 +208,17 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
       }, i * COLLAPSE_DELAY);
     });
 
-    // After all rows collapsed, hide overlay FIRST, then reset states
-    const totalCollapseTime = products.length * COLLAPSE_DELAY + 450;
+    // After all rows collapsed, hide overlay, then reset states
+    const totalCollapseTime = products.length * COLLAPSE_DELAY + 420;
     setTimeout(() => {
-      // Step 1: Close overlay immediately (while rows are still collapsed)
       setIsOpen(false);
       setShowItems(false);
-      // Step 2: Reset collapse state AFTER overlay is fully hidden
       setTimeout(() => {
         setIsClosing(false);
         setCollapsedRows(new Array(products.length).fill(false));
       }, 100);
     }, totalCollapseTime);
   }, [isClosing]);
-
-  /* ── Stagger delay when menu opens ── */
-  useEffect(() => {
-    if (isOpen) {
-      const t = setTimeout(() => setShowItems(true), 50);
-      return () => clearTimeout(t);
-    }
-    // Don't auto-reset showItems here — handleCloseMenu manages the close sequence
-  }, [isOpen]);
 
   /* ── Lock scroll when overlay is open ── */
   useEffect(() => {
@@ -250,7 +255,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           className={styles.menuButton}
           onMouseEnter={() => setMenuBtnHovered(true)}
           onMouseLeave={() => setMenuBtnHovered(false)}
-          onClick={() => setIsOpen(true)}
+          onClick={() => handleOpenMenu()}
         >
           {/* Inner wrap – grows on hover like sidebar buttons */}
           <div className={styles.menuButtonInner} style={{ minWidth: `${SIDEBAR_W}px` }}>
@@ -320,7 +325,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                 if (isOpen) {
                   handleCloseMenu();
                 } else {
-                  setIsOpen(true);
+                  handleOpenMenu();
                 }
               }}
               isOpen={isOpen}
@@ -401,37 +406,27 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           visibility: (isOpen || isClosing) ? 'visible' : 'hidden',
         }}
       >
-        {/* Gradient bg – slides up on open, slides down on close (after items) */}
+        {/* Gradient bg – fades in + subtle slide from top (shoprooof style) */}
         <div
           className={styles.overlayBg}
           style={{
             background: `linear-gradient(to bottom, ${menuRowColors[0]}, ${menuRowColors[menuRowColors.length - 1]})`,
-            transform: showItems ? 'translateY(0)' : 'translateY(150%)',
             opacity: (isClosing && collapsedRows.every(Boolean)) ? 0 : showItems ? 1 : 0,
+            transform: showItems ? 'translateY(0)' : 'translateY(-5%)',
             transition: showItems
-              ? 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 0.3s ease-in-out'
-              : (isClosing ? 'opacity 0.4s ease-out' : 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s'),
+              ? 'opacity 0.25s ease-out, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)'
+              : (isClosing ? 'opacity 0.35s ease-out 0.25s' : 'none'),
           }}
         />
 
-        {/* Nav – slides up on open, slides down on close */}
+        {/* Nav – no translateY; rows reveal via height/flex animation */}
         <nav
           className={styles.overlayNav}
-          style={{
-            transform: showItems ? 'translateY(0)' : 'translateY(300%)',
-            transition: showItems
-              ? 'transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s'
-              : 'transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s',
-          }}
         >
           {/* Product links */}
           <ol className={styles.productList}>
             {products.map((product, index) => {
               const isHovered = hoveredProduct === index;
-              // Match resin.gr stagger: Huxton first, Phantigo last
-              const openDelay = 0.45 + (products.length - 1 - index) * 0.15;
-              // Close: top-to-bottom stagger — Πολυθρόνες first, Ειδικές last
-              const closeDelay = 0.15 + index * 0.1;
               const isCollapsed = collapsedRows[index];
 
               return (
@@ -442,11 +437,16 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                     flex: isCollapsed
                       ? 0.001
                       : (clickedIndex === index && expandImage) ? 99 : isHovered ? 2 : 1,
+                    // Open: smooth expand (shoprooof simultaneous reveal)
+                    // Close: sharper sequential collapse
+                    // Hover: quick flex grow
                     transition: isCollapsed
-                      ? 'flex 0.45s cubic-bezier(0.55, 0, 1, 0.45)'
-                      : (clickedIndex !== null)
-                        ? 'flex 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out'
-                        : 'flex 1s',
+                      ? (isClosing
+                          ? 'flex 0.38s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.25s ease-out'
+                          : 'flex 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out')
+                      : (clickedIndex !== null
+                          ? 'flex 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out'
+                          : 'flex 0.7s cubic-bezier(0.16, 1, 0.3, 1)'),
                     opacity: isCollapsed
                       ? 0
                       : (clickedIndex !== null && clickedIndex !== index && expandImage) ? 0 : 1,
@@ -480,12 +480,6 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                       }, 1400);
                     }}
                     className={styles.productLink}
-                    style={{
-                      transform: showItems ? 'translateY(0)' : 'translateY(110%)',
-                      transition: showItems
-                        ? `transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${openDelay}s`
-                        : (isClosing ? 'none' : `transform 1s cubic-bezier(0.16, 1, 0.3, 1) ${closeDelay}s`),
-                    }}
                   >
                     {/* Product image (left) – expands to fullscreen on click */}
                     <div
@@ -549,14 +543,14 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
             })}
           </ol>
 
-          {/* Bottom row – secondary nav */}
+          {/* Bottom row – secondary nav; slides up from below on open (shoprooof style) */}
           <div
             className={styles.bottomNav}
             style={{
-              transform: showItems ? 'translateY(0)' : 'translateY(150%)',
+              transform: showItems ? 'translateY(0)' : 'translateY(110%)',
               transition: showItems
-                ? 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s'
-                : (isClosing ? 'opacity 0.2s ease-out' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0s'),
+                ? 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.1s'
+                : (isClosing ? 'opacity 0.15s ease-out' : 'none'),
               opacity: isClosing ? 0 : (clickedIndex !== null && expandImage) ? 0 : 1,
             }}
           >
