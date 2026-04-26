@@ -4,14 +4,14 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
 const galleryImages = [
-  { url: '/hero1.png',          caption: 'Κάθε χώρος αφηγείται τη δική του ιστορία.',         product: 'Συλλογή 2025' },
-  { url: '/sofa2.png',          caption: 'Απαλές γραμμές που αγκαλιάζουν το σώμα.',            product: 'Lyra' },
-  { url: '/armchairs2.png',     caption: 'Η πολυθρόνα που ορίζει τον χαρακτήρα του σαλονιού.', product: 'Phantigo' },
-  { url: '/dining-tables2.png', caption: 'Η τραπεζαρία ως κέντρο της οικογενειακής ζωής.',     product: 'Hermes' },
-  { url: '/wardrobes3.png',     caption: 'Τάξη και αισθητική σε τέλεια ισορροπία.',             product: 'Maximillian' },
-  { url: '/family1.png',        caption: 'Χώροι φτιαγμένοι για στιγμές που μένουν.',            product: 'Συλλογή 2025' },
-  { url: '/lyra2.png',          caption: 'Η ομορφιά κρύβεται στη λεπτομέρεια.',                product: 'Lyra' },
-  { url: '/hermes2.png',        caption: 'Μασίφ ξύλο, χειροποίητη τελειότητα.',                product: 'Hermes' },
+  { url: '/gallery_01_lifestyle.webp',    caption: 'Κάθε χώρος αφηγείται τη δική του ιστορία.',          product: 'Συλλογή 2025' },
+  { url: '/gallery_02_lyra.webp',         caption: 'Απαλές γραμμές που αγκαλιάζουν το σώμα.',             product: 'Lyra' },
+  { url: '/gallery_03_phantigo.webp',     caption: 'Η πολυθρόνα που ορίζει τον χαρακτήρα του σαλονιού.',  product: 'Phantigo' },
+  { url: '/gallery_04_hermes.webp',       caption: 'Η τραπεζαρία ως κέντρο της οικογενειακής ζωής.',      product: 'Hermes' },
+  { url: '/gallery_05_storage.webp',      caption: 'Τάξη και αισθητική σε τέλεια ισορροπία.',              product: 'Maximillian' },
+  { url: '/gallery_06_lifestyle2.webp',   caption: 'Χώροι φτιαγμένοι για στιγμές που μένουν.',             product: 'Συλλογή 2025' },
+  { url: '/gallery_07_lyra_detail.webp',  caption: 'Η ομορφιά κρύβεται στη λεπτομέρεια.',                 product: 'Lyra' },
+  { url: '/gallery_08_hermes_detail.webp',caption: 'Μασίφ ξύλο, χειροποίητη τελειότητα.',                 product: 'Hermes' },
 ];
 
 /* Alternating tall / short cards, staggered vertically for editorial rhythm */
