@@ -583,7 +583,7 @@
 }
 
 .miniImageWrap {
-  aspect-ratio: 3/4;
+  aspect-ratio: 4/3;
   background: #EDEBE8;
   overflow: hidden;
   margin-bottom: 14px;
