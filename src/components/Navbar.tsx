@@ -2,9 +2,14 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import localFont from 'next/font/local';
 import { useStore } from '@/context/StoreContext';
 import styles from './Navbar.module.css';
+
+/* Sidebar width — must match SIDEBAR_W below. Used by both source (Navbar)
+   and destination (CategoryPageClient) so the menu→hero morph is pixel-aligned. */
+export const MORPH_TARGET_LEFT = 75;
 
 const narrenschiff = localFont({
   src: [
@@ -135,6 +140,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
   const [navigatingTo, setNavigatingTo] = useState<string | null>(null); // product page transition
   const [clickedIndex, setClickedIndex] = useState<number | null>(null); // which product was clicked
   const [expandImage, setExpandImage] = useState(false); // trigger image expand to fullscreen
+  const [morphRect, setMorphRect] = useState<{ top: number; left: number; width: number; height: number } | null>(null); // source rect for menu→hero morph
   const [overImageSection, setOverImageSection] = useState(false); // sidebar transparent when over image sections
   const [isClosing, setIsClosing] = useState(false);     // closing animation in progress
   const [collapsedRows, setCollapsedRows] = useState<boolean[]>(new Array(products.length).fill(false)); // which rows have collapsed
@@ -464,6 +470,21 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                     onClick={(e) => {
                       e.preventDefault();
                       if (clickedIndex !== null) return; // already navigating
+
+                      // Capture the source image rect (viewport coords) so the
+                      // morph layer can fly out from exactly where the clicked
+                      // image is currently rendered — eliminates any visual
+                      // discontinuity at the start of the animation.
+                      const linkEl = e.currentTarget as HTMLElement;
+                      const imgWrap = linkEl.querySelector(`.${styles.productImageWrap}`) as HTMLElement | null;
+                      const rect = (imgWrap || linkEl).getBoundingClientRect();
+                      const sourceRect = {
+                        top: rect.top,
+                        left: rect.left,
+                        width: rect.width,
+                        height: rect.height,
+                      };
+                      setMorphRect(sourceRect);
                       setNavigatingTo(product.slug);
                       setClickedIndex(index);
                       // Hand off transition state to destination page
@@ -474,37 +495,41 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                           ts: Date.now(),
                         }));
                       } catch {}
-                      // Step 1: Expand the image to fullscreen
+                      // Step 1: trigger fullscreen expansion of the morph layer
                       requestAnimationFrame(() => {
                         setExpandImage(true);
                       });
-                      // Step 2: Navigate while image is still fullscreen — destination
-                      // page will pick up the transition via sessionStorage and continue
-                      // shrinking the same image down to the hero rectangle.
+                      // Step 2: Navigate while morph layer is at fullscreen.
+                      // Destination picks up exactly where this leaves off.
                       setTimeout(() => {
                         router.push(`/category/${product.slug}`);
-                        // Reset state after navigation
+                        // Reset state slightly later so the morph layer stays
+                        // mounted across the route swap (covering any flash).
                         setTimeout(() => {
                           setIsOpen(false);
                           setShowItems(false);
                           setClickedIndex(null);
                           setExpandImage(false);
                           setNavigatingTo(null);
-                        }, 100);
-                      }, 950);
+                          setMorphRect(null);
+                        }, 200);
+                      }, 900);
                     }}
                     className={styles.productLink}
                   >
-                    {/* Product image (left) – expands to fullscreen on click */}
+                    {/* Product image (left) – stays at row size; the actual
+                        fullscreen morph is handled by a dedicated fixed-position
+                        layer rendered at the bottom of this component so its
+                        coords are anchored to the viewport, not this row. */}
                     <div
                       className={styles.productImageWrap}
                       style={{
-                        width: (clickedIndex === index && expandImage) ? '100vw' : '25.4167vw',
-                        height: (clickedIndex === index && expandImage) ? '100vh' : '100%',
-                        zIndex: (clickedIndex === index) ? 50 : 'auto',
-                        transition: (clickedIndex === index)
-                          ? 'width 1.2s cubic-bezier(0.16, 1, 0.3, 1), height 1.2s cubic-bezier(0.16, 1, 0.3, 1)'
-                          : 'none',
+                        width: '25.4167vw',
+                        height: '100%',
+                        // Hide this small image when the morph layer takes over,
+                        // so we don't show two copies briefly.
+                        opacity: (clickedIndex === index) ? 0 : 1,
+                        transition: 'opacity 0.18s ease-out',
                       }}
                     >
                       <img
@@ -512,12 +537,8 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                         alt={product.name}
                         className={styles.productImage}
                         style={{
-                          transition: (clickedIndex === index)
-                            ? 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)'
-                            : 'transform 0.7s ease-out',
-                          transform: (clickedIndex === index && expandImage)
-                            ? 'scale(1.1)'
-                            : isHovered ? 'scale(1.05)' : 'scale(1)',
+                          transition: 'transform 0.7s ease-out',
+                          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                         }}
                       />
                     </div>
@@ -594,6 +615,63 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
           </div>
         </nav>
       </div>
+
+      {/* =============================================
+          4. MENU → HERO MORPH LAYER
+          A single fixed-position image element that flies from the clicked
+          row's image rect up to a true viewport-fullscreen rectangle. The
+          destination page mounts an identically-positioned overlay at the
+          same final rect, then morphs it down into the hero. Because both
+          source and destination layers occupy the same coords at the moment
+          of route swap, there is zero visual discontinuity.
+          ============================================= */}
+      <AnimatePresence>
+        {clickedIndex !== null && morphRect && navigatingTo && (
+          <motion.div
+            key="navbar-morph"
+            initial={{
+              top: morphRect.top,
+              left: morphRect.left,
+              width: morphRect.width,
+              height: morphRect.height,
+            }}
+            animate={
+              expandImage
+                ? {
+                    top: 0,
+                    left: MORPH_TARGET_LEFT,
+                    width: `calc(100vw - ${MORPH_TARGET_LEFT}px)`,
+                    height: '100vh',
+                  }
+                : {
+                    top: morphRect.top,
+                    left: morphRect.left,
+                    width: morphRect.width,
+                    height: morphRect.height,
+                  }
+            }
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'fixed',
+              zIndex: 400,
+              overflow: 'hidden',
+              pointerEvents: 'none',
+              willChange: 'top, left, width, height',
+            }}
+          >
+            <img
+              src={products[clickedIndex].image}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -248,14 +248,14 @@ export default function CategoryPageClient({
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, amount: 0.3 });
 
-  /* ── Menu→Hero handoff: detect if we just arrived via the menu transition ── */
-  const [menuMorphImage, setMenuMorphImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+  /* ── Menu→Hero handoff: detect synchronously on first render so the morph
+      overlay mounts in the same paint frame as the destination route, with
+      no useEffect-induced flash of the bare hero between source and overlay. */
+  const [menuMorphImage, setMenuMorphImage] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
     try {
       const raw = sessionStorage.getItem('menuTransition');
-      if (!raw) return;
+      if (!raw) return null;
       const data = JSON.parse(raw);
       sessionStorage.removeItem('menuTransition');
       if (
@@ -264,12 +264,13 @@ export default function CategoryPageClient({
         Date.now() - (data.ts || 0) < 4000 &&
         typeof data.image === 'string'
       ) {
-        setMenuMorphImage(data.image);
+        return data.image;
       }
     } catch {
       /* ignore */
     }
-  }, [category.slug]);
+    return null;
+  });
 
   return (
     <div style={{ paddingLeft: '75px' }}>
@@ -283,9 +284,11 @@ export default function CategoryPageClient({
           <motion.div
             key="menu-morph"
             initial={{
+              // Match the source Navbar morph layer's final rect EXACTLY so
+              // the route swap is visually invisible — same image, same rect.
               top: 0,
-              left: 0,
-              width: '100vw',
+              left: 75,
+              width: 'calc(100vw - 75px)',
               height: '100vh',
               opacity: 1,
             }}
@@ -298,16 +301,13 @@ export default function CategoryPageClient({
             }}
             exit={{ opacity: 0 }}
             transition={{
-              top: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-              left: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-              width: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
               height: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-              opacity: { duration: 0.45, ease: 'easeOut' },
+              opacity: { duration: 0.4, ease: 'easeOut' },
             }}
             onAnimationComplete={(def) => {
-              // Definition is the target object; once the size/position settle, fade out
+              // Definition is the target object; once the height settles, fade out
               if (typeof def === 'object' && def && (def as Record<string, unknown>).height) {
-                setTimeout(() => setMenuMorphImage(null), 60);
+                setTimeout(() => setMenuMorphImage(null), 80);
               }
             }}
             style={{
@@ -315,7 +315,7 @@ export default function CategoryPageClient({
               zIndex: 200,
               overflow: 'hidden',
               pointerEvents: 'none',
-              willChange: 'top, left, width, height, opacity',
+              willChange: 'height, opacity',
             }}
           >
             <img
