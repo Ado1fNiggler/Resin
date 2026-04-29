@@ -293,7 +293,7 @@ export default function CategoryPageClient({
               top: 0,
               left: 75,
               width: 'calc(100vw - 75px)',
-              height: 'max(55vh, 400px)',
+              height: 'max(78vh, 560px)',
               opacity: 1,
             }}
             exit={{ opacity: 0 }}
@@ -341,8 +341,8 @@ export default function CategoryPageClient({
       <section
         style={{
           position: 'relative',
-          height: '55vh',
-          minHeight: '400px',
+          height: '78vh',
+          minHeight: '560px',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'flex-end',
