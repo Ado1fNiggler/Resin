@@ -452,7 +452,11 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                       : (clickedIndex !== null && clickedIndex !== index && expandImage) ? 0 : 1,
                     background: menuRowColors[index] || '#F3F7F7',
                   }}
-                  onMouseEnter={() => { if (clickedIndex === null && !isClosing) setHoveredProduct(index); }}
+                  onMouseEnter={() => {
+                    if (clickedIndex === null && !isClosing) setHoveredProduct(index);
+                    // Prefetch destination so navigation is instant
+                    router.prefetch(`/category/${product.slug}`);
+                  }}
                   onMouseLeave={() => setHoveredProduct(null)}
                 >
                   <a
@@ -462,11 +466,21 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                       if (clickedIndex !== null) return; // already navigating
                       setNavigatingTo(product.slug);
                       setClickedIndex(index);
+                      // Hand off transition state to destination page
+                      try {
+                        sessionStorage.setItem('menuTransition', JSON.stringify({
+                          slug: product.slug,
+                          image: product.image,
+                          ts: Date.now(),
+                        }));
+                      } catch {}
                       // Step 1: Expand the image to fullscreen
                       requestAnimationFrame(() => {
                         setExpandImage(true);
                       });
-                      // Step 2: Navigate after animation completes
+                      // Step 2: Navigate while image is still fullscreen — destination
+                      // page will pick up the transition via sessionStorage and continue
+                      // shrinking the same image down to the hero rectangle.
                       setTimeout(() => {
                         router.push(`/category/${product.slug}`);
                         // Reset state after navigation
@@ -477,7 +491,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                           setExpandImage(false);
                           setNavigatingTo(null);
                         }, 100);
-                      }, 1400);
+                      }, 950);
                     }}
                     className={styles.productLink}
                   >

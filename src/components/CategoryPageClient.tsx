@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import localFont from 'next/font/local';
 import type { CategoryData, ProductData } from '@/data/products';
@@ -248,8 +248,95 @@ export default function CategoryPageClient({
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, amount: 0.3 });
 
+  /* ── Menu→Hero handoff: detect if we just arrived via the menu transition ── */
+  const [menuMorphImage, setMenuMorphImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const raw = sessionStorage.getItem('menuTransition');
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      sessionStorage.removeItem('menuTransition');
+      if (
+        data &&
+        data.slug === category.slug &&
+        Date.now() - (data.ts || 0) < 4000 &&
+        typeof data.image === 'string'
+      ) {
+        setMenuMorphImage(data.image);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, [category.slug]);
+
   return (
     <div style={{ paddingLeft: '75px' }}>
+      {/* ── Menu→Hero morphing overlay ──
+          Continues the menu's expanding-image animation: starts fullscreen
+          (where Navbar left it) and shrinks down into the hero rectangle.
+          Behind it, the real hero is already mounted and ready, so when
+          this overlay fades out the underlying hero is pixel-identical. */}
+      <AnimatePresence>
+        {menuMorphImage && (
+          <motion.div
+            key="menu-morph"
+            initial={{
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              opacity: 1,
+            }}
+            animate={{
+              top: 0,
+              left: 75,
+              width: 'calc(100vw - 75px)',
+              height: 'max(55vh, 400px)',
+              opacity: 1,
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              top: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+              left: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+              width: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+              height: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+              opacity: { duration: 0.45, ease: 'easeOut' },
+            }}
+            onAnimationComplete={(def) => {
+              // Definition is the target object; once the size/position settle, fade out
+              if (typeof def === 'object' && def && (def as Record<string, unknown>).height) {
+                setTimeout(() => setMenuMorphImage(null), 60);
+              }
+            }}
+            style={{
+              position: 'fixed',
+              zIndex: 200,
+              overflow: 'hidden',
+              pointerEvents: 'none',
+              willChange: 'top, left, width, height, opacity',
+            }}
+          >
+            <img
+              src={menuMorphImage}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+            {/* Match the hero's gradient overlay so the handoff is invisible */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(30,30,30,0.8) 0%, rgba(30,30,30,0.2) 40%, transparent 70%)',
+            }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* ── Hero Banner ── */}
       <section
         style={{
@@ -261,7 +348,9 @@ export default function CategoryPageClient({
           alignItems: 'flex-end',
         }}
       >
-        {/* Background image with Ken Burns */}
+        {/* Background image with Ken Burns (skipped on menu handoff to keep
+            the underlying image static so the morphing overlay can fade out
+            onto a pixel-identical hero). */}
         <motion.img
           src={category.heroImage}
           alt={category.name}
@@ -272,9 +361,9 @@ export default function CategoryPageClient({
             height: '100%',
             objectFit: 'cover',
           }}
-          initial={{ scale: 1.1 }}
+          initial={{ scale: menuMorphImage ? 1 : 1.1 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: menuMorphImage ? 0 : 1.8, ease: [0.16, 1, 0.3, 1] }}
         />
 
         {/* Gradient overlay */}
