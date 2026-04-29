@@ -283,39 +283,26 @@ export default function CategoryPageClient({
         {menuMorphImage && (
           <motion.div
             key="menu-morph"
-            initial={{
-              // Match the source Navbar morph layer's final rect EXACTLY so
-              // the route swap is visually invisible — same image, same rect.
-              top: 0,
-              left: 75,
-              width: 'calc(100vw - 75px)',
-              height: '100vh',
-              opacity: 1,
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ opacity: { duration: 0.45, ease: 'easeOut' } }}
+            onAnimationComplete={() => {
+              // Sit on top of the static hero for a beat, then fade out.
+              // The underlying hero is pixel-identical, so this fade is
+              // invisible to the user.
+              setTimeout(() => setMenuMorphImage(null), 100);
             }}
-            animate={{
+            style={{
+              position: 'fixed',
               top: 0,
               left: 75,
               width: 'calc(100vw - 75px)',
               height: 'max(78vh, 560px)',
-              opacity: 1,
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              height: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-              opacity: { duration: 0.4, ease: 'easeOut' },
-            }}
-            onAnimationComplete={(def) => {
-              // Definition is the target object; once the height settles, fade out
-              if (typeof def === 'object' && def && (def as Record<string, unknown>).height) {
-                setTimeout(() => setMenuMorphImage(null), 80);
-              }
-            }}
-            style={{
-              position: 'fixed',
               zIndex: 200,
               overflow: 'hidden',
               pointerEvents: 'none',
-              willChange: 'height, opacity',
+              willChange: 'opacity',
             }}
           >
             <img

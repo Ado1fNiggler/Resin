@@ -471,10 +471,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                       e.preventDefault();
                       if (clickedIndex !== null) return; // already navigating
 
-                      // Capture the source image rect (viewport coords) so the
-                      // morph layer can fly out from exactly where the clicked
-                      // image is currently rendered — eliminates any visual
-                      // discontinuity at the start of the animation.
+                      // Capture the source image rect (viewport coords).
                       const linkEl = e.currentTarget as HTMLElement;
                       const imgWrap = linkEl.querySelector(`.${styles.productImageWrap}`) as HTMLElement | null;
                       const rect = (imgWrap || linkEl).getBoundingClientRect();
@@ -495,16 +492,17 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                           ts: Date.now(),
                         }));
                       } catch {}
-                      // Step 1: trigger fullscreen expansion of the morph layer
+                      // Single continuous morph: row image rect → hero rect.
+                      // No fullscreen intermediate — that out-and-back motion
+                      // was the source of the un-smooth feel.
                       requestAnimationFrame(() => {
                         setExpandImage(true);
                       });
-                      // Step 2: Navigate while morph layer is at fullscreen.
-                      // Destination picks up exactly where this leaves off.
+                      // Navigate AFTER the morph reaches the hero rect, so the
+                      // destination simply renders the static hero behind a
+                      // pixel-identical fading overlay.
                       setTimeout(() => {
                         router.push(`/category/${product.slug}`);
-                        // Reset state slightly later so the morph layer stays
-                        // mounted across the route swap (covering any flash).
                         setTimeout(() => {
                           setIsOpen(false);
                           setShowItems(false);
@@ -512,8 +510,8 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                           setExpandImage(false);
                           setNavigatingTo(null);
                           setMorphRect(null);
-                        }, 200);
-                      }, 900);
+                        }, 250);
+                      }, 850);
                     }}
                     className={styles.productLink}
                   >
@@ -638,10 +636,13 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
             animate={
               expandImage
                 ? {
+                    // Single continuous morph: directly to the hero rectangle.
+                    // (Same coords used by CategoryPageClient — see MORPH_TARGET_LEFT.)
                     top: 0,
                     left: MORPH_TARGET_LEFT,
                     width: `calc(100vw - ${MORPH_TARGET_LEFT}px)`,
-                    height: '100vh',
+                    // Hero is height: max(78vh, 560px) — express identically here.
+                    height: 'max(78vh, 560px)',
                   }
                 : {
                     top: morphRect.top,
@@ -650,7 +651,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                     height: morphRect.height,
                   }
             }
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.85, ease: [0.4, 0, 0.2, 1] }}
             style={{
               position: 'fixed',
               zIndex: 400,
