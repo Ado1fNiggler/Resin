@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import localFont from 'next/font/local';
 import type { ProductData } from '@/data/products';
+import { allProducts } from '@/data/products';
 import { useStore } from '@/context/StoreContext';
 import styles from './ProductPageClient.module.css';
 
@@ -417,7 +418,21 @@ export default function ProductPageClient({ product }: { product: ProductData })
           </div>
         </div>
 
-        <Divider />
+        {/* ════════════ QUALITY STRIP ════════════ */}
+        <div className={styles.qualityStrip}>
+          {[
+            { icon: '🌿', title: 'Βιώσιμα Υλικά', body: 'FSC-πιστοποιημένο ξύλο από ελεγχόμενα δάση' },
+            { icon: '🤝', title: 'Εγγύηση 5 Ετών', body: 'Πλήρης κάλυψη κατασκευαστικών ελαττωμάτων' },
+            { icon: '✦', title: 'Χειροποίητη Κατασκευή', body: 'Κάθε κομμάτι δημιουργείται από έμπειρους τεχνίτες' },
+            { icon: '🚚', title: 'Δωρεάν Αποστολή', body: 'White-glove delivery για παραγγελίες άνω των 500€' },
+          ].map((item) => (
+            <div key={item.title} className={styles.qualityItem}>
+              <span className={styles.qualityIcon}>{item.icon}</span>
+              <p className={`${dihjauti.className} ${styles.qualityTitle}`}>{item.title}</p>
+              <p className={styles.qualityBody}>{item.body}</p>
+            </div>
+          ))}
+        </div>
 
         {/* ════════════ YOU MIGHT ALSO LIKE ════════════ */}
         <div className={styles.relatedSection}>
@@ -425,26 +440,27 @@ export default function ProductPageClient({ product }: { product: ProductData })
             Μπορεί να σας αρέσει επίσης
           </h3>
           <div className={styles.threeColumnGrid}>
-            {[
-              { name: 'PHANTIGO', slug: 'phantigo', image: '/armchairs1.png' },
-              { name: 'VIOLET', slug: 'violet', image: '/sofas.png' },
-              { name: 'MAXIMILLIAN', slug: 'maximillian', image: '/dining-tables1.png' },
-              { name: 'HUXTON', slug: 'huxton', image: '/wardrobes.png' },
-            ].filter(p => p.slug !== product.slug).slice(0, 3).map(p => (
-              <a key={p.slug} href={`/product/${p.slug}`} className={styles.relatedLink}>
-                <div className={styles.relatedImageWrap}>
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className={styles.relatedImage}
-                  />
-                </div>
-                <p className={`${dihjauti.className} ${styles.relatedName}`}>{p.name}</p>
-                <p className={styles.relatedViewText}>
-                  Προβολή
-                </p>
-              </a>
-            ))}
+            {allProducts
+              .filter(p => p.slug !== product.slug)
+              .sort((a, b) =>
+                a.category === product.category ? -1 :
+                b.category === product.category ? 1 : 0
+              )
+              .slice(0, 4)
+              .map(p => (
+                <a key={p.slug} href={`/product/${p.slug}`} className={styles.relatedLink}>
+                  <div className={styles.relatedImageWrap}>
+                    <img
+                      src={p.images['natural-oak']}
+                      alt={p.name}
+                      className={styles.relatedImage}
+                    />
+                  </div>
+                  <p className={styles.relatedCat}>{p.categoryName}</p>
+                  <p className={`${dihjauti.className} ${styles.relatedName}`}>{p.name}</p>
+                  <p className={styles.relatedViewText}>Προβολή &rarr;</p>
+                </a>
+              ))}
           </div>
         </div>
 

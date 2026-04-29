@@ -34,50 +34,46 @@ const products: Product[] = [
     fabrics: '19 υφάσματα',
     price: '750',
     images: {
-      'natural-oak': '/dining-tables1.png',
-      'caramel-walnut': '/dining-tables2.png',
-      'dark-walnut': '/dining-tables.png',
+      'natural-oak': '/phantigo1.webp',
+      'caramel-walnut': '/phantigo2.webp',
+      'dark-walnut': '/phantigo3.webp',
     },
-    hoverImage: '/tables-hover.png',
   },
   {
-    slug: 'violet',
-    name: 'VIOLET',
+    slug: 'kronos',
+    name: 'KRONOS',
     sizes: '2 μεγέθη',
-    fabrics: '19 υφάσματα',
-    price: '850',
+    fabrics: 'Δέρμα & υφάσματα',
+    price: '1.450',
     images: {
-      'natural-oak': '/wardrobes.png',
-      'caramel-walnut': '/wardrobes2.png',
-      'dark-walnut': '/wardrobes3.png',
+      'natural-oak': '/kronos1.webp',
+      'caramel-walnut': '/kronos2.webp',
+      'dark-walnut': '/kronos3.webp',
     },
-    hoverImage: '/wardrobe-hover.png',
   },
   {
-    slug: 'maximillian',
-    name: 'MAXIMILLIAN',
-    sizes: '2 μεγέθη',
-    fabrics: '19 υφάσματα',
-    price: '950',
+    slug: 'agora',
+    name: 'AGORA',
+    sizes: '1 μέγεθος',
+    fabrics: '—',
+    price: '1.600',
     images: {
-      'natural-oak': '/sofa1.png',
-      'caramel-walnut': '/sofa3.png',
-      'dark-walnut': '/sofa2.png',
+      'natural-oak': '/agora1.webp',
+      'caramel-walnut': '/agora2.webp',
+      'dark-walnut': '/agora3.webp',
     },
-    hoverImage: '/sofa-hover.png',
   },
   {
-    slug: 'huxton',
-    name: 'HUXTON',
-    sizes: '2 μεγέθη',
-    fabrics: '19 υφάσματα',
-    price: '1.150',
+    slug: 'elara',
+    name: 'ELARA',
+    sizes: '1 μέγεθος',
+    fabrics: '14 υφάσματα',
+    price: '920',
     images: {
-      'natural-oak': '/armchairs1.png',
-      'caramel-walnut': '/armchairs2.png',
-      'dark-walnut': '/armchairs.png',
+      'natural-oak': '/elara1.webp',
+      'caramel-walnut': '/elara2.webp',
+      'dark-walnut': '/elara3.webp',
     },
-    hoverImage: '/armchairs-hover.png',
   },
 ];
 
@@ -172,7 +168,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
         {product.name}
       </h3>
       <p className="text-xs mb-1" style={{ color: '#214A4F', opacity: 0.7 }}>
-        Διαθέσιμο σε {product.sizes} και {product.fabrics}
+        Διαθέσιμο σε {product.sizes}{product.fabrics !== '—' ? ` και ${product.fabrics}` : ''}
       </p>
       <p className="text-xs mb-4" style={{ color: '#214A4F', opacity: 0.7 }}>
         Από {product.price}&euro;

@@ -26,13 +26,13 @@ const products = [
   { name: 'Ειδικές παραγγελίες', slug: 'custom-orders', image: '/custom-orders-hero.webp' },
 ];
 
-/* ── Menu row background gradient scale (light → darker teal, like resin.gr) ── */
+/* ── Menu row background — light teal gradient, slightly darker top→bottom (shoprooof exact palette) ── */
 const menuRowColors = [
-  '#F3F7F7',  // lightest
-  '#E8F0F0',
-  '#DAE6E7',
-  '#CDDCDD',
-  '#C0D2D3',  // darkest
+  '#F3F7F7', // rgb(243, 247, 247)
+  '#E6EEEF', // rgb(230, 238, 239)
+  '#DAE5E7', // rgb(218, 229, 231)
+  '#CEDCDE', // rgb(206, 220, 222)
+  '#C2D4D6', // rgb(194, 212, 214)
 ];
 
 const sidebarItems = [
@@ -508,7 +508,7 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                       />
                     </div>
 
-                    {/* Light overlay – clip‑path wipe on hover, gradient scale per row */}
+                    {/* Dark overlay — clips away upward on hover to reveal image */}
                     <div
                       className={styles.lightOverlay}
                       style={{
@@ -520,10 +520,14 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
                         opacity: (clickedIndex === index && expandImage) ? 0 : 1,
                       }}
                     >
+                      {/* Row index number — top right */}
+                      <span className={styles.rowIndex}>
+                        {(index + 1).toString().padStart(2, '0')}
+                      </span>
                       {product.name}
                     </div>
 
-                    {/* Text + arrow on dark teal */}
+                    {/* Text + arrow — visible beneath the overlay (same white on dark) */}
                     <span
                       className={styles.textArrow}
                       style={{

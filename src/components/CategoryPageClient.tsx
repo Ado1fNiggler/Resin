@@ -365,14 +365,14 @@ export default function CategoryPageClient({
 
       {/* ── Products Grid ── */}
       <section style={{
-        padding: '48px',
+        padding: '40px 48px 60px',
         maxWidth: '1400px',
         margin: '0 auto',
       }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '48px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gap: '40px',
         }}>
           {products.map((product, index) => (
             <CategoryProductCard key={product.slug} product={product} index={index} categorySlug={category.slug} />

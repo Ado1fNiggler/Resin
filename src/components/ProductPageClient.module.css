@@ -333,13 +333,13 @@
 }
 
 .aboutSection {
-  padding: 5rem 4rem;
+  padding: 3.5rem 4rem;
   max-width: 900px;
   margin: 0 auto;
 }
 
 .contentSection {
-  padding: 4rem;
+  padding: 3rem 4rem;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -391,17 +391,55 @@
   line-height: 1.8;
 }
 
+/* ── Quality Promise Strip ── */
+.qualityStrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #214A4F;
+  border-top: 1px solid rgba(252, 252, 252, 0.08);
+}
+
+.qualityItem {
+  padding: clamp(24px, 3vw, 40px) clamp(20px, 2.5vw, 32px);
+  border-right: 1px solid rgba(252, 252, 252, 0.08);
+  text-align: center;
+}
+
+.qualityItem:last-child {
+  border-right: none;
+}
+
+.qualityIcon {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.qualityTitle {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #FCFCFC;
+  margin-bottom: 6px;
+}
+
+.qualityBody {
+  font-size: 0.75rem;
+  color: rgba(252, 252, 252, 0.6);
+  line-height: 1.6;
+}
+
 /* ── Related Products ── */
 .relatedSection {
-  padding: 4rem;
-  max-width: 1200px;
+  padding: 3rem 4rem 4rem;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .threeColumnGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.75rem;
 }
 
 .relatedLink {
@@ -409,11 +447,10 @@
 }
 
 .relatedImageWrap {
-  aspect-ratio: 4/3;
+  aspect-ratio: 1/1;
   overflow: hidden;
-  border-radius: 4px;
   background-color: #EDEBE8;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .relatedImage {
@@ -425,6 +462,18 @@
 
 .relatedImage:hover {
   transform: scale(1.05);
+}
+
+/* Related product category */
+.relatedCat {
+  font-size: 0.7rem;
+  color: #214A4F;
+  opacity: 0.45;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  margin-top: 0.75rem;
 }
 
 /* Dihjauti: related product names */
@@ -514,19 +563,31 @@
 
   .aboutSection,
   .contentSection {
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1.5rem;
   }
 
   .relatedSection {
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1.5rem 3rem;
   }
 
   .threeColumnGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 
   .twoColumnGrid {
     grid-template-columns: 1fr;
+  }
+
+  .qualityStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .qualityItem {
+    border-bottom: 1px solid rgba(252, 252, 252, 0.08);
+  }
+
+  .qualityItem:nth-child(2n) {
+    border-right: none;
   }
 }
