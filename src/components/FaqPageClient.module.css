@@ -404,6 +404,11 @@
 .cta {
   background: #214A4F;
   color: #FCFCFC;
+  padding: 72px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
   position: relative;
   overflow: hidden;
 }
@@ -423,14 +428,6 @@
 .cta > * {
   position: relative;
   z-index: 1;
-}
-  padding: 72px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 40px;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
 }
 
 .ctaDecor {
