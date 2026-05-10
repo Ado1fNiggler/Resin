@@ -226,6 +226,17 @@ export default function FaqPageClient() {
         </div>
 
         <div className={styles.heroRight} aria-hidden="true">
+          {/* Video background with gradient fallback */}
+          <video
+            className={styles.heroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster=""
+          >
+            <source src="/faq-hero.mp4" type="video/mp4" />
+          </video>
           <div className={styles.heroImage} />
           <div className={styles.heroIndex}>N° 04 / Atelier Notes</div>
           <div className={styles.heroCaption}>Οδός Πλάτωνος — μασίφ δρυς, χειροποίητο φινίρισμα</div>
