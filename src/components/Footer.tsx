@@ -127,7 +127,7 @@ export default function Footer() {
             >
               RESIN
             </a>
-            <p style={{ fontSize: '12px', letterSpacing: '0.18em', color: 'rgba(252,252,252,0.4)', textTransform: 'uppercase', marginTop: '6px' }}>
+            <p style={{ fontSize: '12px', letterSpacing: '0.18em', color: 'rgba(252,252,252,0.65)', textTransform: 'uppercase', marginTop: '6px' }}>
               Atelier · Athens · Est. 2014
             </p>
           </div>
@@ -150,11 +150,11 @@ export default function Footer() {
                   width: '44px',
                   height: '44px',
                   borderRadius: '50%',
-                  border: '1px solid rgba(252,252,252,0.2)',
+                  border: '1px solid rgba(252,252,252,0.45)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'rgba(252,252,252,0.6)',
+                  color: 'rgba(252,252,252,0.9)',
                   transition: 'border-color 0.3s ease',
                 }}
               >
@@ -187,7 +187,7 @@ export default function Footer() {
                 fontWeight: 700,
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: 'rgba(252,252,252,0.35)',
+                color: 'rgba(252,252,252,0.6)',
                 marginBottom: '20px',
               }}>
                 {col.title}
@@ -197,7 +197,7 @@ export default function Footer() {
                   <li key={link}>
                     <motion.a
                       href={linkMap[link] || '#'}
-                      style={{ fontSize: '14px', color: 'rgba(252,252,252,0.6)', textDecoration: 'none', display: 'block' }}
+                      style={{ fontSize: '14px', color: 'rgba(252,252,252,0.85)', textDecoration: 'none', display: 'block' }}
                       whileHover={{ color: '#FCFCFC', x: 4 }}
                       transition={{ duration: 0.2 }}
                     >
@@ -223,7 +223,7 @@ export default function Footer() {
             padding: '20px 100px 28px',
           }}
         >
-          <p style={{ fontSize: '12px', color: 'rgba(252,252,252,0.3)', letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: '12px', color: 'rgba(252,252,252,0.55)', letterSpacing: '0.06em' }}>
             © 2025 Resin Furniture. All Rights Reserved.
           </p>
           <motion.button
@@ -231,7 +231,7 @@ export default function Footer() {
             whileHover={{ y: -3, color: '#7EC0C9' }}
             style={{
               background: 'transparent',
-              border: '1px solid rgba(252,252,252,0.2)',
+              border: '1px solid rgba(252,252,252,0.45)',
               borderRadius: '50%',
               width: '36px',
               height: '36px',
@@ -239,7 +239,7 @@ export default function Footer() {
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              color: 'rgba(252,252,252,0.4)',
+              color: 'rgba(252,252,252,0.75)',
               transition: 'color 0.3s ease',
             }}
           >
