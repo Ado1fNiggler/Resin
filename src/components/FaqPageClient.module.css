@@ -402,8 +402,7 @@
 
 /* ----- CTA Section ----- */
 .cta {
-  background: #214A4F;
-  background-image: url('/footer-family.png');
+  background-image: linear-gradient(rgba(33,74,79,0.82), rgba(33,74,79,0.82)), url('/footer-family.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

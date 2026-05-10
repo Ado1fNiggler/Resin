@@ -61,11 +61,10 @@ export default function Footer() {
       id="contact"
       style={{
         backgroundColor: '#1A3A3E',
-        backgroundImage: 'url(/footer-family.png)',
+        backgroundImage: 'linear-gradient(rgba(26,58,62,0.82), rgba(26,58,62,0.82)), url(/footer-family.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        position: 'relative',
       }}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-[100px]">
