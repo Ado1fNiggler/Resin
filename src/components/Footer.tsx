@@ -59,9 +59,19 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      style={{ backgroundColor: '#1A3A3E' }}
+      style={{ backgroundColor: '#1A3A3E', position: 'relative', overflow: 'hidden' }}
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-[100px]">
+      {/* Subtle texture background */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        backgroundImage: 'url(/footer-texture.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.15,
+        pointerEvents: 'none',
+      }} />
+      <div className="max-w-[1400px] mx-auto px-6 md:px-[100px]" style={{ position: 'relative', zIndex: 1 }}>
         <div className="py-16 md:py-20">
           {/* Main columns */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-16 gap-y-10 mb-20">

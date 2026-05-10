@@ -404,6 +404,26 @@
 .cta {
   background: #214A4F;
   color: #FCFCFC;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/footer-texture.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta > * {
+  position: relative;
+  z-index: 1;
+}
   padding: 72px;
   display: grid;
   grid-template-columns: 1fr auto;
