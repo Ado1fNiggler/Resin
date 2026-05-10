@@ -59,7 +59,14 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      style={{ backgroundColor: '#1A3A3E' }}
+      style={{
+        backgroundColor: '#1A3A3E',
+        backgroundImage: 'url(/footer-family.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        position: 'relative',
+      }}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-[100px]">
         <div className="py-16 md:py-20">

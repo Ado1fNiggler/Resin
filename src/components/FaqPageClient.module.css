@@ -403,6 +403,10 @@
 /* ----- CTA Section ----- */
 .cta {
   background: #214A4F;
+  background-image: url('/footer-family.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #FCFCFC;
   padding: 72px;
   display: grid;
