@@ -39,7 +39,7 @@
 .heroTitle {
   font-family: Georgia, "Times New Roman", "Iowan Old Style", serif;
   font-weight: 400;
-  font-size: clamp(64px, 8.6vw, 148px);
+  font-size: clamp(42px, 5.5vw, 90px);
   line-height: 0.92;
   letter-spacing: -0.025em;
   margin: 0;
