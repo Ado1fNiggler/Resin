@@ -203,7 +203,7 @@ export default function FaqPageClient() {
           </motion.div>
 
           <motion.h1
-            className={`${narrenschiff.className} ${styles.heroTitle}`}
+            className={styles.heroTitle}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
