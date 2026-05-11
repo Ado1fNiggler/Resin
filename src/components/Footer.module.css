@@ -1,0 +1,83 @@
+/* ── Social Icons ── */
+.social {
+  display: flex;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.social li {
+  position: relative;
+  flex-basis: 44px;
+}
+
+/* Tooltip */
+.social li::after {
+  position: absolute;
+  content: attr(data-tooltip);
+  inset: -45% auto auto 50%;
+  z-index: 10;
+  translate: -50%;
+  padding: 0.2rem 0.6rem;
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  letter-spacing: 0.04em;
+  color: #FCFCFC;
+  background: var(--bg, #214A4F);
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: inset 0.4s cubic-bezier(0.47, 2, 0.41, 1.5),
+    visibility 0.3s ease-in-out,
+    opacity 0.2s ease-in-out;
+}
+
+.social li:has(a:hover)::after {
+  opacity: 1;
+  visibility: visible;
+  inset-block-start: -60%;
+}
+
+/* Icon button */
+.social a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(252, 252, 252, 0.45);
+  color: rgba(252, 252, 252, 0.9);
+  text-decoration: none;
+  overflow: hidden;
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.social a svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fill-from-bottom */
+.social a::after {
+  position: absolute;
+  content: "";
+  inset: 100% 0 0;
+  background: var(--bg, #7EC0C9);
+  pointer-events: none;
+  transition: inset 0.3s ease-in-out;
+}
+
+.social a:hover {
+  color: #FCFCFC;
+  border-color: transparent;
+}
+
+.social a:hover::after {
+  inset-block-start: 0;
+}
