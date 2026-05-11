@@ -144,12 +144,10 @@ export default function Footer() {
             {socialLinks.map((s, i) => (
               <motion.li
                 key={s.label}
-                data-tooltip={s.label}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.1 + i * 0.07 }}
-                style={{ '--bg': s.bg } as React.CSSProperties}
               >
                 <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
                   {s.icon}
