@@ -1,129 +1,279 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import localFont from 'next/font/local';
+import styles from './AboutPageClient.module.css';
 
-const narrenschiff = localFont({
-  src: [{ path: '../../public/fonts/Narrenschiff-Regular.otf', weight: '400', style: 'normal' }],
-  display: 'swap',
-  variable: '--font-narrenschiff',
-});
-
-const teal = '#214A4F';
-const offWhite = '#FCFCFC';
 const SIDEBAR_W = 75;
 
-const values = [
-  { title: 'Χειροποίητη Τέχνη', desc: 'Κάθε κομμάτι δημιουργείται με αφοσίωση στη λεπτομέρεια, χρησιμοποιώντας παραδοσιακές τεχνικές ξυλουργικής που συνδυάζονται με σύγχρονο design.' },
-  { title: 'Βιώσιμα Υλικά', desc: 'Επιλέγουμε μόνο πιστοποιημένα ξύλα και φυσικά υλικά, σεβόμενοι το περιβάλλον σε κάθε βήμα της παραγωγικής διαδικασίας.' },
-  { title: 'Ελληνική Παραγωγή', desc: 'Σχεδιάζουμε και κατασκευάζουμε στην Ελλάδα, υποστηρίζοντας την τοπική τεχνογνωσία και τη βιοτεχνική παράδοση.' },
-  { title: 'Προσωπική Εξυπηρέτηση', desc: 'Από τη σύλληψη της ιδέας ως την παράδοση, κάθε πελάτης μας απολαμβάνει εξατομικευμένη εξυπηρέτηση και συμβουλές.' },
+/* ── Reusable animation presets ── */
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 } as const,
+  viewport: { once: true },
+  transition: { duration: 0.9, ease: [0.2, 0.7, 0.2, 1] as const, delay },
+});
+
+const heroAnim = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 } as const,
+  transition: { duration: 0.9, ease: [0.2, 0.7, 0.2, 1] as const, delay },
+});
+
+/* ── Data ── */
+const stats = [
+  { num: '10',  suffix: '+' as const, label: ['χρόνια', 'εμπειρίας'] },
+  { num: '500', suffix: '+' as const, label: ['παραγγελίες', 'παραδομένες'] },
+  { num: '3',   suffix: null,         label: ['τεχνίτες', 'στο εργαστήριο'] },
+  { num: '100', suffix: '%' as const, label: ['μασίφ', 'ξύλο'] },
+];
+
+const team = [
+  {
+    name: 'Νίκος Βλαχάκης',
+    role: 'Founder · Master Joiner',
+    bio:  'Ξεκίνησε σε εργαστήριο του πατέρα του στα 14. Σπούδασε στη Φλωρεντία, επέστρεψε στην Αθήνα, άνοιξε τη Resin.',
+  },
+  {
+    name: 'Ελένη Παπαδάκη',
+    role: 'Designer · Wood Finisher',
+    bio:  'Σχεδιάζει με μολύβι, δοκιμάζει με τα δάχτυλα. Τα φινιρίσματα βερνικιού της είναι η υπογραφή της Resin.',
+  },
+  {
+    name: 'Δημήτρης Καραντίνος',
+    role: 'Cabinetmaker',
+    bio:  'Δέκα χρόνια δίπλα στον Νίκο. Ειδικός σε αρμούς χωρίς βίδα — μόνο ξύλο, κόλλα και υπομονή.',
+  },
 ];
 
 export default function AboutPageClient() {
   return (
-    <div style={{ paddingLeft: `${SIDEBAR_W}px` }}>
-      {/* Hero Section */}
-      <section style={{ position: 'relative', height: '70vh', overflow: 'hidden', background: teal }}>
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'url(/hero1.png)',
-          backgroundSize: 'cover', backgroundPosition: 'center',
-          opacity: 0.35,
-        }} />
-        <div style={{
-          position: 'relative', zIndex: 1, height: '100%',
-          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-          padding: '0 24px', textAlign: 'center',
-        }}>
-          <motion.h1
-            className={narrenschiff.className}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            style={{ fontSize: 'clamp(42px, 6vw, 72px)', color: offWhite, letterSpacing: '0.04em', marginBottom: '20px' }}
+    <div style={{ paddingLeft: SIDEBAR_W }}>
+
+      {/* ══════════════════════════════════════
+          1. HERO — 55/45 split
+      ══════════════════════════════════════ */}
+      <section className={styles.hero}>
+
+        {/* Left: wood-gradient image panel */}
+        <div className={styles.heroImage} role="img" aria-label="Workshop wood texture">
+          <div className={styles.heroCaption}>Workshop · Pagkrati</div>
+        </div>
+
+        {/* Right: dark teal text panel */}
+        <div className={styles.heroText}>
+          <span className={styles.heroCorner}>№ 01 — About</span>
+
+          <motion.div
+            className={styles.eyebrow}
+            style={{ marginBottom: 48 }}
+            {...heroAnim(0)}
           >
-            Σχετικά με εμάς
+            Athens · Est. 2014
+          </motion.div>
+
+          <motion.h1 className={styles.heroH1} {...heroAnim(0.1)}>
+            Η ιστορία <em>μας</em>
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            style={{ fontSize: '18px', color: 'rgba(252,252,252,0.7)', maxWidth: '600px', lineHeight: 1.7 }}
-          >
-            Δημιουργούμε χειροποίητα έπιπλα που μεταμορφώνουν τον χώρο σας σε κάτι μοναδικό.
+
+          <motion.p className={styles.heroSub} {...heroAnim(0.22)}>
+            Από το εργαστήριο στο σαλόνι σας — χειροποίητα, με αγάπη.
           </motion.p>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section style={{ padding: 'clamp(60px, 8vw, 120px) clamp(24px, 5vw, 100px)', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '60px', alignItems: 'center' }}>
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className={narrenschiff.className} style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', color: teal, marginBottom: '24px', letterSpacing: '0.02em' }}>
-              Η Ιστορία μας
-            </h2>
-            <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#5A5A5A', marginBottom: '16px' }}>
-              Η RESIN γεννήθηκε από την αγάπη για το ξύλο και την τέχνη του design. Από το πρώτο μας εργαστήριο,
-              δημιουργούμε έπιπλα που συνδυάζουν τη λιτότητα της Σκανδιναβικής αισθητικής με τη ζεστασιά
-              της ελληνικής παράδοσης.
-            </p>
-            <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#5A5A5A' }}>
-              Κάθε κομμάτι σχεδιάζεται με γνώμονα τη λειτουργικότητα, τη διάρκεια και την αισθητική αρτιότητα —
-              δημιουργώντας χώρους που εμπνέουν και αντέχουν στον χρόνο.
-            </p>
+      {/* ══════════════════════════════════════
+          2. STORY — pullquote + editorial body
+      ══════════════════════════════════════ */}
+      <section className={styles.story}>
+        <div className={styles.container}>
+
+          <motion.div className={styles.sectionMarker} {...fadeUp(0)}>
+            <span className={styles.num}>01</span> · Φιλοσοφία
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden', borderRadius: '4px' }}
-          >
-            <img src="/hero1.png" alt="RESIN Workshop" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </motion.div>
+
+          <div className={styles.storyGrid}>
+            <motion.div {...fadeUp(0)}>
+              <blockquote className={styles.pullquote}>
+                Πιστεύουμε ότι ένα έπιπλο δεν είναι απλώς αντικείμενο — είναι μια απόφαση για τη ζωή σου.
+                <span className={styles.attribution}>Resin · Athens</span>
+              </blockquote>
+            </motion.div>
+
+            <motion.div className={styles.storyBody} {...fadeUp(0.16)}>
+              <p className={styles.lede}>
+                Η Resin γεννήθηκε το 2014 σε ένα μικρό εργαστήριο στο Παγκράτι, με μία ξεκάθαρη πεποίθηση: το έπιπλο δεν είναι εμπόρευμα. Είναι σύντροφος.
+              </p>
+              <p>
+                Κάθε κομμάτι σχεδιάζεται και κατασκευάζεται με το χέρι, από μασίφ ευρωπαϊκή δρυ και καρυδιά. Δεν χρησιμοποιούμε MDF, δεν χρησιμοποιούμε καπλαμάδες· μόνο ξύλο που γερνά όμορφα και που μπορεί να συνταξιδέψει με τη ζωή σου για δεκαετίες.
+              </p>
+              <p>
+                Δουλεύουμε αργά, επειδή η ταχύτητα είναι ο εχθρός της λεπτομέρειας. Μία καρέκλα μπορεί να μας πάρει δύο εβδομάδες· ένα τραπέζι, έναν μήνα. Στο τέλος, αυτό που παραδίδουμε δεν είναι ένα προϊόν — είναι μια δουλειά υπογεγραμμένη με όνομα.
+              </p>
+            </motion.div>
+          </div>
+
         </div>
       </section>
 
-      {/* Values Grid */}
-      <section style={{ padding: 'clamp(60px, 8vw, 100px) clamp(24px, 5vw, 100px)', background: teal }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <motion.h2
-            className={narrenschiff.className}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', color: offWhite, marginBottom: '60px', textAlign: 'center', letterSpacing: '0.02em' }}
-          >
-            Οι αξίες μας
-          </motion.h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))', gap: '40px' }}>
-            {values.map((v, i) => (
-              <motion.div
-                key={v.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                style={{ padding: '32px', borderTop: '2px solid rgba(252,252,252,0.2)' }}
-              >
-                <h3 style={{ fontSize: '18px', fontWeight: 600, color: offWhite, marginBottom: '12px', letterSpacing: '0.02em' }}>
-                  {v.title}
-                </h3>
-                <p style={{ fontSize: '15px', lineHeight: 1.7, color: 'rgba(252,252,252,0.65)' }}>
-                  {v.desc}
-                </p>
+      {/* ══════════════════════════════════════
+          3. STATS — dark teal, 4 large numbers
+      ══════════════════════════════════════ */}
+      <section className={styles.stats}>
+        <div className={styles.container}>
+
+          <motion.div className={styles.statsHead} {...fadeUp(0)}>
+            <div
+              className={`${styles.eyebrow} ${styles.eyebrowCenter}`}
+              style={{ marginBottom: 24 }}
+            >
+              By the numbers · Με αριθμούς
+            </div>
+            <h2>Μια δεκαετία στο ίδιο πάγκο.</h2>
+          </motion.div>
+
+          <div className={styles.statsRow}>
+            {stats.map((s, i) => (
+              <motion.div key={s.num} className={styles.stat} {...fadeUp(i * 0.08)}>
+                <div className={styles.statRule} />
+                <div className={styles.statNum}>
+                  {s.num}
+                  {s.suffix === '+' && <span className={styles.plus}>+</span>}
+                  {s.suffix === '%' && <span className={styles.pct}>%</span>}
+                </div>
+                <div className={styles.statLabel}>
+                  {s.label[0]}<br />{s.label[1]}
+                </div>
               </motion.div>
             ))}
           </div>
+
         </div>
       </section>
+
+      {/* ══════════════════════════════════════
+          4. TEAM — 3 portrait cards
+      ══════════════════════════════════════ */}
+      <section className={styles.team}>
+        <div className={styles.container}>
+
+          <div className={styles.teamHead}>
+            <motion.h2 {...fadeUp(0)}>
+              Οι άνθρωποι πίσω<br />από κάθε <em>κομμάτι</em>.
+            </motion.h2>
+            <motion.p className={styles.teamIntro} {...fadeUp(0.08)}>
+              Τρεις τεχνίτες, ένα κοινό όνομα στο τέλος κάθε έργου. Η Resin είναι μικρή, εκ προθέσεως — γιατί η σχέση με τον πελάτη μετρά όσο και το ίδιο το έπιπλο.
+            </motion.p>
+          </div>
+
+          <div className={styles.teamGrid}>
+            {team.map((m, i) => (
+              <motion.article key={m.name} {...fadeUp(i * 0.08)}>
+                <div className={styles.memberImg}>
+                  <span className={styles.memberTag}>portrait</span>
+                </div>
+                <h3 className={styles.memberName}>{m.name}</h3>
+                <div className={styles.memberRole}>{m.role}</div>
+                <p className={styles.memberBio}>{m.bio}</p>
+              </motion.article>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          5. WORKSHOP — alternating image/text rows
+      ══════════════════════════════════════ */}
+      <section className={styles.workshop}>
+        <div className={styles.container}>
+
+          {/* Row 1 — Workshop */}
+          <div className={styles.row}>
+            <motion.div
+              className={`${styles.rowImg} ${styles.workshopTone}`}
+              {...fadeUp(0)}
+            >
+              <div className={styles.frame} />
+              <span className={styles.imgCorner}>Pagkrati · 200m²</span>
+            </motion.div>
+
+            <motion.div className={styles.rowText} {...fadeUp(0.1)}>
+              <span className={styles.rowBignum} aria-hidden="true">01</span>
+              <div className={styles.rowInner}>
+                <div className={styles.rowEyebrow}>Workshop</div>
+                <h3>Το <em>εργαστήριο</em>.</h3>
+                <p>
+                  Στο Παγκράτι, σε ένα νεοκλασικό του &lsquo;36, βρίσκεται το εργαστήριο. Φως από τα βόρεια παράθυρα, πάγκοι από καρυδιά γερασμένη πάνω από εικοσι χρόνια, εργαλεία που πέρασαν από δυο γενιές.
+                </p>
+                <p>
+                  Δεν είναι μουσείο — είναι ένας ζωντανός χώρος όπου ο ήχος του πλάνου και η μυρωδιά του ξύλου ορίζουν τη μέρα. Κάθε πελάτης που το επιθυμεί, είναι ευπρόσδεκτος να δει το έπιπλό του να γεννιέται.
+                </p>
+                <div className={styles.rowMeta}>
+                  <div>Σημείο<strong>Παγκράτι, Αθήνα</strong></div>
+                  <div>Εμβαδόν<strong>200 τ.μ.</strong></div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Row 2 — Materials (reversed) */}
+          <div className={`${styles.row} ${styles.rowReverse}`}>
+            <motion.div
+              className={`${styles.rowImg} ${styles.materialsTone}`}
+              {...fadeUp(0)}
+            >
+              <div className={styles.frame} />
+              <span className={styles.imgCorner}>European oak · walnut</span>
+            </motion.div>
+
+            <motion.div className={styles.rowText} {...fadeUp(0.1)}>
+              <span className={styles.rowBignum} aria-hidden="true">02</span>
+              <div className={styles.rowInner}>
+                <div className={styles.rowEyebrow}>Materials</div>
+                <h3>Τα <em>υλικά</em>.</h3>
+                <p>
+                  Δουλεύουμε αποκλειστικά με ευρωπαϊκή δρυ και καρυδιά, από βιώσιμα διαχειριζόμενα δάση της Γαλλίας και της Σλοβενίας. Κάθε σανίδα φτάνει στο εργαστήριο μετά από φυσική ξήρανση τουλάχιστον τριών ετών.
+                </p>
+                <p>
+                  Επιλέγουμε ένα-ένα τα κομμάτια· κρατάμε όσα έχουν χαρακτήρα — ρόζους, νερά, μικρές ατέλειες που μαρτυρούν τη ζωή του δέντρου. Λαδώνουμε με φυσικά έλαια· καθόλου χημικά βερνίκια.
+                </p>
+                <div className={styles.rowMeta}>
+                  <div>Είδη<strong>Oak · Walnut</strong></div>
+                  <div>Φινίρισμα<strong>Φυσικά έλαια</strong></div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          6. CTA — showroom booking strip
+      ══════════════════════════════════════ */}
+      <section className={styles.cta}>
+        <div className={styles.container}>
+          <div className={styles.ctaInner}>
+
+            <motion.div className={styles.ctaText} {...fadeUp(0)}>
+              <div className={styles.eyebrow} style={{ marginBottom: 24 }}>
+                Showroom · Με ραντεβού
+              </div>
+              <h2>Επισκεφτείτε το <em>showroom</em> μας.</h2>
+              <div className={styles.ctaAddr}>
+                Πλατεία Πλαστήρα 12, Παγκράτι · Δευτέρα–Σάββατο, 10:00–19:00
+              </div>
+            </motion.div>
+
+            <motion.a href="/contact" className={styles.btn} {...fadeUp(0.1)}>
+              Κλείστε ραντεβού
+              <span className={styles.btnArrow} aria-hidden="true" />
+            </motion.a>
+
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
