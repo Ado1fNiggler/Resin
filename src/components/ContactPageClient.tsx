@@ -1,147 +1,246 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useState } from 'react';
-import localFont from 'next/font/local';
+import { motion } from 'framer-motion';
+import styles from './ContactPageClient.module.css';
 
-const narrenschiff = localFont({
-  src: [{ path: '../../public/fonts/Narrenschiff-Regular.otf', weight: '400', style: 'normal' }],
-  display: 'swap',
-  variable: '--font-narrenschiff',
+const reveal = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 } as const,
+  viewport: { once: true },
+  transition: { duration: 0.7, ease: [0.2, 0.7, 0.2, 1] as const, delay },
 });
 
-const teal = '#214A4F';
-const offWhite = '#FCFCFC';
-const SIDEBAR_W = 75;
-
-const contactInfo = [
-  { label: 'Email', value: 'info@resin.gr', icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
-  { label: 'Τηλέφωνο', value: '+30 210 1234567', icon: 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z' },
-  { label: 'Διεύθυνση', value: 'Λεωφ. Κηφισίας 100, Αθήνα 11526', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
-  { label: 'Ωράριο', value: 'Δευ-Παρ: 10:00–19:00, Σάβ: 10:00–15:00', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
-];
-
-function InputField({ label, type = 'text', rows }: { label: string; type?: string; rows?: number }) {
-  const [focused, setFocused] = useState(false);
-  const isTextarea = !!rows;
-
-  const sharedStyle = {
-    width: '100%', padding: '14px 0', fontSize: '15px', color: teal,
-    background: 'transparent', border: 'none', borderBottom: `1px solid ${focused ? teal : 'rgba(33,74,79,0.2)'}`,
-    outline: 'none', transition: 'border-color 0.3s', resize: 'none' as const,
-    fontFamily: 'inherit',
-  };
-
-  return (
-    <div style={{ marginBottom: '32px' }}>
-      <label style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: focused ? teal : '#8A8A8A', transition: 'color 0.3s', display: 'block', marginBottom: '4px' }}>
-        {label}
-      </label>
-      {isTextarea ? (
-        <textarea rows={rows} style={sharedStyle} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
-      ) : (
-        <input type={type} style={sharedStyle} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
-      )}
-    </div>
-  );
-}
-
 export default function ContactPageClient() {
+  const [sent, setSent] = useState(false);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSent(true);
+  }
+
   return (
-    <div style={{ paddingLeft: `${SIDEBAR_W}px` }}>
-      {/* Hero */}
-      <section style={{ padding: 'clamp(120px, 15vw, 200px) clamp(24px, 5vw, 100px) clamp(60px, 8vw, 100px)', textAlign: 'center', background: teal }}>
-        <motion.h1
-          className={narrenschiff.className}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          style={{ fontSize: 'clamp(42px, 6vw, 72px)', color: offWhite, letterSpacing: '0.04em', marginBottom: '20px' }}
-        >
-          Επικοινωνία
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          style={{ fontSize: '18px', color: 'rgba(252,252,252,0.7)', maxWidth: '500px', margin: '0 auto', lineHeight: 1.7 }}
-        >
-          Θα χαρούμε να ακούσουμε τις ιδέες σας. Επικοινωνήστε μαζί μας.
-        </motion.p>
-      </section>
+    <div className={styles.page}>
 
-      {/* Content */}
-      <section style={{ padding: 'clamp(60px, 8vw, 100px) clamp(24px, 5vw, 100px)', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 400px), 1fr))', gap: '80px' }}>
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-          >
-            <h2 className={narrenschiff.className} style={{ fontSize: 'clamp(24px, 3vw, 36px)', color: teal, marginBottom: '40px', letterSpacing: '0.02em' }}>
-              Στείλτε μας μήνυμα
-            </h2>
-            <form onSubmit={(e) => e.preventDefault()}>
-              <InputField label="Ονοματεπώνυμο" />
-              <InputField label="Email" type="email" />
-              <InputField label="Τηλέφωνο" type="tel" />
-              <InputField label="Μήνυμα" rows={4} />
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                style={{
-                  padding: '16px 48px', background: teal, color: offWhite, border: 'none', cursor: 'pointer',
-                  fontSize: '13px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
-                  transition: 'opacity 0.3s', marginTop: '8px',
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.85'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
-              >
-                Αποστολή
-              </motion.button>
-            </form>
+      {/* ══ 1. HERO ══ */}
+      <section className={styles.hero}>
+
+        {/* Left — teal panel */}
+        <div className={styles.heroLeft}>
+          <span className={styles.cornerLabel}>
+            <span className={styles.num}>№ 05</span>— Contact
+          </span>
+
+          <motion.div {...reveal(0)}>
+            <span className={styles.eyebrow}>ΕΠΙΚΟΙΝΩΝΙΑ</span>
+            <h1 className={styles.heroHeading}>
+              Ελάτε να<br /><em>μιλήσουμε.</em>
+            </h1>
+            <p className={styles.heroSub}>
+              Showroom με ραντεβού — Δευτέρα–Σάββατο, 10:00–19:00.
+              Παρουσιάζουμε τη συλλογή και κάθε παραγγελία ξεκινά με μια ήρεμη συζήτηση.
+            </p>
           </motion.div>
 
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-          >
-            <h2 className={narrenschiff.className} style={{ fontSize: 'clamp(24px, 3vw, 36px)', color: teal, marginBottom: '40px', letterSpacing: '0.02em' }}>
-              Στοιχεία Επικοινωνίας
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-              {contactInfo.map((info, i) => (
-                <motion.div
-                  key={info.label}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-                  style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px', opacity: 0.6 }}>
-                    <path d={info.icon} />
-                  </svg>
-                  <div>
-                    <div style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#8A8A8A', marginBottom: '4px' }}>
-                      {info.label}
-                    </div>
-                    <div style={{ fontSize: '15px', color: teal, lineHeight: 1.5 }}>
-                      {info.value}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          <div className={styles.heroFoot}>
+            <span>Athens · GR</span>
+            <span className={styles.est}>Est. MMXIV</span>
+            <span>Atelier № 12</span>
+          </div>
+        </div>
+
+        {/* Right — map placeholder */}
+        <div className={styles.heroRight} aria-hidden="true">
+          <div className={styles.map} />
+
+          <div className={styles.mapMeta}>
+            <span>37.9665° N</span>
+            <span className={styles.sep}>·</span>
+            <span>23.7470° E</span>
+          </div>
+
+          <div className={styles.pin}>
+            <div className={styles.ring} />
+            <div className={`${styles.ring} ${styles.ringMid}`} />
+            <div className={`${styles.ring} ${styles.ringInner}`} />
+            <div className={styles.cross} />
+            <div className={`${styles.cross} ${styles.crossH}`} />
+            <div className={styles.pulse} />
+            <div className={styles.pinDot} />
+          </div>
+
+          <div className={styles.mapCaption}>
+            <span>Πλατεία Πλαστήρα 12 · Παγκράτι</span>
+          </div>
         </div>
       </section>
+
+      {/* ══ 2. FORM SECTION ══ */}
+      <section className={styles.formSection}>
+        <div className={styles.container}>
+          <div className={styles.formGrid}>
+
+            {/* Aside */}
+            <motion.div {...reveal(0)}>
+              <span className={styles.sectionMarker}>
+                <span className={styles.num}>02</span>
+                <span>·</span>
+                <span>Φόρμα</span>
+              </span>
+              <h2 className={styles.formHeading}>
+                Στείλτε μας <em>μήνυμα.</em>
+              </h2>
+              <p className={styles.formAsideNote}>
+                Απαντάμε προσωπικά εντός δύο εργάσιμων ημερών. Για παραγγελίες κατά
+                παραγγελία, σας προτείνουμε να κλείσετε ραντεβού στο showroom μας
+                στο Παγκράτι.
+              </p>
+              <dl className={styles.formAsideMeta}>
+                <div>
+                  <dt>Απάντηση</dt>
+                  <dd>έως 48 ώρες</dd>
+                </div>
+                <div>
+                  <dt>Γλώσσες</dt>
+                  <dd>EL · EN · FR</dd>
+                </div>
+                <div>
+                  <dt>Παράδοση</dt>
+                  <dd>10–14 εβδομάδες</dd>
+                </div>
+              </dl>
+            </motion.div>
+
+            {/* Form */}
+            <motion.div {...reveal(0.1)}>
+              {sent ? (
+                <div className={styles.sentState}>
+                  <h3>Το μήνυμά σας στάλθηκε.</h3>
+                  <p>Θα επικοινωνήσουμε μαζί σας εντός δύο εργάσιμων ημερών.</p>
+                </div>
+              ) : (
+                <form className={styles.form} noValidate onSubmit={handleSubmit}>
+                  <div className={styles.row2}>
+                    <div className={styles.field}>
+                      <input id="name" name="name" type="text" placeholder=" " autoComplete="name" />
+                      <label htmlFor="name">Όνομα</label>
+                    </div>
+                    <div className={styles.field}>
+                      <input id="email" name="email" type="email" placeholder=" " autoComplete="email" />
+                      <label htmlFor="email">Email</label>
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <input id="phone" name="phone" type="tel" placeholder=" " autoComplete="tel" />
+                    <label htmlFor="phone">
+                      Τηλέφωνο<span className={styles.opt}>προαιρετικό</span>
+                    </label>
+                  </div>
+
+                  <div className={styles.field}>
+                    <textarea id="message" name="message" rows={5} placeholder=" " />
+                    <label htmlFor="message">Μήνυμα</label>
+                  </div>
+
+                  <button type="submit" className={styles.submit}>
+                    <span>Αποστολή μηνύματος</span>
+                    <span className={styles.submitArrow} aria-hidden="true">
+                      <svg width="42" height="10" viewBox="0 0 42 10" fill="none">
+                        <path d="M0 5H40M40 5L36 1M40 5L36 9" stroke="currentColor" strokeWidth="1.2" />
+                      </svg>
+                    </span>
+                  </button>
+
+                  <p className={styles.formConsent}>
+                    Με την αποστολή αποδέχεστε την{' '}
+                    <a href="#">πολιτική απορρήτου</a> μας.
+                  </p>
+                </form>
+              )}
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ══ 3. INFO STRIP ══ */}
+      <section className={styles.infoStrip}>
+        <div className={styles.container}>
+          <div className={styles.infoGrid}>
+
+            <motion.div className={styles.infoCol} {...reveal(0)}>
+              <span className={styles.rule} />
+              <div className={styles.label}>Showroom</div>
+              <div className={styles.value}>
+                Πλατεία Πλαστήρα 12,<br />Παγκράτι, Αθήνα
+              </div>
+            </motion.div>
+
+            <motion.div className={styles.infoCol} {...reveal(0.06)}>
+              <span className={styles.rule} />
+              <div className={styles.label}>Ώρες λειτουργίας</div>
+              <div className={styles.value}>
+                Δευτέρα – Σάββατο<span className={styles.sep}>·</span><br />10:00 – 19:00
+              </div>
+            </motion.div>
+
+            <motion.div className={styles.infoCol} {...reveal(0.12)}>
+              <span className={styles.rule} />
+              <div className={styles.label}>Επικοινωνία</div>
+              <div className={styles.value}>
+                <a href="mailto:hello@resin.gr">hello@resin.gr</a>
+                <span className={styles.sep}>·</span><br />
+                +30 210 000 0000
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ══ 4. WORKSHOP ROW ══ */}
+      <section className={styles.workshop}>
+        <div className={styles.container}>
+          <div className={styles.workshopGrid}>
+
+            <motion.div
+              className={styles.workshopImage}
+              aria-label="Φωτογραφία εργαστηρίου"
+              {...reveal(0)}
+            >
+              <span className={styles.imgNum}>№ 04</span>
+              <span className={styles.imgTag}>Atelier · Παγκράτι</span>
+            </motion.div>
+
+            <motion.div className={styles.workshopText} {...reveal(0.1)}>
+              <span className={styles.eyebrowDark}>Workshop</span>
+              <h2>
+                Επισκεφτείτε <br />το <em>εργαστήριο.</em>
+              </h2>
+              <p>
+                Το εργαστήριό μας στεγάζεται σε ένα παλιό βιοτεχνικό κτίριο του &apos;50,
+                λίγα μέτρα πίσω από το showroom. Εκεί κόβονται, αρμολογούνται και
+                φινίρονται όλα τα κομμάτια στο χέρι, από έξι μαστόρους.
+              </p>
+              <p>
+                Κλείστε ραντεβού για μια ιδιωτική ξενάγηση και δείτε από κοντά το ξύλο,
+                τα εργαλεία και τις δοκιμές χρωμάτων. Διαθέτουμε ώρες κάθε Πέμπτη
+                απόγευμα και Σάββατο πρωί.
+              </p>
+              <blockquote className={styles.quote}>
+                Κάθε πελάτης είναι ευπρόσδεκτος να δει το έπιπλό του να γεννιέται.
+              </blockquote>
+              <div className={styles.quoteAttribution}>
+                <span className={styles.num}>— Δ.Π.</span>
+                <span>Founder &amp; Master Craftsman</span>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
