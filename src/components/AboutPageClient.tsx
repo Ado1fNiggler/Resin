@@ -54,8 +54,18 @@ export default function AboutPageClient() {
       ══════════════════════════════════════ */}
       <section className={styles.hero}>
 
-        {/* Left: wood-gradient image panel */}
-        <div className={styles.heroImage} role="img" aria-label="Workshop wood texture">
+        {/* Left: video panel */}
+        <div className={styles.heroImage}>
+          <video
+            className={styles.heroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          >
+            <source src="/about-hero.mp4" type="video/mp4" />
+          </video>
           <div className={styles.heroCaption}>Workshop · Pagkrati</div>
         </div>
 
