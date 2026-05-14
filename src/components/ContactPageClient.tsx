@@ -49,24 +49,22 @@ export default function ContactPageClient() {
           </div>
         </div>
 
-        {/* Right — map placeholder */}
-        <div className={styles.heroRight} aria-hidden="true">
-          <div className={styles.map} />
+        {/* Right — Google Maps embed */}
+        <div className={styles.heroRight}>
+          <iframe
+            className={styles.mapIframe}
+            src="https://maps.google.com/maps?q=37.9665,23.7470&z=16&output=embed"
+            title="Resin Atelier — Πλατεία Πλαστήρα 12, Παγκράτι"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          <div className={styles.mapOverlay} aria-hidden="true" />
 
           <div className={styles.mapMeta}>
             <span>37.9665° N</span>
             <span className={styles.sep}>·</span>
             <span>23.7470° E</span>
-          </div>
-
-          <div className={styles.pin}>
-            <div className={styles.ring} />
-            <div className={`${styles.ring} ${styles.ringMid}`} />
-            <div className={`${styles.ring} ${styles.ringInner}`} />
-            <div className={styles.cross} />
-            <div className={`${styles.cross} ${styles.crossH}`} />
-            <div className={styles.pulse} />
-            <div className={styles.pinDot} />
           </div>
 
           <div className={styles.mapCaption}>
@@ -206,9 +204,11 @@ export default function ContactPageClient() {
 
             <motion.div
               className={styles.workshopImage}
-              aria-label="Φωτογραφία εργαστηρίου"
+              aria-label="Εξωτερικό εργαστηρίου Resin, Παγκράτι"
               {...reveal(0)}
             >
+              {/* Photo dropped into /public/contact-workshop-ext.jpg */}
+              <img src="/contact-workshop-ext.jpg" alt="Εξωτερικό εργαστηρίου" />
               <span className={styles.imgNum}>№ 04</span>
               <span className={styles.imgTag}>Atelier · Παγκράτι</span>
             </motion.div>
