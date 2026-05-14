@@ -193,7 +193,7 @@
   font-size: 10.5px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(29, 42, 44, 0.5);
+  color: #7EC0C9;
   margin-bottom: 12px;
 }
 
@@ -235,6 +235,7 @@
 
 .price {
   font-family: Georgia, serif;
+  font-style: italic;
   color: #C9A078;
   font-size: 18px;
   letter-spacing: 0.01em;
@@ -262,6 +263,7 @@
 
 .ctaArrow {
   display: inline-block;
+  color: #C9A078;
   transition: transform 0.25s ease;
 }
 
