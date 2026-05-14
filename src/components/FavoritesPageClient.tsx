@@ -1,195 +1,190 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import localFont from 'next/font/local';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/context/StoreContext';
-import { allProducts, categories } from '@/data/products';
+import { allProducts } from '@/data/products';
 import styles from './FavoritesPageClient.module.css';
 
-const narrenschiff = localFont({
-  src: [{ path: '../../public/fonts/Narrenschiff-Regular.otf', weight: '400', style: 'normal' }],
-  display: 'swap',
-  variable: '--font-narrenschiff',
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  animate: { opacity: 1, y: 0 } as const,
+  transition: { duration: 0.7, ease: [0.2, 0.7, 0.2, 1] as const, delay },
 });
 
-const dihjauti = localFont({
-  src: [{ path: '../../public/fonts/Dihjauti-Bold.otf', weight: '700', style: 'normal' }],
-  display: 'swap',
-  variable: '--font-dihjauti',
-});
+/* Pad index to N°.01 format */
+const formatIndex = (n: number) => `N°.${String(n).padStart(2, '0')}`;
 
-const slowEase = [0.16, 1, 0.3, 1] as const;
-
-const featured = ['aurora', 'lyra', 'kronion', 'theron', 'agora', 'elara']
-  .map(slug => allProducts.find(p => p.slug === slug))
-  .filter(Boolean) as typeof allProducts;
+/* Look up category name from products data */
+const getCategoryName = (slug: string) =>
+  allProducts.find(p => p.slug === slug)?.categoryName ?? '';
 
 export default function FavoritesPageClient() {
   const router = useRouter();
   const { favorites, removeFavorite, addToCart } = useStore();
+  const [activeFilter, setActiveFilter] = useState('Όλα');
+
+  /* Derive unique categories from current favorites */
+  const categories = ['Όλα', ...Array.from(
+    new Set(favorites.map(f => getCategoryName(f.slug)).filter(Boolean))
+  )];
+
+  const filtered = activeFilter === 'Όλα'
+    ? favorites
+    : favorites.filter(f => getCategoryName(f.slug) === activeFilter);
+
+  const count = favorites.length;
 
   return (
     <div className={styles.pageWrapper}>
-      {/* Hero */}
-      <section className={styles.hero}>
-        <motion.h1
-          className={`${narrenschiff.className} ${styles.heroTitle}`}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: slowEase }}
-        >
-          Αγαπημένα
+
+      {/* ══ HEADER ══ */}
+      <header className={styles.pageHeader}>
+        <motion.div className={styles.eyebrow} {...fadeUp(0)}>
+          <span className={styles.eyebrowRule} />
+          <span className={styles.eyebrowLabel}>ΑΠΟΘΗΚΕΥΜΕΝΑ</span>
+        </motion.div>
+
+        <motion.h1 className={styles.title} {...fadeUp(0.06)}>
+          Τα αγαπημένα<br />σας.
         </motion.h1>
-        <motion.p
-          className={styles.heroSubtitle}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          {favorites.length === 0
-            ? 'Αποθηκεύστε τα αγαπημένα σας κομμάτια για εύκολη πρόσβαση αργότερα.'
-            : `${favorites.length} ${favorites.length === 1 ? 'αποθηκευμένο προϊόν' : 'αποθηκευμένα προϊόντα'}`}
+
+        <motion.p className={styles.subtitle} {...fadeUp(0.12)}>
+          <span className={styles.count}>{count}</span>{' '}
+          {count === 1 ? 'κομμάτι αποθηκευμένο' : 'κομμάτια αποθηκευμένα'}{' '}
+          — επιλεγμένα από τη συλλογή του εργαστηρίου.
         </motion.p>
-      </section>
 
-      {favorites.length === 0 ? (
-        <>
-          {/* ── Empty State ── */}
-          <section className={styles.emptySection}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#214A4F" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 28px', opacity: 0.2, display: 'block' }}>
-                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-              </svg>
-              <h2 className={styles.emptyTitle}>Δεν έχετε αγαπημένα ακόμα</h2>
-              <p className={styles.emptyText}>
-                Πατήστε το εικονίδιο καρδιάς σε οποιοδήποτε προϊόν για να το αποθηκεύσετε εδώ.
+        {count > 0 && (
+          <motion.div className={styles.toolbar} {...fadeUp(0.18)}>
+            <div className={styles.toolbarLeft}>
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  className={`${styles.toolbarBtn} ${activeFilter === cat ? styles.toolbarBtnActive : ''}`}
+                  onClick={() => setActiveFilter(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            <span className={styles.toolbarRight}>
+              {filtered.length} {filtered.length === 1 ? 'αποτέλεσμα' : 'αποτελέσματα'}
+            </span>
+          </motion.div>
+        )}
+      </header>
+
+      {/* ══ GRID or EMPTY ══ */}
+      {count === 0 ? (
+        <section className={styles.emptySection}>
+          <motion.div className={styles.emptyWrap} {...fadeUp(0.2)}>
+            <div className={styles.emptyZero} aria-hidden="true">0</div>
+            <div className={styles.emptyContent}>
+              <div className={styles.emptyRule} />
+              <p className={styles.emptyMsg}>
+                Δεν έχετε αποθηκεύσει κομμάτια ακόμα.
               </p>
-            </motion.div>
-          </section>
-
-          {/* ── Categories Strip ── */}
-          <section className={styles.categoriesSection}>
-            <motion.p
-              className={styles.categoriesEyebrow}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-            >
-              Εξερευνήστε τις κατηγορίες
-            </motion.p>
-            <div className={styles.categoriesRow}>
-              {categories.filter(c => c.slug !== 'custom-orders').map((cat, i) => (
-                <motion.div
-                  key={cat.slug}
-                  className={styles.catCard}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.55 + i * 0.08, ease: slowEase }}
-                  onClick={() => router.push(`/category/${cat.slug}`)}
-                >
-                  <div className={styles.catImageWrap}>
-                    <img src={cat.heroImage} alt={cat.name} className={styles.catImage} />
-                    <div className={styles.catOverlay} />
-                    <span className={`${narrenschiff.className} ${styles.catName}`}>{cat.name}</span>
-                  </div>
-                </motion.div>
-              ))}
+              <a href="/category/armchairs" className={styles.emptyLink}>
+                Εξερευνήστε τη συλλογή <span>→</span>
+              </a>
             </div>
-          </section>
-
-          {/* ── Featured Products ── */}
-          <section className={styles.featuredSection}>
-            <motion.div
-              className={styles.featuredHeader}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9, ease: slowEase }}
-            >
-              <p className={styles.featuredEyebrow}>Νέες αφίξεις</p>
-              <h2 className={`${narrenschiff.className} ${styles.featuredTitle}`}>Γνωρίστε τη συλλογή</h2>
-            </motion.div>
-            <div className={styles.featuredGrid}>
-              {featured.map((product, i) => (
-                <motion.div
-                  key={product.slug}
-                  className={styles.featCard}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 1.0 + i * 0.09, ease: slowEase }}
-                  onClick={() => router.push(`/product/${product.slug}`)}
-                >
-                  <div className={styles.featImageWrap}>
-                    <img src={product.images['natural-oak']} alt={product.name} className={styles.featImage} />
-                    <div className={styles.featOverlay}>
-                      <span className={styles.featOverlayText}>Προβολή</span>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCFCFC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                      </svg>
-                    </div>
-                  </div>
-                  <p className={styles.featCategory}>{product.categoryName}</p>
-                  <h3 className={styles.featName}>{product.name}</h3>
-                  <p className={styles.featPrice}>
-                    {product.price.match(/^\d/) ? `Από ${product.price}€` : product.price}
-                  </p>
-                  <button
-                    className={`${dihjauti.className} ${styles.featBtn}`}
-                    onClick={(e) => { e.stopPropagation(); router.push(`/product/${product.slug}`); }}
-                  >
-                    Προσαρμογή
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7" /></svg>
-                  </button>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        </>
+          </motion.div>
+        </section>
       ) : (
-        /* ── Favorites Grid ── */
         <section className={styles.gridSection}>
           <div className={styles.grid}>
-            {favorites.map((item, i) => (
-              <motion.div
-                key={item.slug}
-                className={styles.card}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-              >
-                <div className={styles.imageWrap} onClick={() => router.push(`/product/${item.slug}`)}>
-                  <img src={item.image} alt={item.name} className={styles.productImage} />
-                  <button
-                    className={styles.heartBtn}
-                    onClick={(e) => { e.stopPropagation(); removeFavorite(item.slug); }}
+            <AnimatePresence mode="popLayout">
+              {filtered.map((item, i) => (
+                <motion.article
+                  key={item.slug}
+                  className={styles.card}
+                  initial={{ opacity: 0, y: 28 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12, transition: { duration: 0.35 } }}
+                  transition={{ duration: 0.5, ease: [0.2, 0.7, 0.2, 1], delay: i * 0.06 }}
+                  layout
+                >
+                  {/* Image */}
+                  <div
+                    className={styles.media}
+                    onClick={() => router.push(`/product/${item.slug}`)}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#214A4F" stroke="#214A4F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                    </svg>
-                  </button>
-                </div>
-                <p className={styles.productName}>{item.name}</p>
-                <p className={styles.productPrice}>€ {item.price}</p>
-                <div className={styles.cardActions}>
-                  <a href={`/product/${item.slug}`} className={styles.viewLink} onClick={(e) => { e.preventDefault(); router.push(`/product/${item.slug}`); }}>
-                    Προβολή
-                  </a>
-                  <button
-                    className={styles.addCartBtn}
-                    onClick={() => addToCart({ slug: item.slug, name: item.name, price: item.price, image: item.image, finish: 'Dark Walnut', fabric: 'Wheat' })}
-                  >
-                    Στο Καλάθι
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className={styles.productImage}
+                    />
+
+                    {/* Heart — remove from favorites */}
+                    <button
+                      className={styles.heart}
+                      aria-label="Αφαίρεση από αγαπημένα"
+                      onClick={(e) => { e.stopPropagation(); removeFavorite(item.slug); }}
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path d="M12 21s-7.5-4.5-9.5-9.5C1 7.5 4 4 7.5 4c2 0 3.5 1 4.5 2.5C13 5 14.5 4 16.5 4 20 4 23 7.5 21.5 11.5 19.5 16.5 12 21 12 21z" />
+                      </svg>
+                    </button>
+
+                    <span className={styles.index}>{formatIndex(i + 1)}</span>
+                  </div>
+
+                  {/* Body */}
+                  <div className={styles.body}>
+                    <div className={styles.category}>
+                      {getCategoryName(item.slug)}
+                    </div>
+                    <span className={styles.name}>{item.name}</span>
+                    <div className={styles.meta}>
+                      <span className={styles.price}>€ {item.price}</span>
+                      <button
+                        className={styles.cta}
+                        onClick={() => addToCart({
+                          slug: item.slug,
+                          name: item.name,
+                          price: item.price,
+                          image: item.image,
+                          finish: 'Dark Walnut',
+                          fabric: 'Wheat',
+                        })}
+                      >
+                        Στο καλάθι <span className={styles.ctaArrow}>→</span>
+                      </button>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </AnimatePresence>
           </div>
         </section>
       )}
+
+      {/* ══ EDITORIAL STRIP ══ */}
+      <motion.section
+        className={styles.editorialStrip}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+      >
+        <div className={styles.stripEyebrow}>
+          <span className={styles.stripEyebrowRule} />
+          ΕΞΑΤΟΜΙΚΕΥΣΗ
+        </div>
+        <div className={styles.stripInner}>
+          <h2 className={styles.stripHeading}>
+            Χρειάζεστε βοήθεια να επιλέξετε;
+            <em>Μιλήστε με έναν τεχνίτη.</em>
+          </h2>
+          <a href="/contact" className={styles.stripCta}>
+            <span>Επικοινωνία</span>
+            <span className={styles.stripArrow}>→</span>
+          </a>
+        </div>
+      </motion.section>
+
     </div>
   );
 }
