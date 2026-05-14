@@ -425,8 +425,7 @@
 
 .submit {
   margin-top: 40px;
-  width: auto;
-  align-self: flex-start;
+  justify-self: start;
   background: #C9A078;
   color: #214A4F;
   border: none;
@@ -435,7 +434,7 @@
   font-size: 11px;
   letter-spacing: 0.38em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
