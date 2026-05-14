@@ -17,7 +17,7 @@ export default function NewsletterSection() {
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(/background.png)` }}
+        style={{ backgroundImage: `url(/background.webp)` }}
       />
       {/* Dark overlay to keep text readable */}
       <div className="absolute inset-0" style={{ backgroundColor: 'rgba(33,74,79,0.75)' }} />

@@ -11,9 +11,9 @@ interface WoodSwatch {
 }
 
 const woodSwatches: WoodSwatch[] = [
-  { name: 'natural-oak', image: '/wood1.png' },
-  { name: 'caramel-walnut', image: '/wood3.png' },
-  { name: 'dark-walnut', image: '/wood2.png' },
+  { name: 'natural-oak', image: '/wood1.webp' },
+  { name: 'caramel-walnut', image: '/wood3.webp' },
+  { name: 'dark-walnut', image: '/wood2.webp' },
 ];
 
 interface Product {

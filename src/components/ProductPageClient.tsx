@@ -23,9 +23,9 @@ const dihjauti = localFont({
 
 /* ── Wood finish swatches ── */
 const woodSwatches = [
-  { name: 'natural-oak', label: 'Natural Oak', image: '/wood1.png' },
-  { name: 'caramel-walnut', label: 'Caramel Walnut', image: '/wood3.png' },
-  { name: 'dark-walnut', label: 'Dark Walnut', image: '/wood2.png' },
+  { name: 'natural-oak', label: 'Natural Oak', image: '/wood1.webp' },
+  { name: 'caramel-walnut', label: 'Caramel Walnut', image: '/wood3.webp' },
+  { name: 'dark-walnut', label: 'Dark Walnut', image: '/wood2.webp' },
 ];
 
 /* ── Fabric swatches ── */
@@ -291,7 +291,7 @@ export default function ProductPageClient({ product }: { product: ProductData })
                   {/* Fabric strip */}
                   <div className={styles.fabricStrip}>
                     <img
-                      src="/textures.png"
+                      src="/textures.webp"
                       alt="Fabric textures"
                       className={styles.fabricStripImage}
                     />

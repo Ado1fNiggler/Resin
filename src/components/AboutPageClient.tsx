@@ -32,19 +32,19 @@ const team = [
     name: 'Νίκος Βλαχάκης',
     role: 'Founder · Master Joiner',
     bio:  'Ξεκίνησε σε εργαστήριο του πατέρα του στα 14. Σπούδασε στη Φλωρεντία, επέστρεψε στην Αθήνα, άνοιξε τη Resin.',
-    img:  '/about-team-1.jpg',
+    img:  '/about-team-1.webp',
   },
   {
     name: 'Στέφανος Παπαδάκης',
     role: 'Designer · Wood Finisher',
     bio:  'Σχεδιάζει με μολύβι, δοκιμάζει με τα δάχτυλα. Τα φινιρίσματα βερνικιού του είναι η υπογραφή της Resin.',
-    img:  '/about-team-2.jpg',
+    img:  '/about-team-2.webp',
   },
   {
     name: 'Δημήτρης Καραντίνος',
     role: 'Cabinetmaker',
     bio:  'Δέκα χρόνια δίπλα στον Νίκο. Ειδικός σε αρμούς χωρίς βίδα — μόνο ξύλο, κόλλα και υπομονή.',
-    img:  '/about-team-3.jpg',
+    img:  '/about-team-3.webp',
   },
 ];
 
@@ -203,7 +203,7 @@ export default function AboutPageClient() {
           {/* Row 1 — Workshop */}
           <div className={styles.row}>
             <motion.div className={styles.rowImg} {...fadeUp(0)}>
-              <img src="/about-workshop.jpg" alt="Εργαστήριο Resin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/about-workshop.webp" alt="Εργαστήριο Resin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               <div className={styles.frame} />
               <span className={styles.imgCorner}>Pagkrati · 200m²</span>
             </motion.div>
@@ -230,7 +230,7 @@ export default function AboutPageClient() {
           {/* Row 2 — Materials (reversed) */}
           <div className={`${styles.row} ${styles.rowReverse}`}>
             <motion.div className={styles.rowImg} {...fadeUp(0)}>
-              <img src="/about-materials.jpg" alt="Υλικά Resin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/about-materials.webp" alt="Υλικά Resin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               <div className={styles.frame} />
               <span className={styles.imgCorner}>European oak · walnut</span>
             </motion.div>

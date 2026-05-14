@@ -94,7 +94,7 @@ export default function Footer() {
       <div style={{
         position: 'absolute',
         inset: 0,
-        backgroundImage: 'url(/footer-texture.png)',
+        backgroundImage: 'url(/footer-texture.webp)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         opacity: 0.15,

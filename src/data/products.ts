@@ -300,7 +300,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'violet',
     name: 'VIOLET',
-    menuImage: '/sofa1.png',
+    menuImage: '/sofa1.webp',
     category: 'sofas',
     categoryName: 'Καναπέδες',
     sizes: '2 μεγέθη',
@@ -308,12 +308,12 @@ export const allProducts: ProductData[] = [
     price: '850',
     description: 'Μοναδικός σχεδιασμός με εξαιρετική ποιότητα κατασκευής. Ο ιδανικός καναπές για κάθε σαλόνι.',
     images: {
-      'natural-oak': '/sofa1.png',
-      'caramel-walnut': '/sofa3.png',
-      'dark-walnut': '/sofa2.png',
+      'natural-oak': '/sofa1.webp',
+      'caramel-walnut': '/sofa3.webp',
+      'dark-walnut': '/sofa2.webp',
     },
-    hoverImage: '/sofa-hover.png',
-    galleryImages: ['/sofa1.png', '/sofa3.png', '/sofa2.png'],
+    hoverImage: '/sofa-hover.webp',
+    galleryImages: ['/sofa1.webp', '/sofa3.webp', '/sofa2.webp'],
     dimensions: {
       small: { width: '180cm', depth: '90cm', height: '80cm' },
       large: { width: '220cm', depth: '95cm', height: '80cm' },
@@ -322,7 +322,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'elysium',
     name: 'ELYSIUM',
-    menuImage: '/sofa.png',
+    menuImage: '/sofa.webp',
     category: 'sofas',
     categoryName: 'Καναπέδες',
     sizes: '3 μεγέθη',
@@ -330,11 +330,11 @@ export const allProducts: ProductData[] = [
     price: '1.250',
     description: 'Πολυτελής γωνιακός καναπές με αφαιρούμενα μαξιλάρια. Μέγιστη άνεση για ολόκληρη την οικογένεια.',
     images: {
-      'natural-oak': '/sofa.png',
-      'caramel-walnut': '/sofa1.png',
-      'dark-walnut': '/sofa3.png',
+      'natural-oak': '/sofa.webp',
+      'caramel-walnut': '/sofa1.webp',
+      'dark-walnut': '/sofa3.webp',
     },
-    galleryImages: ['/sofa.png', '/sofa1.png', '/sofa3.png'],
+    galleryImages: ['/sofa.webp', '/sofa1.webp', '/sofa3.webp'],
     dimensions: {
       small: { width: '200cm', depth: '90cm', height: '82cm' },
       large: { width: '280cm', depth: '95cm', height: '82cm' },
@@ -343,7 +343,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'serenity',
     name: 'SERENITY',
-    menuImage: '/sofa2.png',
+    menuImage: '/sofa2.webp',
     category: 'sofas',
     categoryName: 'Καναπέδες',
     sizes: '2 μεγέθη',
@@ -351,12 +351,12 @@ export const allProducts: ProductData[] = [
     price: '980',
     description: 'Κλασικός διθέσιος καναπές με μινιμαλιστικό σχεδιασμό. Ιδανικός για μικρότερους χώρους χωρίς συμβιβασμούς στην άνεση.',
     images: {
-      'natural-oak': '/sofa2.png',
-      'caramel-walnut': '/sofa1.png',
-      'dark-walnut': '/sofa3.png',
+      'natural-oak': '/sofa2.webp',
+      'caramel-walnut': '/sofa1.webp',
+      'dark-walnut': '/sofa3.webp',
     },
-    hoverImage: '/sofa-hover.png',
-    galleryImages: ['/sofa2.png', '/sofa1.png', '/sofa3.png'],
+    hoverImage: '/sofa-hover.webp',
+    galleryImages: ['/sofa2.webp', '/sofa1.webp', '/sofa3.webp'],
     dimensions: {
       small: { width: '160cm', depth: '85cm', height: '78cm' },
       large: { width: '190cm', depth: '90cm', height: '78cm' },
@@ -471,7 +471,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'maximillian',
     name: 'MAXIMILLIAN',
-    menuImage: '/dining-tables.png',
+    menuImage: '/dining-tables.webp',
     category: 'dining-tables',
     categoryName: 'Τραπεζαρίες',
     sizes: '2 μεγέθη',
@@ -479,12 +479,12 @@ export const allProducts: ProductData[] = [
     price: '950',
     description: 'Κορυφαία ποιότητα και διαχρονικός σχεδιασμός. Τραπεζαρία από μασίφ ξύλο που γίνεται το κεντρικό σημείο κάθε χώρου.',
     images: {
-      'natural-oak': '/dining-tables1.png',
-      'caramel-walnut': '/dining-tables2.png',
-      'dark-walnut': '/dining-tables.png',
+      'natural-oak': '/dining-tables1.webp',
+      'caramel-walnut': '/dining-tables2.webp',
+      'dark-walnut': '/dining-tables.webp',
     },
-    hoverImage: '/tables-hover.png',
-    galleryImages: ['/dining-tables1.png', '/dining-tables2.png', '/dining-tables.png'],
+    hoverImage: '/tables-hover.webp',
+    galleryImages: ['/dining-tables1.webp', '/dining-tables2.webp', '/dining-tables.webp'],
     dimensions: {
       small: { width: '160cm', depth: '90cm', height: '75cm' },
       large: { width: '200cm', depth: '100cm', height: '75cm' },
@@ -493,7 +493,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'olympus',
     name: 'OLYMPUS',
-    menuImage: '/dining-tables1.png',
+    menuImage: '/dining-tables1.webp',
     category: 'dining-tables',
     categoryName: 'Τραπεζαρίες',
     sizes: '2 μεγέθη',
@@ -501,11 +501,11 @@ export const allProducts: ProductData[] = [
     price: '1.350',
     description: 'Εντυπωσιακή τραπεζαρία με μοναδικό σχεδιασμό βάσης. Ξύλο καρυδιάς με χειροποίητο φινίρισμα και αντοχή στον χρόνο.',
     images: {
-      'natural-oak': '/table1.png',
-      'caramel-walnut': '/table.png',
-      'dark-walnut': '/dining-tables2.png',
+      'natural-oak': '/table1.webp',
+      'caramel-walnut': '/table.webp',
+      'dark-walnut': '/dining-tables2.webp',
     },
-    galleryImages: ['/table1.png', '/table.png', '/dining-tables2.png'],
+    galleryImages: ['/table1.webp', '/table.webp', '/dining-tables2.webp'],
     dimensions: {
       small: { width: '180cm', depth: '95cm', height: '76cm' },
       large: { width: '240cm', depth: '110cm', height: '76cm' },
@@ -558,7 +558,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'huxton',
     name: 'HUXTON',
-    menuImage: '/wardrobes.png',
+    menuImage: '/wardrobes.webp',
     category: 'storage',
     categoryName: 'Αποθηκευτικοί χώροι',
     sizes: '2 μεγέθη',
@@ -566,12 +566,12 @@ export const allProducts: ProductData[] = [
     price: '1.150',
     description: 'Το απόλυτο έπιπλο πολυτελείας για την οικία σας. Ευρύχωρη ντουλάπα με κομψές γραμμές και premium φινίρισμα.',
     images: {
-      'natural-oak': '/wardrobes.png',
-      'caramel-walnut': '/wardrobes2.png',
-      'dark-walnut': '/wardrobes3.png',
+      'natural-oak': '/wardrobes.webp',
+      'caramel-walnut': '/wardrobes2.webp',
+      'dark-walnut': '/wardrobes3.webp',
     },
-    hoverImage: '/wardrobe-hover.png',
-    galleryImages: ['/wardrobes.png', '/wardrobes2.png', '/wardrobes3.png'],
+    hoverImage: '/wardrobe-hover.webp',
+    galleryImages: ['/wardrobes.webp', '/wardrobes2.webp', '/wardrobes3.webp'],
     dimensions: {
       small: { width: '120cm', depth: '55cm', height: '180cm' },
       large: { width: '160cm', depth: '60cm', height: '200cm' },
@@ -580,7 +580,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'heritage',
     name: 'HERITAGE',
-    menuImage: '/wardrobes2.png',
+    menuImage: '/wardrobes2.webp',
     category: 'storage',
     categoryName: 'Αποθηκευτικοί χώροι',
     sizes: '1 μέγεθος',
@@ -588,11 +588,11 @@ export const allProducts: ProductData[] = [
     price: '890',
     description: 'Κλασική βιτρίνα με γυάλινες πόρτες. Ιδανική για την προβολή συλλεκτικών αντικειμένων και βιβλίων.',
     images: {
-      'natural-oak': '/wardrobes2.png',
-      'caramel-walnut': '/wardrobes3.png',
-      'dark-walnut': '/wardrobes.png',
+      'natural-oak': '/wardrobes2.webp',
+      'caramel-walnut': '/wardrobes3.webp',
+      'dark-walnut': '/wardrobes.webp',
     },
-    galleryImages: ['/wardrobes2.png', '/wardrobes3.png', '/wardrobes.png'],
+    galleryImages: ['/wardrobes2.webp', '/wardrobes3.webp', '/wardrobes.webp'],
     dimensions: {
       small: { width: '100cm', depth: '40cm', height: '190cm' },
     },
@@ -602,7 +602,7 @@ export const allProducts: ProductData[] = [
   {
     slug: 'custom-orders',
     name: 'ΕΙΔΙΚΕΣ ΠΑΡΑΓΓΕΛΙΕΣ',
-    menuImage: '/other.png',
+    menuImage: '/other.webp',
     category: 'custom-orders',
     categoryName: 'Ειδικές παραγγελίες',
     sizes: 'Κατόπιν παραγγελίας',
@@ -610,11 +610,11 @@ export const allProducts: ProductData[] = [
     price: 'Κατόπιν προσφοράς',
     description: 'Δημιουργήστε το έπιπλο των ονείρων σας με πλήρως εξατομικευμένες διαστάσεις, υλικά και φινίρισμα.',
     images: {
-      'natural-oak': '/other.png',
-      'caramel-walnut': '/other.png',
-      'dark-walnut': '/other.png',
+      'natural-oak': '/other.webp',
+      'caramel-walnut': '/other.webp',
+      'dark-walnut': '/other.webp',
     },
-    galleryImages: ['/other.png'],
+    galleryImages: ['/other.webp'],
   },
 ];
 

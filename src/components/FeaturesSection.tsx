@@ -23,7 +23,7 @@ const features: Feature[] = [
       'Χειροποίητη κατασκευή',
       'Natural Oak, Caramel & Dark Walnut',
     ],
-    image: '/sofa.png',
+    image: '/sofa.webp',
     reverse: false,
   },
   {
@@ -36,7 +36,7 @@ const features: Feature[] = [
       '19 premium υφάσματα',
       'Πλένονται στο πλυντήριο',
     ],
-    image: '/table.png',
+    image: '/table.webp',
     reverse: true,
   },
 ];

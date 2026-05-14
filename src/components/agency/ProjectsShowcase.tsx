@@ -12,7 +12,7 @@ const projects = [
     gradient: 'from-[#214A4F] to-[#7EC0C9]',
     link: '/projects/rooof-luxury',
     stats: { pages: '6+', animations: '20+', components: '11' },
-    image: '/heroimage1.png',
+    image: '/heroimage1.webp',
   },
   {
     id: 'spiti365',

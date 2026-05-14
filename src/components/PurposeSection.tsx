@@ -28,7 +28,7 @@ export default function PurposeSection() {
         <motion.div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(/family1.png)`,
+            backgroundImage: `url(/family1.webp)`,
             y: imageY,
             scale: 1.1,
           }}

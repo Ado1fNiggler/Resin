@@ -9,7 +9,7 @@ const projects = [
     title: 'ROOOF Luxury Furniture',
     description: 'Premium furniture e-commerce experience',
     tags: ['Next.js', 'React 19', 'Framer Motion'],
-    screenshot: '/heroimage1.png',
+    screenshot: '/heroimage1.webp',
     link: '/projects/rooof-luxury',
   },
   {

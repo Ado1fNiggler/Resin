@@ -207,8 +207,8 @@ export default function ContactPageClient() {
               aria-label="Εξωτερικό εργαστηρίου Resin, Παγκράτι"
               {...reveal(0)}
             >
-              {/* Photo dropped into /public/contact-workshop-ext.jpg */}
-              <img src="/contact-workshop-ext.jpg" alt="Εξωτερικό εργαστηρίου" />
+              {/* Photo dropped into /public/contact-workshop-ext.webp */}
+              <img src="/contact-workshop-ext.webp" alt="Εξωτερικό εργαστηρίου" />
               <span className={styles.imgNum}>№ 04</span>
               <span className={styles.imgTag}>Atelier · Παγκράτι</span>
             </motion.div>
