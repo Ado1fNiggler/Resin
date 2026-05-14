@@ -340,15 +340,16 @@
 }
 
 .formAsideMeta dt {
-  color: rgba(29, 42, 44, 0.5);
-  letter-spacing: 0.24em;
+  color: rgba(29, 42, 44, 0.65);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: 11.5px;
 }
 
 .formAsideMeta dd {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 14px;
+  font-size: 16px;
+  color: #214A4F;
 }
 
 /* Form fields — floating label */
