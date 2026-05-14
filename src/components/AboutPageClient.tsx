@@ -32,16 +32,19 @@ const team = [
     name: 'Νίκος Βλαχάκης',
     role: 'Founder · Master Joiner',
     bio:  'Ξεκίνησε σε εργαστήριο του πατέρα του στα 14. Σπούδασε στη Φλωρεντία, επέστρεψε στην Αθήνα, άνοιξε τη Resin.',
+    img:  '/about-team-1.jpg',
   },
   {
-    name: 'Ελένη Παπαδάκη',
+    name: 'Στέφανος Παπαδάκης',
     role: 'Designer · Wood Finisher',
-    bio:  'Σχεδιάζει με μολύβι, δοκιμάζει με τα δάχτυλα. Τα φινιρίσματα βερνικιού της είναι η υπογραφή της Resin.',
+    bio:  'Σχεδιάζει με μολύβι, δοκιμάζει με τα δάχτυλα. Τα φινιρίσματα βερνικιού του είναι η υπογραφή της Resin.',
+    img:  '/about-team-2.jpg',
   },
   {
     name: 'Δημήτρης Καραντίνος',
     role: 'Cabinetmaker',
     bio:  'Δέκα χρόνια δίπλα στον Νίκο. Ειδικός σε αρμούς χωρίς βίδα — μόνο ξύλο, κόλλα και υπομονή.',
+    img:  '/about-team-3.jpg',
   },
 ];
 
@@ -179,7 +182,7 @@ export default function AboutPageClient() {
             {team.map((m, i) => (
               <motion.article key={m.name} {...fadeUp(i * 0.08)}>
                 <div className={styles.memberImg}>
-                  <span className={styles.memberTag}>portrait</span>
+                  <img src={m.img} alt={m.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
                 </div>
                 <h3 className={styles.memberName}>{m.name}</h3>
                 <div className={styles.memberRole}>{m.role}</div>
@@ -199,10 +202,8 @@ export default function AboutPageClient() {
 
           {/* Row 1 — Workshop */}
           <div className={styles.row}>
-            <motion.div
-              className={`${styles.rowImg} ${styles.workshopTone}`}
-              {...fadeUp(0)}
-            >
+            <motion.div className={styles.rowImg} {...fadeUp(0)}>
+              <img src="/about-workshop.jpg" alt="Εργαστήριο Resin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               <div className={styles.frame} />
               <span className={styles.imgCorner}>Pagkrati · 200m²</span>
             </motion.div>
@@ -228,10 +229,8 @@ export default function AboutPageClient() {
 
           {/* Row 2 — Materials (reversed) */}
           <div className={`${styles.row} ${styles.rowReverse}`}>
-            <motion.div
-              className={`${styles.rowImg} ${styles.materialsTone}`}
-              {...fadeUp(0)}
-            >
+            <motion.div className={styles.rowImg} {...fadeUp(0)}>
+              <img src="/about-materials.jpg" alt="Υλικά Resin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               <div className={styles.frame} />
               <span className={styles.imgCorner}>European oak · walnut</span>
             </motion.div>
