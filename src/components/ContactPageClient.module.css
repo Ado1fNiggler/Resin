@@ -425,19 +425,21 @@
 
 .submit {
   margin-top: 40px;
-  width: 100%;
+  width: auto;
+  align-self: flex-start;
   background: #C9A078;
   color: #214A4F;
   border: none;
-  padding: 26px 32px;
-  font-size: 12px;
-  letter-spacing: 0.42em;
+  padding: 14px 32px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.38em;
   text-transform: uppercase;
   font-weight: 600;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 20px;
   transition: background 0.3s ease;
   font-family: inherit;
 }
