@@ -184,18 +184,23 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
   /* ── Handle menu open: rows expand simultaneously (shoprooof style) ── */
   const handleOpenMenu = useCallback(() => {
     if (isOpen || isClosing) return;
-    // flushSync forces React to commit the collapsed state to the DOM
-    // synchronously — guaranteeing a paint before the expansion RAF fires.
-    // Without this, heavy pages (e.g. Favorites with AnimatePresence) batch
-    // both state updates into one render and the animation never plays.
+    // flushSync → React commits collapsed DOM synchronously (not deferred).
+    // Without it, heavy pages (Favorites / AnimatePresence) let React defer
+    // this render past the first RAF, so the collapsed state never paints.
     flushSync(() => {
       setCollapsedRows(new Array(products.length).fill(true));
       setShowItems(false);
       setIsOpen(true);
     });
+    // Double-RAF: RAF callbacks fire *before* the browser paints.
+    //   RAF-1 (frame N)  → schedules RAF-2, does nothing else
+    //   Paint frame N    → collapsed rows are painted ← the key intermediate frame
+    //   RAF-2 (frame N+1)→ triggers expansion; animation plays against painted baseline
     requestAnimationFrame(() => {
-      setShowItems(true);
-      setCollapsedRows(new Array(products.length).fill(false));
+      requestAnimationFrame(() => {
+        setShowItems(true);
+        setCollapsedRows(new Array(products.length).fill(false));
+      });
     });
   }, [isOpen, isClosing]);
 
