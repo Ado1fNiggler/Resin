@@ -158,7 +158,7 @@
 .heart svg {
   width: 16px;
   height: 16px;
-  fill: #C9A078;
+  fill: #214A4F;
   transition: transform 0.25s ease, fill 0.2s ease;
 }
 
@@ -168,7 +168,7 @@
 
 .heart:hover svg {
   transform: scale(1.15);
-  fill: #214A4F;
+  fill: #C9A078;
 }
 
 .index {
@@ -193,7 +193,7 @@
   font-size: 10.5px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #7EC0C9;
+  color: rgba(29, 42, 44, 0.5);
   margin-bottom: 12px;
 }
 
@@ -263,7 +263,6 @@
 
 .ctaArrow {
   display: inline-block;
-  color: #C9A078;
   transition: transform 0.25s ease;
 }
 
