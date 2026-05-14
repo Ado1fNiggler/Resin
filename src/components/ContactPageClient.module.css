@@ -374,7 +374,7 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(29, 42, 44, 0.15);
+  border-bottom: 1px solid rgba(29, 42, 44, 0.32);
   padding: 14px 0;
   font-size: 16px;
   color: #1d2a2c;
@@ -393,7 +393,7 @@
   left: 0;
   top: 42px;
   font-size: 16px;
-  color: rgba(29, 42, 44, 0.5);
+  color: rgba(29, 42, 44, 0.72);
   pointer-events: none;
   transform-origin: left center;
   transition: transform 0.3s cubic-bezier(.22,.61,.36,1), color 0.3s ease;
