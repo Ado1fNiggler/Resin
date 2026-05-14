@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { flushSync } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import localFont from 'next/font/local';
@@ -183,16 +184,18 @@ export default function Navbar({ alwaysShowSidebar = false }: { alwaysShowSideba
   /* ── Handle menu open: rows expand simultaneously (shoprooof style) ── */
   const handleOpenMenu = useCallback(() => {
     if (isOpen || isClosing) return;
-    // Pre-collapse all rows so the expansion can be animated
-    setCollapsedRows(new Array(products.length).fill(true));
-    setShowItems(false);
-    setIsOpen(true);
-    // Two rAFs: first commits collapsed state to DOM, second triggers expansion
+    // flushSync forces React to commit the collapsed state to the DOM
+    // synchronously — guaranteeing a paint before the expansion RAF fires.
+    // Without this, heavy pages (e.g. Favorites with AnimatePresence) batch
+    // both state updates into one render and the animation never plays.
+    flushSync(() => {
+      setCollapsedRows(new Array(products.length).fill(true));
+      setShowItems(false);
+      setIsOpen(true);
+    });
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setShowItems(true);
-        setCollapsedRows(new Array(products.length).fill(false));
-      });
+      setShowItems(true);
+      setCollapsedRows(new Array(products.length).fill(false));
     });
   }, [isOpen, isClosing]);
 
